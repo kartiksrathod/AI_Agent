@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Frontend (React)
 
 ## Run locally
@@ -14,3 +15,6 @@ VITE_API_BASE=http://localhost:5000/api
 ## Notes
 - Ensure `public/index.html` exists. Downgraded date-fns to ^3.6.0 to satisfy react-day-picker peer deps.
 - If you previously saw `ERESOLVE` for `date-fns` vs `react-day-picker`, we've set `date-fns` to `^3.6.0`.
+=======
+# Frontend-demo
+>>>>>>> e8ab693927245a7d0c51d9194199af99b65f160c
