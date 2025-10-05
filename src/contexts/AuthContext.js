@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
       try {
         const user = JSON.parse(storedUser);
         setCurrentUser(user);
-        setIsAdmin(user.is_admin || storedAdminStatus);
+        setIsAdmin(user.is_admin === true || storedAdminStatus);
       } catch (error) {
         console.error('Error parsing stored user:', error);
         localStorage.removeItem('currentUser');
