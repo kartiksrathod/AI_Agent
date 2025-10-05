@@ -43,11 +43,11 @@ export const AuthProvider = ({ children }) => {
       const { access_token, user } = response.data;
       
       setCurrentUser(user);
-      setIsAdmin(user.is_admin || false);
+      setIsAdmin(user.is_admin === true);
       
       localStorage.setItem('currentUser', JSON.stringify(user));
       localStorage.setItem('token', access_token);
-      localStorage.setItem('isAdmin', user.is_admin || false);
+      localStorage.setItem('isAdmin', user.is_admin === true);
       
       return user;
     } catch (error) {
@@ -61,11 +61,11 @@ export const AuthProvider = ({ children }) => {
       const { access_token, user } = response.data;
       
       setCurrentUser(user);
-      setIsAdmin(user.is_admin || false);
+      setIsAdmin(user.is_admin === true);
       
       localStorage.setItem('currentUser', JSON.stringify(user));
       localStorage.setItem('token', access_token);
-      localStorage.setItem('isAdmin', user.is_admin || false);
+      localStorage.setItem('isAdmin', user.is_admin === true);
       
       return user;
     } catch (error) {
