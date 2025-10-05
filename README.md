@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Frontend (React)
 
 ## Run locally
@@ -18,3 +19,6 @@ VITE_API_BASE=http://localhost:5000/api
 =======
 # Frontend-demo
 >>>>>>> e8ab693927245a7d0c51d9194199af99b65f160c
+=======
+# demo-project
+>>>>>>> 10ea0b8f1fd2cb606e62b65459182961f8368c56
