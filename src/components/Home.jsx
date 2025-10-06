@@ -2,11 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
+import { motion } from 'framer-motion';
 import { 
   FileText, 
   BookOpen, 
   GraduationCap, 
-  MessageSquare
+  MessageSquare,
+  Sparkles
 } from 'lucide-react';
 
 const Home = () => {
