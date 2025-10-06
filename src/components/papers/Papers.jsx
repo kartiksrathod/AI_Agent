@@ -97,6 +97,25 @@ const Papers = () => {
     });
   };
 
+  const handleView = (paper) => {
+    if (!currentUser) {
+      toast({
+        title: "Login Required",
+        description: "Please login to view papers.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Use id or _id based on what's available
+    const paperId = paper.id || paper._id;
+    papersAPI.view(paperId);
+    toast({
+      title: "Opening Preview",
+      description: `Opening preview: ${paper.title}`,
+    });
+  };
+
   const handleUpload = async (e) => {
     e.preventDefault();
     
