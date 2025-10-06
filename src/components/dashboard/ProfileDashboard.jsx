@@ -106,30 +106,88 @@ const ProfileDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-blue-950 dark:via-gray-900 dark:to-purple-950">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-blue-950 dark:via-gray-900 dark:to-purple-950 relative overflow-hidden">
+      {/* Animated Background Particles */}
+      <div className="fixed inset-0 pointer-events-none">
+        {[...Array(4)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-3 h-3 bg-blue-400/10 rounded-full"
+            initial={{ 
+              x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1000), 
+              y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 1000),
+              scale: 0 
+            }}
+            animate={{ 
+              x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1000), 
+              y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 1000),
+              scale: [0, 1, 0]
+            }}
+            transition={{ 
+              duration: Math.random() * 8 + 12, 
+              repeat: Infinity, 
+              ease: "linear" 
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
         {/* Welcome Header */}
-        <div className="mb-8">
+        <motion.div 
+          className="mb-8"
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
           <div className="flex items-center gap-4 mb-4">
-            <div className="flex items-center justify-center w-16 h-16 bg-blue-600 text-white rounded-full">
+            <motion.div 
+              className="flex items-center justify-center w-16 h-16 bg-blue-600 text-white rounded-full"
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              whileHover={{ scale: 1.1, rotate: 5 }}
+            >
               <User className="h-8 w-8" />
-            </div>
+            </motion.div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+              <motion.h1 
+                className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-2"
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+              >
                 {getGreeting()}, {currentUser?.name}!
-              </h1>
-              <p className="text-lg text-gray-600 dark:text-gray-300">
+                <motion.div
+                  animate={{ rotate: [0, 15, -15, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+                >
+                  <Sparkles className="h-6 w-6 text-yellow-400" />
+                </motion.div>
+              </motion.h1>
+              <motion.p 
+                className="text-lg text-gray-600 dark:text-gray-300"
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+              >
                 Welcome to your learning dashboard
-              </p>
+              </motion.p>
               {isAdmin && (
-                <Badge variant="destructive" className="mt-1">
-                  <Award className="h-3 w-3 mr-1" />
-                  Administrator
-                </Badge>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6, delay: 0.6 }}
+                >
+                  <Badge variant="destructive" className="mt-1">
+                    <Award className="h-3 w-3 mr-1" />
+                    Administrator
+                  </Badge>
+                </motion.div>
               )}
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
