@@ -412,9 +412,11 @@ const Papers = () => {
                     <div className="flex-1">
                       {isAdmin && (
                         <Checkbox
+                          key={`paper-checkbox-${paperId}`}
                           checked={selectedPapers.includes(paperId)}
                           onCheckedChange={() => togglePaperSelection(paperId)}
                           className="mb-2"
+                          data-testid={`paper-checkbox-${paperId}`}
                         />
                       )}
                       <CardTitle className="text-lg leading-tight mb-2 dark:text-white">
