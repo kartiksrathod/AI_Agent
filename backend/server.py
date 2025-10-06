@@ -60,6 +60,7 @@ try:
     papers_collection = db.papers
     notes_collection = db.notes
     syllabus_collection = db.syllabus
+    chat_messages_collection = db.chat_messages
     
     # Test connection
     client.admin.command('ping')
