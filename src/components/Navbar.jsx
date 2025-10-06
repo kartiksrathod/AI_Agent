@@ -17,7 +17,7 @@ import ThemeToggle from './ThemeToggle';
 import { Search, BookOpen, User, LogOut, Menu, X, Shield } from 'lucide-react';
 
 const Navbar = () => {
-  const { currentUser, isAdmin, logout, toggleAdminMode } = useAuth();
+  const { currentUser, isAdmin, logout } = useAuth();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
