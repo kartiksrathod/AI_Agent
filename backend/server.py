@@ -629,6 +629,28 @@ async def download_syllabus(syllabus_id: str):
         media_type="application/pdf"
     )
 
+@app.get("/api/syllabus/{syllabus_id}/view")
+async def view_syllabus(syllabus_id: str):
+    syllabus = syllabus_collection.find_one({"_id": syllabus_id})
+    
+    if not syllabus:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Syllabus not found"
+        )
+    
+    if not os.path.exists(syllabus["file_path"]):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="File not found"
+        )
+    
+    return FileResponse(
+        path=syllabus["file_path"],
+        media_type="application/pdf",
+        headers={"Content-Disposition": "inline"}
+    )
+
 # Stats Endpoint
 @app.get("/api/stats", response_model=Stats)
 async def get_stats():
