@@ -35,9 +35,14 @@ const Navbar = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // In real app, this would navigate to search results
-      console.log('Searching for:', searchQuery);
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+      setSearchQuery('');
     }
+  };
+
+  const handleProfileClick = () => {
+    navigate('/profile');
+    setMobileMenuOpen(false);
   };
 
   const handleLogout = () => {
