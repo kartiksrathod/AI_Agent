@@ -14,7 +14,10 @@ import {
   Plus,
   TrendingUp,
   User,
-  Reply
+  Reply,
+  ThumbsUp,
+  Sparkles,
+  Users
 } from 'lucide-react';
 
 const Forum = () => {
