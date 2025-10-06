@@ -14,7 +14,7 @@ import {
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { useAuth } from '../contexts/AuthContext';
 import ThemeToggle from './ThemeToggle';
-import { Search, BookOpen, User, LogOut, Menu, X, Shield } from 'lucide-react';
+import { BookOpen, User, LogOut, Menu, X, Shield } from 'lucide-react';
 
 const Navbar = () => {
   const { currentUser, isAdmin, logout } = useAuth();
