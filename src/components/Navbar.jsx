@@ -77,19 +77,7 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Search Bar */}
-          <div className="hidden lg:flex flex-1 max-w-lg mx-8">
-            <form onSubmit={handleSearch} className="relative w-full">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground dark:text-gray-400" />
-              <Input
-                type="text"
-                placeholder="Search papers, notes, syllabus..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 w-full dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
-              />
-            </form>
-          </div>
+          {/* Global search removed as requested */}
 
           {/* Auth Section */}
           <div className="flex items-center space-x-2">
