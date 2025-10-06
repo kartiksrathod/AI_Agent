@@ -556,9 +556,20 @@ const Syllabus = () => {
                             {/* Actions */}
                             <div className="flex gap-2">
                               <Button 
+                                onClick={() => handleView(item)}
+                                className="flex-1 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
+                                size="sm"
+                                data-testid="view-syllabus-year-btn"
+                              >
+                                <Eye className="h-4 w-4 mr-2" />
+                                View
+                              </Button>
+                              
+                              <Button 
                                 onClick={() => handleDownload(item)}
                                 className="flex-1 bg-purple-600 hover:bg-purple-700 dark:bg-purple-700 dark:hover:bg-purple-800"
                                 size="sm"
+                                data-testid="download-syllabus-year-btn"
                               >
                                 <Download className="h-4 w-4 mr-2" />
                                 Download
@@ -570,6 +581,7 @@ const Syllabus = () => {
                                   variant="destructive"
                                   size="sm"
                                   className="bg-red-600 hover:bg-red-700"
+                                  data-testid="delete-syllabus-year-btn"
                                 >
                                   <Trash2 className="h-4 w-4" />
                                 </Button>
