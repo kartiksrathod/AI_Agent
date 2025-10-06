@@ -200,57 +200,70 @@ const Forum = () => {
           {filteredPosts.map((post) => (
             <Card 
               key={post.id} 
-              className="hover:shadow-md transition-all duration-300 cursor-pointer"
+              className="hover:shadow-xl transition-all duration-300 cursor-pointer border-0 shadow-md hover:scale-[1.01] dark:bg-gray-800"
               onClick={() => handlePostClick(post)}
+              data-testid="forum-post-card"
             >
-              <CardHeader>
-                <div className="flex items-start justify-between">
+              <CardHeader className="pb-3">
+                <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
-                    <CardTitle className="text-lg leading-tight mb-2 hover:text-orange-600 transition-colors">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-red-500 text-white font-semibold">
+                        {post.author.charAt(0).toUpperCase()}
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900 dark:text-white">{post.author}</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
+                          {post.lastActivity}
+                        </p>
+                      </div>
+                    </div>
+                    <CardTitle className="text-xl leading-tight mb-2 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">
                       {post.title}
                     </CardTitle>
-                    <CardDescription className="line-clamp-2 mb-3">
+                    <CardDescription className="line-clamp-2 text-base dark:text-gray-400">
                       {post.content}
                     </CardDescription>
                   </div>
-                  <MessageSquare className="h-5 w-5 text-orange-600 flex-shrink-0 ml-4" />
+                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center">
+                    <MessageSquare className="h-6 w-6 text-orange-600 dark:text-orange-400" />
+                  </div>
                 </div>
               </CardHeader>
               
               <CardContent className="pt-0">
                 {/* Tags */}
-                <div className="flex flex-wrap gap-1 mb-4">
+                <div className="flex flex-wrap gap-2 mb-4">
                   {post.tags.map((tag, index) => (
-                    <Badge key={index} variant="outline" className="text-xs">
+                    <Badge 
+                      key={index} 
+                      variant="outline" 
+                      className="text-xs border-orange-300 text-orange-700 dark:border-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-900/20"
+                    >
                       #{tag}
                     </Badge>
                   ))}
                 </div>
 
                 {/* Post Meta */}
-                <div className="flex items-center justify-between text-sm text-gray-600">
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-1">
-                      <User className="h-4 w-4" />
-                      <span>{post.author}</span>
-                    </div>
-                    <Badge className={getCategoryColor(post.category)}>
-                      {post.category}
-                    </Badge>
-                  </div>
+                <div className="flex items-center justify-between">
+                  <Badge className={`${getCategoryColor(post.category)} font-medium`}>
+                    {post.category.split(' ').slice(0, 2).join(' ')}
+                  </Badge>
                   
-                  <div className="flex items-center gap-4">
-                    <span className="flex items-center gap-1">
+                  <div className="flex items-center gap-4 text-sm">
+                    <span className="flex items-center gap-1 text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full">
                       <Reply className="h-4 w-4" />
-                      {post.replies}
+                      <span className="font-medium">{post.replies}</span>
                     </span>
-                    <span className="flex items-center gap-1">
+                    <span className="flex items-center gap-1 text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full">
                       <Eye className="h-4 w-4" />
-                      {post.views}
+                      <span className="font-medium">{post.views}</span>
                     </span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="h-4 w-4" />
-                      {post.lastActivity}
+                    <span className="flex items-center gap-1 text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full">
+                      <ThumbsUp className="h-4 w-4" />
+                      <span className="font-medium">{Math.floor(post.views / 10)}</span>
                     </span>
                   </div>
                 </div>
