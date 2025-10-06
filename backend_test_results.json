@@ -1,0 +1,111 @@
+{
+  "timestamp": "2025-10-06T10:43:40.652238",
+  "backend_url": "http://localhost:8001",
+  "total_tests": 17,
+  "passed_tests": 15,
+  "success_rate": 88.23529411764706,
+  "test_details": [
+    {
+      "test": "Root endpoint",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-10-06T10:43:26.372893"
+    },
+    {
+      "test": "Health check",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-10-06T10:43:26.374488"
+    },
+    {
+      "test": "Normal user registration",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-10-06T10:43:26.616786"
+    },
+    {
+      "test": "User registered without admin privileges",
+      "success": true,
+      "details": "",
+      "timestamp": "2025-10-06T10:43:26.616878"
+    },
+    {
+      "test": "Admin login",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-10-06T10:43:26.857503"
+    },
+    {
+      "test": "Admin user has admin privileges",
+      "success": true,
+      "details": "",
+      "timestamp": "2025-10-06T10:43:26.857597"
+    },
+    {
+      "test": "Upload paper (admin)",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-10-06T10:43:26.883581"
+    },
+    {
+      "test": "Upload notes (admin)",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-10-06T10:43:26.915984"
+    },
+    {
+      "test": "Upload syllabus (admin)",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-10-06T10:43:26.940989"
+    },
+    {
+      "test": "Get papers",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-10-06T10:43:26.942692"
+    },
+    {
+      "test": "Get notes",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-10-06T10:43:26.943958"
+    },
+    {
+      "test": "Get syllabus",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-10-06T10:43:26.945112"
+    },
+    {
+      "test": "Get stats",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-10-06T10:43:26.946840"
+    },
+    {
+      "test": "AI Assistant chat",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-10-06T10:43:40.649690"
+    },
+    {
+      "test": "AI Assistant provides meaningful response",
+      "success": true,
+      "details": "",
+      "timestamp": "2025-10-06T10:43:40.649788"
+    },
+    {
+      "test": "Unauthorized paper upload",
+      "success": false,
+      "details": "Status: 403, Error: Not authenticated",
+      "timestamp": "2025-10-06T10:43:40.651120"
+    },
+    {
+      "test": "Unauthorized AI chat",
+      "success": false,
+      "details": "Status: 403, Error: Not authenticated",
+      "timestamp": "2025-10-06T10:43:40.652185"
+    }
+  ]
+}
