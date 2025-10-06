@@ -159,6 +159,37 @@ const GlobalSearch = () => {
     });
   };
 
+  const handleView = (item) => {
+    if (!currentUser) {
+      toast({
+        title: "Login Required",
+        description: "Please login to view resources.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const itemId = item.id || item._id;
+    
+    // Call the appropriate view API
+    switch (item.type) {
+      case 'paper':
+        papersAPI.view(itemId);
+        break;
+      case 'note':
+        notesAPI.view(itemId);
+        break;
+      case 'syllabus':
+        syllabusAPI.view(itemId);
+        break;
+    }
+
+    toast({
+      title: "Opening Preview",
+      description: `Opening preview: ${item.title}`,
+    });
+  };
+
   const getTypeColor = (type) => {
     switch (type) {
       case 'paper': return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
