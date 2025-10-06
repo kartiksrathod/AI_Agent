@@ -49,6 +49,11 @@ const Papers = () => {
       setLoading(false);
     } catch (error) {
       console.error('Failed to fetch papers:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load papers. Please refresh the page.",
+        variant: "destructive"
+      });
       setLoading(false);
     }
   };
@@ -83,7 +88,9 @@ const Papers = () => {
       return;
     }
 
-    papersAPI.download(paper._id);
+    // Use id or _id based on what's available
+    const paperId = paper.id || paper._id;
+    papersAPI.download(paperId);
     toast({
       title: "Download Started",
       description: `Downloading: ${paper.title}`,
@@ -96,7 +103,16 @@ const Papers = () => {
     if (!uploadForm.file) {
       toast({
         title: "File Required",
-        description: "Please select a file to upload.",
+        description: "Please select a PDF file to upload.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (!uploadForm.branch) {
+      toast({
+        title: "Branch Required",
+        description: "Please select a branch.",
         variant: "destructive"
       });
       return;
@@ -123,11 +139,14 @@ const Papers = () => {
         tags: '',
         file: null
       });
+      // Reset file input
+      document.getElementById('file').value = '';
       fetchPapers();
     } catch (error) {
+      console.error('Upload error:', error);
       toast({
         title: "Upload Failed",
-        description: "Failed to upload paper. Please try again.",
+        description: error.response?.data?.detail || "Failed to upload paper. Please try again.",
         variant: "destructive"
       });
     }
@@ -214,7 +233,7 @@ const Papers = () => {
           <div className="mb-6 flex flex-wrap gap-4">
             <Dialog open={isUploadDialogOpen} onOpenChange={setIsUploadDialogOpen}>
               <DialogTrigger asChild>
-                <Button className="bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800">
+                <Button className="bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800" data-testid="add-paper-btn">
                   <Plus className="h-4 w-4 mr-2" />
                   Add Paper
                 </Button>
@@ -225,7 +244,7 @@ const Papers = () => {
                 </DialogHeader>
                 <form onSubmit={handleUpload} className="space-y-4">
                   <div>
-                    <Label htmlFor="title" className="dark:text-white">Subject Name</Label>
+                    <Label htmlFor="title" className="dark:text-white">Subject Name *</Label>
                     <Input
                       id="title"
                       placeholder="Enter subject name"
@@ -233,16 +252,18 @@ const Papers = () => {
                       onChange={(e) => setUploadForm({...uploadForm, title: e.target.value})}
                       required
                       className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      data-testid="paper-title-input"
                     />
                   </div>
                   
                   <div>
-                    <Label htmlFor="branch" className="dark:text-white">Branch</Label>
+                    <Label htmlFor="branch" className="dark:text-white">Branch *</Label>
                     <Select 
                       value={uploadForm.branch} 
                       onValueChange={(value) => setUploadForm({...uploadForm, branch: value})}
+                      required
                     >
-                      <SelectTrigger className="dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                      <SelectTrigger className="dark:bg-gray-700 dark:border-gray-600 dark:text-white" data-testid="paper-branch-select">
                         <SelectValue placeholder="Select Branch" />
                       </SelectTrigger>
                       <SelectContent className="dark:bg-gray-700 dark:border-gray-600">
@@ -263,6 +284,7 @@ const Papers = () => {
                       value={uploadForm.description}
                       onChange={(e) => setUploadForm({...uploadForm, description: e.target.value})}
                       className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      data-testid="paper-description-input"
                     />
                   </div>
 
@@ -274,11 +296,12 @@ const Papers = () => {
                       value={uploadForm.tags}
                       onChange={(e) => setUploadForm({...uploadForm, tags: e.target.value})}
                       className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      data-testid="paper-tags-input"
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="file" className="dark:text-white">PDF File</Label>
+                    <Label htmlFor="file" className="dark:text-white">PDF File *</Label>
                     <Input
                       id="file"
                       type="file"
@@ -286,11 +309,12 @@ const Papers = () => {
                       onChange={(e) => setUploadForm({...uploadForm, file: e.target.files[0]})}
                       required
                       className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      data-testid="paper-file-input"
                     />
                   </div>
 
                   <div className="flex gap-2">
-                    <Button type="submit" className="flex-1">
+                    <Button type="submit" className="flex-1" data-testid="submit-paper-btn">
                       <Upload className="h-4 w-4 mr-2" />
                       Upload Paper
                     </Button>
@@ -333,6 +357,7 @@ const Papers = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="pl-10 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
+                    data-testid="papers-search-input"
                   />
                 </div>
               </div>
@@ -359,77 +384,81 @@ const Papers = () => {
 
         {/* Papers Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-          {filteredPapers.map((paper) => (
-            <Card key={paper._id} className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 dark:bg-gray-800 dark:border-gray-700">
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    {isAdmin && (
-                      <Checkbox
-                        checked={selectedPapers.includes(paper._id)}
-                        onCheckedChange={() => togglePaperSelection(paper._id)}
-                        className="mb-2"
-                      />
-                    )}
-                    <CardTitle className="text-lg leading-tight mb-2 dark:text-white">
-                      {paper.title}
-                    </CardTitle>
-                    <Badge variant="secondary" className="text-xs dark:bg-gray-700 dark:text-gray-300">
-                      {paper.branch}
-                    </Badge>
-                  </div>
-                  <FileText className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 ml-2" />
-                </div>
-              </CardHeader>
-              
-              <CardContent className="space-y-4">
-                {paper.description && (
-                  <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
-                    {paper.description}
-                  </p>
-                )}
-
-                {/* Tags */}
-                {paper.tags && paper.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-1">
-                    {paper.tags.slice(0, 3).map((tag, index) => (
-                      <Badge key={index} variant="outline" className="text-xs dark:border-gray-600 dark:text-gray-400">
-                        {tag}
+          {filteredPapers.map((paper) => {
+            const paperId = paper.id || paper._id;
+            return (
+              <Card key={paperId} className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 dark:bg-gray-800 dark:border-gray-700" data-testid="paper-card">
+                <CardHeader>
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      {isAdmin && (
+                        <Checkbox
+                          checked={selectedPapers.includes(paperId)}
+                          onCheckedChange={() => togglePaperSelection(paperId)}
+                          className="mb-2"
+                        />
+                      )}
+                      <CardTitle className="text-lg leading-tight mb-2 dark:text-white">
+                        {paper.title}
+                      </CardTitle>
+                      <Badge variant="secondary" className="text-xs dark:bg-gray-700 dark:text-gray-300">
+                        {paper.branch}
                       </Badge>
-                    ))}
-                    {paper.tags.length > 3 && (
-                      <Badge variant="outline" className="text-xs dark:border-gray-600 dark:text-gray-400">
-                        +{paper.tags.length - 3}
-                      </Badge>
-                    )}
+                    </div>
+                    <FileText className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 ml-2" />
                   </div>
-                )}
-
-                {/* Actions */}
-                <div className="flex gap-2">
-                  <Button 
-                    onClick={() => handleDownload(paper)}
-                    className="flex-1 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
-                    size="sm"
-                  >
-                    <Download className="h-4 w-4 mr-2" />
-                    Download
-                  </Button>
-                  
-                  {isAdmin && (
-                    <Button 
-                      onClick={() => handleDelete(paper._id)}
-                      variant="destructive"
-                      size="sm"
-                      className="bg-red-600 hover:bg-red-700"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                </CardHeader>
+                
+                <CardContent className="space-y-4">
+                  {paper.description && (
+                    <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+                      {paper.description}
+                    </p>
                   )}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+
+                  {/* Tags */}
+                  {paper.tags && paper.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1">
+                      {paper.tags.slice(0, 3).map((tag, index) => (
+                        <Badge key={index} variant="outline" className="text-xs dark:border-gray-600 dark:text-gray-400">
+                          {tag}
+                        </Badge>
+                      ))}
+                      {paper.tags.length > 3 && (
+                        <Badge variant="outline" className="text-xs dark:border-gray-600 dark:text-gray-400">
+                          +{paper.tags.length - 3}
+                        </Badge>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Actions */}
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={() => handleDownload(paper)}
+                      className="flex-1 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
+                      size="sm"
+                      data-testid="download-paper-btn"
+                    >
+                      <Download className="h-4 w-4 mr-2" />
+                      Download
+                    </Button>
+                    
+                    {isAdmin && (
+                      <Button 
+                        onClick={() => handleDelete(paperId)}
+                        variant="destructive"
+                        size="sm"
+                        className="bg-red-600 hover:bg-red-700"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
 
         {/* No Results */}

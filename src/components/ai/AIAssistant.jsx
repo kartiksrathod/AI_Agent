@@ -62,6 +62,7 @@ const AIAssistant = () => {
       timestamp: new Date()
     };
 
+    const messageToSend = inputMessage;
     setMessages(prev => [...prev, userMessage]);
     setInputMessage('');
     setIsLoading(true);
@@ -71,6 +72,10 @@ const AIAssistant = () => {
       // Get the token from localStorage
       const token = localStorage.getItem('token');
       
+      if (!token) {
+        throw new Error('Please login to use AI assistant');
+      }
+      
       const response = await fetch(`${BACKEND_URL}/api/ai/chat`, {
         method: 'POST',
         headers: {
@@ -78,17 +83,21 @@ const AIAssistant = () => {
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-          message: inputMessage,
-          sessionId: currentUser.id
+          message: messageToSend,
+          sessionId: currentUser.id || currentUser.email
         })
       });
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.detail || 'Failed to get AI response');
+        throw new Error(errorData.detail || `Server error: ${response.status}`);
       }
 
       const data = await response.json();
+      
+      if (!data.response) {
+        throw new Error('Invalid response from server');
+      }
       
       const aiMessage = {
         id: Date.now() + 1,
@@ -106,7 +115,7 @@ const AIAssistant = () => {
       const errorMessage = {
         id: Date.now() + 1,
         type: 'ai',
-        content: "I apologize, but I'm experiencing some technical difficulties right now. Please try again in a moment, or contact support if the issue persists.",
+        content: `Sorry, I encountered an error: ${err.message}. Please try again or contact support if the issue persists.`,
         timestamp: new Date()
       };
       setMessages(prev => [...prev, errorMessage]);
@@ -135,10 +144,11 @@ const AIAssistant = () => {
 
   if (!isOpen) {
     return (
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-6 right-6 z-50" data-testid="ai-assistant-trigger">
         <Button
           onClick={() => setIsOpen(true)}
           className="h-14 w-14 rounded-full bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse"
+          data-testid="open-ai-assistant-btn"
         >
           <Brain className="h-6 w-6" />
         </Button>
@@ -150,7 +160,7 @@ const AIAssistant = () => {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-6 right-6 z-50" data-testid="ai-assistant-chat">
       <Card className={`w-96 h-[500px] shadow-2xl border-0 ${isMinimized ? 'h-16' : ''} transition-all duration-300`}>
         <CardHeader className="pb-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-lg">
           <div className="flex items-center justify-between">
@@ -167,6 +177,7 @@ const AIAssistant = () => {
                 size="sm"
                 onClick={() => setIsMinimized(!isMinimized)}
                 className="text-white hover:bg-white/20"
+                data-testid="minimize-ai-assistant-btn"
               >
                 {isMinimized ? <Maximize2 className="h-4 w-4" /> : <Minimize2 className="h-4 w-4" />}
               </Button>
@@ -175,6 +186,7 @@ const AIAssistant = () => {
                 size="sm"
                 onClick={() => setIsOpen(false)}
                 className="text-white hover:bg-white/20"
+                data-testid="close-ai-assistant-btn"
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -191,12 +203,13 @@ const AIAssistant = () => {
             )}
 
             {/* Messages */}
-            <ScrollArea className="flex-1 p-4">
+            <ScrollArea className="flex-1 p-4" data-testid="ai-chat-messages">
               <div className="space-y-4">
                 {messages.map((message) => (
                   <div
                     key={message.id}
                     className={`flex gap-3 ${message.type === 'user' ? 'flex-row-reverse' : ''}`}
+                    data-testid={`ai-message-${message.type}`}
                   >
                     <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
                       message.type === 'ai' ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-600'
@@ -219,7 +232,7 @@ const AIAssistant = () => {
                 ))}
                 
                 {isLoading && (
-                  <div className="flex gap-3">
+                  <div className="flex gap-3" data-testid="ai-loading-indicator">
                     <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
                       <Bot className="h-4 w-4" />
                     </div>
@@ -252,6 +265,7 @@ const AIAssistant = () => {
                       size="sm"
                       onClick={() => handleQuickQuestion(question)}
                       className="text-xs h-7"
+                      data-testid={`quick-question-${index}`}
                     >
                       {question}
                     </Button>
@@ -270,12 +284,14 @@ const AIAssistant = () => {
                   placeholder="Ask me anything about engineering..."
                   disabled={isLoading}
                   className="flex-1"
+                  data-testid="ai-chat-input"
                 />
                 <Button
                   onClick={sendMessage}
                   disabled={isLoading || !inputMessage.trim()}
                   size="sm"
                   className="bg-blue-600 hover:bg-blue-700"
+                  data-testid="ai-send-message-btn"
                 >
                   {isLoading ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
