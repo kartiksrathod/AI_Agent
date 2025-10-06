@@ -98,6 +98,23 @@ const Syllabus = () => {
     });
   };
 
+  const handleView = (item) => {
+    if (!currentUser) {
+      toast({
+        title: "Login Required",
+        description: "Please login to view syllabus.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    syllabusAPI.view(item._id);
+    toast({
+      title: "Opening Preview",
+      description: `Opening preview: ${item.title}`,
+    });
+  };
+
   const handleUpload = async (e) => {
     e.preventDefault();
     
