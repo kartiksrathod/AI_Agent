@@ -297,7 +297,7 @@ class EducationalPlatformTester:
 
 def main():
     # Use the public endpoint from environment
-    backend_url = "http://localhost:8001"  # This will be the public URL in production
+    backend_url = "https://interactive-ui-4.preview.emergentagent.com"
     
     tester = EducationalPlatformTester(backend_url)
     success = tester.run_all_tests()
