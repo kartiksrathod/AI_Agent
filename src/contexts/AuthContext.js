@@ -17,21 +17,19 @@ export const AuthProvider = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    // Check for stored user and admin status
+    // Check for stored user - admin status comes only from backend
     const storedUser = localStorage.getItem('currentUser');
     const storedToken = localStorage.getItem('token');
-    const storedAdminStatus = localStorage.getItem('isAdmin') === 'true';
     
     if (storedUser && storedToken) {
       try {
         const user = JSON.parse(storedUser);
         setCurrentUser(user);
-        setIsAdmin(user.is_admin === true || storedAdminStatus);
+        setIsAdmin(user.is_admin === true); // Only use backend admin status
       } catch (error) {
         console.error('Error parsing stored user:', error);
         localStorage.removeItem('currentUser');
         localStorage.removeItem('token');
-        localStorage.removeItem('isAdmin');
       }
     }
     setLoading(false);
