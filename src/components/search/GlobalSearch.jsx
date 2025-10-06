@@ -429,15 +429,28 @@ const GlobalSearch = () => {
                         </div>
                       )}
 
-                      {/* Download Button */}
-                      <Button 
-                        onClick={() => handleDownload(item)}
-                        className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
-                        size="sm"
-                      >
-                        <Download className="h-4 w-4 mr-2" />
-                        Download
-                      </Button>
+                      {/* Action Buttons */}
+                      <div className="flex gap-2">
+                        <Button 
+                          onClick={() => handleView(item)}
+                          className="flex-1 bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800"
+                          size="sm"
+                          data-testid="view-recommendation-btn"
+                        >
+                          <Eye className="h-4 w-4 mr-2" />
+                          View
+                        </Button>
+                        
+                        <Button 
+                          onClick={() => handleDownload(item)}
+                          className="flex-1 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
+                          size="sm"
+                          data-testid="download-recommendation-btn"
+                        >
+                          <Download className="h-4 w-4 mr-2" />
+                          Download
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 );
