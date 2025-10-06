@@ -120,6 +120,14 @@ class Stats(BaseModel):
     total_syllabus: int
     total_users: int
 
+class ChatMessage(BaseModel):
+    message: str
+    sessionId: Optional[str] = None
+
+class ChatResponse(BaseModel):
+    response: str
+    timestamp: datetime
+
 # Utility Functions
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
