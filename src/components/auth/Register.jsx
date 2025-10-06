@@ -18,8 +18,7 @@ const Register = () => {
     password: '',
     confirmPassword: '',
     course: '',
-    semester: '',
-    is_admin: false
+    semester: ''
   });
   const [loading, setLoading] = useState(false);
   
