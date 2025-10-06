@@ -72,12 +72,65 @@ const Forum = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-red-50">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-red-50 dark:from-gray-900 dark:via-gray-900 dark:to-orange-950">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Engineering Community Forum</h1>
-          <p className="text-lg text-gray-600">Connect with fellow engineering students, ask questions, and share knowledge</p>
+        {/* Hero Section */}
+        <div className="text-center mb-12 relative">
+          <div className="absolute inset-0 flex items-center justify-center opacity-10">
+            <Users className="h-64 w-64 text-orange-600" />
+          </div>
+          <div className="relative">
+            <div className="inline-flex items-center gap-2 mb-4 bg-orange-100 dark:bg-orange-900/30 px-4 py-2 rounded-full">
+              <Sparkles className="h-4 w-4 text-orange-600 dark:text-orange-400" />
+              <span className="text-sm font-medium text-orange-700 dark:text-orange-300">Community Driven Learning</span>
+            </div>
+            <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-4 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+              Engineering Community Forum
+            </h1>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              Connect with fellow engineering students, ask questions, share knowledge, and grow together
+            </p>
+          </div>
+        </div>
+
+        {/* Stats Bar */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <Card className="border-0 shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30">
+            <CardContent className="pt-6">
+              <div className="text-center">
+                <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">{mockForumPosts.length}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Discussions</p>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="border-0 shadow-md bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30">
+            <CardContent className="pt-6">
+              <div className="text-center">
+                <p className="text-3xl font-bold text-green-600 dark:text-green-400">
+                  {mockForumPosts.reduce((sum, post) => sum + post.replies, 0)}
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Replies</p>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="border-0 shadow-md bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30">
+            <CardContent className="pt-6">
+              <div className="text-center">
+                <p className="text-3xl font-bold text-purple-600 dark:text-purple-400">
+                  {mockForumPosts.reduce((sum, post) => sum + post.views, 0)}
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Views</p>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="border-0 shadow-md bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/30 dark:to-orange-800/30">
+            <CardContent className="pt-6">
+              <div className="text-center">
+                <p className="text-3xl font-bold text-orange-600 dark:text-orange-400">{categories.length}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Categories</p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Search, Filters and New Post */}
