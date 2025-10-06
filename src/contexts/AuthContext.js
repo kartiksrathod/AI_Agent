@@ -74,13 +74,6 @@ export const AuthProvider = ({ children }) => {
     setIsAdmin(false);
     localStorage.removeItem('currentUser');
     localStorage.removeItem('token');
-    localStorage.removeItem('isAdmin');
-  };
-
-  const toggleAdminMode = () => {
-    const newAdminStatus = !isAdmin;
-    setIsAdmin(newAdminStatus);
-    localStorage.setItem('isAdmin', newAdminStatus);
   };
 
   const value = {
@@ -89,7 +82,6 @@ export const AuthProvider = ({ children }) => {
     login,
     register,
     logout,
-    toggleAdminMode,
     loading
   };
 
