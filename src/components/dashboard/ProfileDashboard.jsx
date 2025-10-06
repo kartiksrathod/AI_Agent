@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
+import { motion } from 'framer-motion';
 import { useAuth } from '../../contexts/AuthContext';
 import { papersAPI, notesAPI, syllabusAPI, statsAPI } from '../../api/api';
 import { 
@@ -13,7 +14,8 @@ import {
   Calendar,
   Award,
   Activity,
-  TrendingUp
+  TrendingUp,
+  Sparkles
 } from 'lucide-react';
 
 const ProfileDashboard = () => {
