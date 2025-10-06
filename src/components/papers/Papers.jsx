@@ -456,6 +456,16 @@ const Papers = () => {
                   {/* Actions */}
                   <div className="flex gap-2">
                     <Button 
+                      onClick={() => handleView(paper)}
+                      className="flex-1 bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800"
+                      size="sm"
+                      data-testid="view-paper-btn"
+                    >
+                      <Eye className="h-4 w-4 mr-2" />
+                      View
+                    </Button>
+                    
+                    <Button 
                       onClick={() => handleDownload(paper)}
                       className="flex-1 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
                       size="sm"
@@ -471,6 +481,7 @@ const Papers = () => {
                         variant="destructive"
                         size="sm"
                         className="bg-red-600 hover:bg-red-700"
+                        data-testid="delete-paper-btn"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
