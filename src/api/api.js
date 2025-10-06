@@ -35,6 +35,9 @@ export const papersAPI = {
   delete: (id) => api.delete(`/api/papers/${id}`),
   download: (id) => {
     window.open(`${API_BASE_URL}/api/papers/${id}/download`, '_blank');
+  },
+  view: (id) => {
+    window.open(`${API_BASE_URL}/api/papers/${id}/view`, '_blank');
   }
 };
 
