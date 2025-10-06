@@ -50,6 +50,9 @@ export const notesAPI = {
   delete: (id) => api.delete(`/api/notes/${id}`),
   download: (id) => {
     window.open(`${API_BASE_URL}/api/notes/${id}/download`, '_blank');
+  },
+  view: (id) => {
+    window.open(`${API_BASE_URL}/api/notes/${id}/view`, '_blank');
   }
 };
 
