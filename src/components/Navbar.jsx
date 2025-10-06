@@ -110,17 +110,13 @@ const Navbar = () => {
                   </div>
                   <DropdownMenuSeparator className="dark:border-gray-600" />
                   
-                  {/* Admin Toggle */}
-                  <div className="p-2 flex items-center space-x-2">
-                    <Shield className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
-                    <Label htmlFor="admin-mode" className="text-sm dark:text-white">Admin Mode</Label>
-                    <Switch
-                      id="admin-mode"
-                      checked={isAdmin}
-                      onCheckedChange={toggleAdminMode}
-                      className="ml-auto"
-                    />
-                  </div>
+                  {/* Admin Status Display */}
+                  {isAdmin && (
+                    <div className="p-2 flex items-center space-x-2 bg-yellow-50 dark:bg-yellow-950 rounded-lg">
+                      <Shield className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
+                      <Label className="text-sm font-medium text-yellow-800 dark:text-yellow-200">Admin User</Label>
+                    </div>
+                  )}
                   
                   <DropdownMenuSeparator className="dark:border-gray-600" />
                   
