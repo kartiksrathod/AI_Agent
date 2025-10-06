@@ -5,7 +5,7 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { papersAPI, notesAPI, syllabusAPI } from '../api/api';
+import { papersAPI, notesAPI, syllabusAPI } from '../../api/api';
 import { engineeringCourses } from '../../data/mock';
 import { Search, Download, FileText, BookOpen, GraduationCap, Filter, Zap } from 'lucide-react';
 import { useToast } from '../../hooks/use-toast';
