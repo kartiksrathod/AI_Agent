@@ -148,19 +148,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Search */}
-        <div className="lg:hidden py-3">
-          <form onSubmit={handleSearch} className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground dark:text-gray-400" />
-            <Input
-              type="text"
-              placeholder="Search papers, notes, syllabus..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 pr-4 w-full dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
-            />
-          </form>
-        </div>
+        {/* Mobile search removed as requested */}
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
