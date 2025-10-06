@@ -32,13 +32,7 @@ const Navbar = () => {
     { path: '/forum', label: 'Forum' }
   ];
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
-      setSearchQuery('');
-    }
-  };
+  // Search handler removed as requested
 
   const handleProfileClick = () => {
     navigate('/profile');
