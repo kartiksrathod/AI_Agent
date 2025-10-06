@@ -22,21 +22,32 @@ users_collection = db.users
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def create_admin_user():
+    # Admin credentials
+    admin_email = "kartiksrathod07@gmail.com"
+    admin_name = "Kartik Rathod"
+    admin_password = "admin123"
+    
     # Check if admin already exists
-    existing_admin = users_collection.find_one({"email": "admin@example.com"})
+    existing_admin = users_collection.find_one({"email": admin_email})
     
     if existing_admin:
-        print("Admin user already exists!")
+        print(f"❌ Admin user already exists: {admin_email}")
+        return
+    
+    # Check if any admin exists
+    existing_any_admin = users_collection.find_one({"is_admin": True})
+    if existing_any_admin:
+        print(f"❌ An admin user already exists: {existing_any_admin['email']}")
         return
     
     # Create admin user
     admin_id = str(uuid.uuid4())
-    hashed_password = pwd_context.hash("admin123")
+    hashed_password = pwd_context.hash(admin_password)
     
     admin_doc = {
         "_id": admin_id,
-        "name": "Administrator",
-        "email": "admin@example.com",
+        "name": admin_name,
+        "email": admin_email,
         "password": hashed_password,
         "is_admin": True,
         "created_at": datetime.utcnow()
@@ -44,8 +55,10 @@ def create_admin_user():
     
     users_collection.insert_one(admin_doc)
     print("✅ Admin user created successfully!")
-    print("📧 Email: admin@example.com")
-    print("🔑 Password: admin123")
+    print(f"📧 Email: {admin_email}")
+    print(f"👤 Name: {admin_name}")
+    print(f"🔑 Password: {admin_password}")
+    print("\n⚠️  IMPORTANT: Change the password after first login!")
 
 if __name__ == "__main__":
     create_admin_user()
