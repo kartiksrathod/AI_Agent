@@ -6,7 +6,7 @@ from datetime import datetime
 from io import BytesIO
 
 class EducationalPlatformTester:
-    def __init__(self, base_url="http://localhost:8001"):
+    def __init__(self, base_url="https://interactive-ui-4.preview.emergentagent.com"):
         self.base_url = base_url
         self.token = None
         self.admin_token = None
