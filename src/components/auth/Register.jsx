@@ -55,8 +55,7 @@ const Register = () => {
         email: formData.email,
         password: formData.password,
         course: formData.course,
-        semester: formData.semester,
-        is_admin: formData.is_admin
+        semester: formData.semester
       });
       
       toast({
