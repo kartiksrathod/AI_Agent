@@ -113,7 +113,7 @@ class EducationalPlatformTester:
         print("\n🔍 Testing Admin Login...")
         
         admin_credentials = {
-            "email": "kartiksrathod07@gmail.com",
+            "email": "admin@example.com",
             "password": "admin123"
         }
         
