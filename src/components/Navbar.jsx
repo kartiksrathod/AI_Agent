@@ -127,7 +127,7 @@ const Navbar = () => {
                   
                   <DropdownMenuSeparator className="dark:border-gray-600" />
                   
-                  <DropdownMenuItem className="dark:text-white dark:hover:bg-gray-700">
+                  <DropdownMenuItem onClick={handleProfileClick} className="dark:text-white dark:hover:bg-gray-700 cursor-pointer">
                     <User className="mr-2 h-4 w-4" />
                     <span>Profile</span>
                   </DropdownMenuItem>
