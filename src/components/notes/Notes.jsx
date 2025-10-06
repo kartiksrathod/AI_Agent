@@ -430,12 +430,23 @@ const Notes = () => {
                 {/* Actions */}
                 <div className="flex gap-2">
                   <Button 
+                    onClick={() => handleView(note)}
+                    className="flex-1 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
+                    size="sm"
+                    data-testid="view-note-btn"
+                  >
+                    <Eye className="h-4 w-4 mr-2" />
+                    View
+                  </Button>
+                  
+                  <Button 
                     onClick={() => handleDownload(note)}
                     className="flex-1 bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800"
                     size="sm"
+                    data-testid="download-note-btn"
                   >
                     <Download className="h-4 w-4 mr-2" />
-                    Download PDF
+                    Download
                   </Button>
                   
                   {isAdmin && (
@@ -444,6 +455,7 @@ const Notes = () => {
                       variant="destructive"
                       size="sm"
                       className="bg-red-600 hover:bg-red-700"
+                      data-testid="delete-note-btn"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
