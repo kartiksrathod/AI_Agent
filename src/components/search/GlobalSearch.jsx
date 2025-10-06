@@ -27,7 +27,12 @@ const GlobalSearch = () => {
 
   useEffect(() => {
     loadRecommendations();
-  }, []);
+    // Check for query parameter from navigation
+    const queryParam = searchParams.get('q');
+    if (queryParam) {
+      setSearchQuery(queryParam);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (searchQuery.trim()) {
