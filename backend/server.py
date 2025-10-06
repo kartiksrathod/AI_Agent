@@ -495,6 +495,28 @@ async def download_note(note_id: str):
         media_type="application/pdf"
     )
 
+@app.get("/api/notes/{note_id}/view")
+async def view_note(note_id: str):
+    note = notes_collection.find_one({"_id": note_id})
+    
+    if not note:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Note not found"
+        )
+    
+    if not os.path.exists(note["file_path"]):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="File not found"
+        )
+    
+    return FileResponse(
+        path=note["file_path"],
+        media_type="application/pdf",
+        headers={"Content-Disposition": "inline"}
+    )
+
 # Syllabus Endpoints
 @app.get("/api/syllabus", response_model=List[SyllabusResponse])
 async def get_syllabus():
