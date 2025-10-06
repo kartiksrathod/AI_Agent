@@ -600,6 +600,74 @@ async def get_stats():
         total_users=total_users
     )
 
+# AI Chat Endpoint
+@app.post("/api/ai/chat", response_model=ChatResponse)
+async def ai_chat(
+    chat_request: ChatMessage,
+    current_user: User = Depends(get_current_user)
+):
+    """
+    AI Assistant for student queries about engineering topics
+    """
+    try:
+        # Create session ID for this chat
+        session_id = chat_request.sessionId or f"user_{current_user.id}_{uuid.uuid4().hex[:8]}"
+        
+        # System message for educational AI assistant
+        system_message = """You are an AI study assistant for engineering students. You specialize in helping with:
+
+1. Computer Science & IT topics (programming, algorithms, data structures, databases, etc.)
+2. Electronics & Communication (circuits, signals, digital electronics, etc.)  
+3. Mechanical Engineering (thermodynamics, mechanics, materials science, etc.)
+4. Civil Engineering (structures, materials, surveying, etc.)
+5. General engineering mathematics, physics, and problem-solving
+
+Your role is to:
+- Explain concepts clearly with examples
+- Help solve engineering problems step-by-step
+- Provide study guidance and tips
+- Answer doubts about course topics
+- Suggest resources for further learning
+
+Keep responses helpful, educational, and encouraging. If asked about non-engineering topics, politely redirect to engineering subjects."""
+
+        # Initialize LLM chat with GPT-4o-mini (good for educational queries)
+        chat = LlmChat(
+            api_key=EMERGENT_LLM_KEY,
+            session_id=session_id,
+            system_message=system_message
+        ).with_model("openai", "gpt-4o-mini")
+        
+        # Create user message
+        user_message = UserMessage(text=chat_request.message)
+        
+        # Get AI response
+        ai_response = await chat.send_message(user_message)
+        
+        # Store chat message in database for history
+        message_doc = {
+            "_id": str(uuid.uuid4()),
+            "user_id": current_user.id,
+            "session_id": session_id,
+            "user_message": chat_request.message,
+            "ai_response": ai_response,
+            "timestamp": datetime.utcnow()
+        }
+        
+        chat_messages_collection.insert_one(message_doc)
+        
+        return ChatResponse(
+            response=ai_response,
+            timestamp=datetime.utcnow()
+        )
+        
+    except Exception as e:
+        print(f"AI Chat Error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to get AI response. Please try again."
+        )
+
 # Health Check
 @app.get("/")
 async def root():
