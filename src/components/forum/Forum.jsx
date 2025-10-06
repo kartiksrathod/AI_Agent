@@ -134,18 +134,19 @@ const Forum = () => {
         </div>
 
         {/* Search, Filters and New Post */}
-        <Card className="mb-8">
+        <Card className="mb-8 border-0 shadow-lg dark:bg-gray-800">
           <CardContent className="pt-6">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               {/* Search */}
               <div className="md:col-span-2">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 dark:text-gray-500" />
                   <Input
                     placeholder="Search discussions, topics, or users..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10"
+                    className="pl-10 h-11 border-2 focus:border-orange-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    data-testid="forum-search-input"
                   />
                 </div>
               </div>
@@ -153,13 +154,13 @@ const Forum = () => {
               {/* Category Filter */}
               <div>
                 <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                  <SelectTrigger>
+                  <SelectTrigger className="h-11 border-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                     <SelectValue placeholder="All Categories" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Categories</SelectItem>
+                  <SelectContent className="dark:bg-gray-700 dark:border-gray-600">
+                    <SelectItem value="all" className="dark:text-white">All Categories</SelectItem>
                     {categories.map(category => (
-                      <SelectItem key={category} value={category}>{category}</SelectItem>
+                      <SelectItem key={category} value={category} className="dark:text-white dark:hover:bg-gray-600">{category}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -169,22 +170,26 @@ const Forum = () => {
               <div>
                 <Button 
                   onClick={handleNewPost}
-                  className="w-full bg-orange-600 hover:bg-orange-700"
+                  className="w-full h-11 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white font-semibold shadow-md"
+                  data-testid="new-post-btn"
                 >
-                  <Plus className="h-4 w-4 mr-2" />
-                  New Post
+                  <Plus className="h-5 w-5 mr-2" />
+                  New Discussion
                 </Button>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Results Count */}
-        <div className="flex items-center justify-between mb-6">
-          <p className="text-gray-600">
-            Showing {filteredPosts.length} of {mockForumPosts.length} discussions
-          </p>
-          <div className="flex items-center gap-2 text-sm text-gray-500">
+        {/* Results Count & Sort */}
+        <div className="flex items-center justify-between mb-6 bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm">
+          <div className="flex items-center gap-2">
+            <MessageSquare className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+            <p className="font-medium text-gray-900 dark:text-white">
+              {filteredPosts.length} of {mockForumPosts.length} discussions
+            </p>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
             <Filter className="h-4 w-4" />
             <span>Sorted by recent activity</span>
           </div>
