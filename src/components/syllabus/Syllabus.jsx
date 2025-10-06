@@ -528,9 +528,11 @@ const Syllabus = () => {
                               <div className="flex-1">
                                 {isAdmin && (
                                   <Checkbox
+                                    key={`syllabus-year-checkbox-${item._id}`}
                                     checked={selectedSyllabus.includes(item._id)}
                                     onCheckedChange={() => toggleSyllabusSelection(item._id)}
                                     className="mb-2"
+                                    data-testid={`syllabus-year-checkbox-${item._id}`}
                                   />
                                 )}
                                 <CardTitle className="text-lg leading-tight mb-2 dark:text-white">
