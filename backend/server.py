@@ -364,6 +364,28 @@ async def download_paper(paper_id: str):
         media_type="application/pdf"
     )
 
+@app.get("/api/papers/{paper_id}/view")
+async def view_paper(paper_id: str):
+    paper = papers_collection.find_one({"_id": paper_id})
+    
+    if not paper:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Paper not found"
+        )
+    
+    if not os.path.exists(paper["file_path"]):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="File not found"
+        )
+    
+    return FileResponse(
+        path=paper["file_path"],
+        media_type="application/pdf",
+        headers={"Content-Disposition": "inline"}
+    )
+
 # Notes Endpoints
 @app.get("/api/notes", response_model=List[NoteResponse])
 async def get_notes():
