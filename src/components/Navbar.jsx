@@ -21,7 +21,7 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  // Search functionality removed as requested
 
   const navItems = [
     { path: '/', label: 'Home' },
