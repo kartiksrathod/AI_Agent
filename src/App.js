@@ -16,6 +16,8 @@ import Notes from "./components/notes/Notes";
 import Syllabus from "./components/syllabus/Syllabus";
 import Forum from "./components/forum/Forum";
 import AIAssistant from "./components/ai/AIAssistant";
+import ProfileDashboard from "./components/dashboard/ProfileDashboard";
+import GlobalSearch from "./components/search/GlobalSearch";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
