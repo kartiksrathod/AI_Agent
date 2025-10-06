@@ -90,6 +90,23 @@ const Notes = () => {
     });
   };
 
+  const handleView = (note) => {
+    if (!currentUser) {
+      toast({
+        title: "Login Required",
+        description: "Please login to view notes.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    notesAPI.view(note._id);
+    toast({
+      title: "Opening Preview",
+      description: `Opening preview: ${note.title}`,
+    });
+  };
+
   const handleUpload = async (e) => {
     e.preventDefault();
     
