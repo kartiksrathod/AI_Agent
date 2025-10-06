@@ -11,7 +11,7 @@ import { Checkbox } from '../ui/checkbox';
 import { useAuth } from '../../contexts/AuthContext';
 import { papersAPI } from '../../api/api';
 import { engineeringCourses } from '../../data/mock';
-import { Search, Download, Plus, Trash2, FileText, Upload } from 'lucide-react';
+import { Search, Download, Plus, Trash2, FileText, Upload, Eye } from 'lucide-react';
 import { useToast } from '../../hooks/use-toast';
 
 const Papers = () => {
