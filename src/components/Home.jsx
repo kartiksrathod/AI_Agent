@@ -151,30 +151,59 @@ const Home = () => {
       {/* Quick Access Cards */}
       <div className="py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+          <motion.div 
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Quick Access</h2>
             <p className="text-lg text-gray-600 dark:text-gray-300">Jump straight to what you need</p>
-          </div>
+          </motion.div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {quickAccessCards.map((card, index) => (
-              <Link key={index} to={card.path}>
-                <Card className={`h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${card.color}`}>
-                  <CardHeader className="text-center">
-                    <card.icon className={`h-12 w-12 mx-auto mb-4 ${card.iconColor}`} />
-                    <CardTitle className="text-xl dark:text-white">{card.title}</CardTitle>
-                    <CardDescription className="text-gray-600 dark:text-gray-400">
-                      {card.description}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="text-center">
-                    <div className="text-2xl font-bold text-gray-900 dark:text-white">
-                      Available
-                    </div>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Resources</p>
-                  </CardContent>
-                </Card>
-              </Link>
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                whileHover={{ 
+                  y: -8, 
+                  transition: { duration: 0.2 } 
+                }}
+              >
+                <Link to={card.path}>
+                  <Card className={`h-full transition-all duration-300 hover:shadow-xl ${card.color} group`}>
+                    <CardHeader className="text-center">
+                      <motion.div
+                        whileHover={{ rotate: 360 }}
+                        transition={{ duration: 0.6 }}
+                      >
+                        <card.icon className={`h-12 w-12 mx-auto mb-4 ${card.iconColor} group-hover:scale-110 transition-transform duration-300`} />
+                      </motion.div>
+                      <CardTitle className="text-xl dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
+                        {card.title}
+                      </CardTitle>
+                      <CardDescription className="text-gray-600 dark:text-gray-400">
+                        {card.description}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="text-center">
+                      <motion.div 
+                        className="text-2xl font-bold text-gray-900 dark:text-white"
+                        whileHover={{ scale: 1.1 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        Available
+                      </motion.div>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Resources</p>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </motion.div>
             ))}
           </div>
         </div>
