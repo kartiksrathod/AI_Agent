@@ -7,7 +7,7 @@ from passlib.context import CryptContext
 from pymongo import MongoClient
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv('/app/backend/.env')
 
 # Configuration
 MONGO_URL = os.getenv("MONGO_URL")
