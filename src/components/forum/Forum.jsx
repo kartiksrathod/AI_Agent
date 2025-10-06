@@ -274,30 +274,47 @@ const Forum = () => {
 
         {/* No Results */}
         {filteredPosts.length === 0 && (
-          <div className="text-center py-12">
-            <MessageSquare className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No discussions found</h3>
-            <p className="text-gray-600 mb-4">Try adjusting your search or filter criteria</p>
-            <Button onClick={handleNewPost} className="bg-orange-600 hover:bg-orange-700">
-              <Plus className="h-4 w-4 mr-2" />
-              Start a new discussion
-            </Button>
-          </div>
+          <Card className="border-0 shadow-lg dark:bg-gray-800">
+            <CardContent className="text-center py-16">
+              <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center">
+                <MessageSquare className="h-10 w-10 text-orange-600 dark:text-orange-400" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">No discussions found</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
+                We couldn't find any discussions matching your search. Try adjusting your filters or start a new discussion!
+              </p>
+              <Button 
+                onClick={handleNewPost} 
+                className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white font-semibold shadow-lg"
+              >
+                <Plus className="h-5 w-5 mr-2" />
+                Start a new discussion
+              </Button>
+            </CardContent>
+          </Card>
         )}
 
-        {/* Popular Topics Sidebar */}
+        {/* Trending Topics */}
         <div className="mt-12">
-          <Card>
+          <Card className="border-0 shadow-lg dark:bg-gray-800">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-orange-600" />
-                Trending Topics
+              <CardTitle className="flex items-center gap-3 text-2xl">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center">
+                  <TrendingUp className="h-5 w-5 text-white" />
+                </div>
+                <span className="dark:text-white">Trending Topics</span>
               </CardTitle>
+              <CardDescription className="dark:text-gray-400">Popular topics in the community right now</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-wrap gap-2">
-                {['data-structures', 'algorithms', 'digital-electronics', 'thermodynamics', 'software-engineering', 'computer-networks'].map((topic, index) => (
-                  <Badge key={index} variant="secondary" className="cursor-pointer hover:bg-orange-100">
+              <div className="flex flex-wrap gap-3">
+                {['data-structures', 'algorithms', 'digital-electronics', 'thermodynamics', 'software-engineering', 'computer-networks', 'machine-learning', 'web-development'].map((topic, index) => (
+                  <Badge 
+                    key={index} 
+                    variant="secondary" 
+                    className="cursor-pointer hover:bg-orange-100 dark:hover:bg-orange-900/30 hover:text-orange-700 dark:hover:text-orange-400 transition-colors text-sm py-2 px-4 dark:bg-gray-700 dark:text-gray-300"
+                  >
+                    <TrendingUp className="h-3 w-3 mr-1" />
                     #{topic}
                   </Badge>
                 ))}
