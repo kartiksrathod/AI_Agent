@@ -43,6 +43,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 MONGO_URL = os.getenv("MONGO_URL")
 DATABASE_NAME = os.getenv("DATABASE_NAME")
 UPLOAD_DIR = os.getenv("UPLOAD_DIR", "uploads")
+EMERGENT_LLM_KEY = os.getenv("EMERGENT_LLM_KEY")
 
 # Create upload directory
 Path(UPLOAD_DIR).mkdir(exist_ok=True)
