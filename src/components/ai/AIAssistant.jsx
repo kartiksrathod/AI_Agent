@@ -68,11 +68,14 @@ const AIAssistant = () => {
     setError('');
 
     try {
+      // Get the token from localStorage
+      const token = localStorage.getItem('token');
+      
       const response = await fetch(`${BACKEND_URL}/api/ai/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${currentUser.token || 'mock-token'}`
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           message: inputMessage,
@@ -81,7 +84,8 @@ const AIAssistant = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to get AI response');
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.detail || 'Failed to get AI response');
       }
 
       const data = await response.json();
@@ -95,14 +99,17 @@ const AIAssistant = () => {
 
       setMessages(prev => [...prev, aiMessage]);
     } catch (err) {
-      // Mock response for demo
-      const aiMessage = {
+      console.error('AI Chat Error:', err);
+      setError(`Error: ${err.message}`);
+      
+      // Fallback message on error
+      const errorMessage = {
         id: Date.now() + 1,
         type: 'ai',
-        content: `I understand you're asking about "${inputMessage}". As an AI assistant for engineering students, I can help you with various topics. However, I'm currently in demo mode. In the full version, I would provide detailed explanations about engineering concepts, solve problems, and guide you through complex topics. Please connect the backend to get full AI functionality!`,
+        content: "I apologize, but I'm experiencing some technical difficulties right now. Please try again in a moment, or contact support if the issue persists.",
         timestamp: new Date()
       };
-      setMessages(prev => [...prev, aiMessage]);
+      setMessages(prev => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
     }
