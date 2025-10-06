@@ -61,14 +61,14 @@ const Forum = () => {
 
   const getCategoryColor = (category) => {
     const colors = {
-      'Computer Science Engineering': 'bg-blue-100 text-blue-800',
-      'Electronics & Communication Engineering': 'bg-green-100 text-green-800',
-      'Information Science & Technology': 'bg-purple-100 text-purple-800',
-      'Mechanical Engineering': 'bg-orange-100 text-orange-800',
-      'Civil Engineering': 'bg-red-100 text-red-800',
-      'Electrical Engineering': 'bg-yellow-100 text-yellow-800'
+      'Computer Science Engineering': 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
+      'Electronics & Communication Engineering': 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
+      'Information Science & Technology': 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300',
+      'Mechanical Engineering': 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300',
+      'Civil Engineering': 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300',
+      'Electrical Engineering': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'
     };
-    return colors[category] || 'bg-gray-100 text-gray-800';
+    return colors[category] || 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
   };
 
   return (
