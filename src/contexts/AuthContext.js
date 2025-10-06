@@ -62,7 +62,6 @@ export const AuthProvider = ({ children }) => {
       
       localStorage.setItem('currentUser', JSON.stringify(user));
       localStorage.setItem('token', access_token);
-      localStorage.setItem('isAdmin', user.is_admin === true);
       
       return user;
     } catch (error) {
