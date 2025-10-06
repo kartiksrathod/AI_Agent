@@ -15,6 +15,8 @@ import shutil
 from pathlib import Path
 import aiofiles
 from dotenv import load_dotenv
+from emergentintegrations.llm.chat import LlmChat, UserMessage
+import asyncio
 
 # Load environment variables
 load_dotenv()
