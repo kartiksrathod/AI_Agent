@@ -173,23 +173,7 @@ const Register = () => {
               />
             </div>
 
-            {/* Admin Toggle */}
-            <div className="flex items-center space-x-2 p-4 bg-yellow-50 dark:bg-yellow-950 rounded-lg">
-              <Shield className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
-              <div className="flex-1">
-                <Label htmlFor="admin-register" className="text-sm font-medium dark:text-white">
-                  Register as Admin
-                </Label>
-                <p className="text-xs text-gray-600 dark:text-gray-400">
-                  Admins can upload and manage resources
-                </p>
-              </div>
-              <Switch
-                id="admin-register"
-                checked={formData.is_admin}
-                onCheckedChange={(checked) => setFormData({...formData, is_admin: checked})}
-              />
-            </div>
+            {/* Note: Admin registration removed for security */}
             
             <Button 
               type="submit" 
