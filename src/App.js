@@ -42,7 +42,15 @@ function App() {
                 <Route path="/notes" element={<Notes />} />
                 <Route path="/syllabus" element={<Syllabus />} />
                 <Route path="/forum" element={<Forum />} />
-                {/* Add more protected routes as needed */}
+                <Route path="/search" element={<GlobalSearch />} />
+                <Route 
+                  path="/profile" 
+                  element={
+                    <ProtectedRoute>
+                      <ProfileDashboard />
+                    </ProtectedRoute>
+                  } 
+                />
               </Routes>
               <AIAssistant />
               <Toaster />
