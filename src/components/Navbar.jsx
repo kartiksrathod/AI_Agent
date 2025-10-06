@@ -19,6 +19,7 @@ import { Search, BookOpen, User, LogOut, Menu, X, Shield } from 'lucide-react';
 const Navbar = () => {
   const { currentUser, isAdmin, logout } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
