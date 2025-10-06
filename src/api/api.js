@@ -65,6 +65,9 @@ export const syllabusAPI = {
   delete: (id) => api.delete(`/api/syllabus/${id}`),
   download: (id) => {
     window.open(`${API_BASE_URL}/api/syllabus/${id}/download`, '_blank');
+  },
+  view: (id) => {
+    window.open(`${API_BASE_URL}/api/syllabus/${id}/view`, '_blank');
   }
 };
 
