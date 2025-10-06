@@ -192,60 +192,148 @@ const ProfileDashboard = () => {
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {/* Personal Downloads */}
-          <Card className="dark:bg-gray-800 dark:border-gray-700" data-testid="downloads-stat-card">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium dark:text-white">Total Downloads</CardTitle>
-              <Download className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold dark:text-white">{userStats.totalDownloads}</div>
-              <p className="text-xs text-gray-600 dark:text-gray-400">
-                Across all resources
-              </p>
-            </CardContent>
-          </Card>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            whileHover={{ 
+              y: -5, 
+              transition: { duration: 0.2 } 
+            }}
+          >
+            <Card className="dark:bg-gray-800 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300" data-testid="downloads-stat-card">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium dark:text-white">Total Downloads</CardTitle>
+                <motion.div
+                  whileHover={{ scale: 1.2, rotate: 15 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Download className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                </motion.div>
+              </CardHeader>
+              <CardContent>
+                <motion.div 
+                  className="text-2xl font-bold dark:text-white"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                >
+                  {userStats.totalDownloads}
+                </motion.div>
+                <p className="text-xs text-gray-600 dark:text-gray-400">
+                  Across all resources
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
 
           {/* Papers Downloaded */}
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium dark:text-white">Papers Downloaded</CardTitle>
-              <FileText className="h-4 w-4 text-green-600 dark:text-green-400" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold dark:text-white">{userStats.papersDownloaded}</div>
-              <p className="text-xs text-gray-600 dark:text-gray-400">
-                Question papers
-              </p>
-            </CardContent>
-          </Card>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            whileHover={{ 
+              y: -5, 
+              transition: { duration: 0.2 } 
+            }}
+          >
+            <Card className="dark:bg-gray-800 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium dark:text-white">Papers Downloaded</CardTitle>
+                <motion.div
+                  whileHover={{ scale: 1.2, rotate: 15 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <FileText className="h-4 w-4 text-green-600 dark:text-green-400" />
+                </motion.div>
+              </CardHeader>
+              <CardContent>
+                <motion.div 
+                  className="text-2xl font-bold dark:text-white"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                >
+                  {userStats.papersDownloaded}
+                </motion.div>
+                <p className="text-xs text-gray-600 dark:text-gray-400">
+                  Question papers
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
 
           {/* Notes Downloaded */}
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium dark:text-white">Notes Downloaded</CardTitle>
-              <BookOpen className="h-4 w-4 text-purple-600 dark:text-purple-400" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold dark:text-white">{userStats.notesDownloaded}</div>
-              <p className="text-xs text-gray-600 dark:text-gray-400">
-                Study materials
-              </p>
-            </CardContent>
-          </Card>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            whileHover={{ 
+              y: -5, 
+              transition: { duration: 0.2 } 
+            }}
+          >
+            <Card className="dark:bg-gray-800 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium dark:text-white">Notes Downloaded</CardTitle>
+                <motion.div
+                  whileHover={{ scale: 1.2, rotate: 15 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <BookOpen className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                </motion.div>
+              </CardHeader>
+              <CardContent>
+                <motion.div 
+                  className="text-2xl font-bold dark:text-white"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.5 }}
+                >
+                  {userStats.notesDownloaded}
+                </motion.div>
+                <p className="text-xs text-gray-600 dark:text-gray-400">
+                  Study materials
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
 
           {/* Platform Activity */}
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium dark:text-white">Platform Engagement</CardTitle>
-              <Activity className="h-4 w-4 text-orange-600 dark:text-orange-400" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold dark:text-white">Active</div>
-              <p className="text-xs text-gray-600 dark:text-gray-400">
-                Regular user
-              </p>
-            </CardContent>
-          </Card>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            whileHover={{ 
+              y: -5, 
+              transition: { duration: 0.2 } 
+            }}
+          >
+            <Card className="dark:bg-gray-800 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium dark:text-white">Platform Engagement</CardTitle>
+                <motion.div
+                  whileHover={{ scale: 1.2, rotate: 15 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Activity className="h-4 w-4 text-orange-600 dark:text-orange-400" />
+                </motion.div>
+              </CardHeader>
+              <CardContent>
+                <motion.div 
+                  className="text-2xl font-bold dark:text-white"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.6 }}
+                >
+                  Active
+                </motion.div>
+                <p className="text-xs text-gray-600 dark:text-gray-400">
+                  Regular user
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
