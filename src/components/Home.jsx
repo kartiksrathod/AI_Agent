@@ -48,7 +48,7 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen relative">
+    <div className="relative">
       {/* Modern Abstract Background */}
       <div className="fixed inset-0 z-0">
         {/* Background Image with Light Mode */}
