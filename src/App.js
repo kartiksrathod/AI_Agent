@@ -71,27 +71,28 @@ function App() {
               {/* Main Content */}
               <div className="relative z-10 min-h-screen text-foreground transition-colors duration-300">
               <Navbar />
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
-                <Route path="/papers" element={<Papers />} />
-                <Route path="/notes" element={<Notes />} />
-                <Route path="/syllabus" element={<Syllabus />} />
-                <Route path="/forum" element={<Forum />} />
-                {/* GlobalSearch route removed as per requirements */}
-                <Route 
-                  path="/profile" 
-                  element={
-                    <ProtectedRoute>
-                      <ProfileDashboard />
-                    </ProtectedRoute>
-                  } 
-                />
-              </Routes>
-              <AIAssistant />
-              <Toaster />
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/forgot-password" element={<ForgotPassword />} />
+                  <Route path="/papers" element={<Papers />} />
+                  <Route path="/notes" element={<Notes />} />
+                  <Route path="/syllabus" element={<Syllabus />} />
+                  <Route path="/forum" element={<Forum />} />
+                  {/* GlobalSearch route removed as per requirements */}
+                  <Route 
+                    path="/profile" 
+                    element={
+                      <ProtectedRoute>
+                        <ProfileDashboard />
+                      </ProtectedRoute>
+                    } 
+                  />
+                </Routes>
+                <AIAssistant />
+                <Toaster />
+              </div>
             </div>
           </AuthProvider>
         </ThemeProvider>
