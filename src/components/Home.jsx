@@ -48,34 +48,66 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-blue-950 dark:via-gray-900 dark:to-purple-950">
-      {/* Animated Background Particles */}
-      <div className="fixed inset-0 pointer-events-none">
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-2 h-2 bg-blue-400/20 rounded-full"
-            initial={{ 
-              x: Math.random() * window.innerWidth, 
-              y: Math.random() * window.innerHeight,
-              scale: 0 
-            }}
-            animate={{ 
-              x: Math.random() * window.innerWidth, 
-              y: Math.random() * window.innerHeight,
-              scale: [0, 1, 0]
-            }}
-            transition={{ 
-              duration: Math.random() * 10 + 10, 
-              repeat: Infinity, 
-              ease: "linear" 
-            }}
-          />
-        ))}
+    <div className="min-h-screen relative">
+      {/* Modern Abstract Background */}
+      <div className="fixed inset-0 z-0">
+        {/* Background Image with Light Mode */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:hidden"></div>
+        <div 
+          className="absolute inset-0 opacity-30 dark:hidden"
+          style={{
+            backgroundImage: 'url(https://images.unsplash.com/photo-1644088379091-d574269d422f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzR8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMHRlY2hub2xvZ3l8ZW58MHx8fHwxNzU5ODU5MDgwfDA&ixlib=rb-4.1.0&q=85)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        ></div>
+        
+        {/* Background Image with Dark Mode */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-gray-900 to-purple-950 hidden dark:block"></div>
+        <div 
+          className="absolute inset-0 opacity-20 hidden dark:block"
+          style={{
+            backgroundImage: 'url(https://images.unsplash.com/photo-1579548122080-c35fd6820ecb?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzR8MHwxfHNlYXJjaHw0fHxhYnN0cmFjdCUyMHRlY2hub2xvZ3l8ZW58MHx8fHwxNzU5ODU5MDgwfDA&ixlib=rb-4.1.0&q=85)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        ></div>
+        
+        {/* Overlay for better text readability */}
+        <div className="absolute inset-0 bg-white/20 dark:bg-black/30"></div>
       </div>
 
-      {/* Hero Section */}
-      <div className="relative overflow-hidden bg-white dark:bg-gray-900">
+      {/* Content Container */}
+      <div className="relative z-10">
+        {/* Animated Background Particles */}
+        <div className="fixed inset-0 pointer-events-none z-5">
+          {[...Array(6)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-2 h-2 bg-blue-400/20 rounded-full"
+              initial={{ 
+                x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1200), 
+                y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 800),
+                scale: 0 
+              }}
+              animate={{ 
+                x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1200), 
+                y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 800),
+                scale: [0, 1, 0]
+              }}
+              transition={{ 
+                duration: Math.random() * 10 + 10, 
+                repeat: Infinity, 
+                ease: "linear" 
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Hero Section */}
+        <div className="relative overflow-hidden bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
           <div className="text-center">
             <motion.div
