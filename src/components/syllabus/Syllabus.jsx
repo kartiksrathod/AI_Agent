@@ -537,7 +537,7 @@ const Syllabus = () => {
                                     checked={selectedSyllabus.includes(syllabusId)}
                                     onCheckedChange={() => toggleSyllabusSelection(syllabusId)}
                                     className="mb-2"
-                                    data-testid={`syllabus-year-checkbox-${item._id}`}
+                                    data-testid={`syllabus-year-checkbox-${syllabusId}`}
                                   />
                                 )}
                                 <CardTitle className="text-lg leading-tight mb-2 dark:text-white">
