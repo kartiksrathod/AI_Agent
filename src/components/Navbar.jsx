@@ -29,7 +29,6 @@ const Navbar = () => {
     { path: '/papers', label: 'Papers' },
     { path: '/notes', label: 'Notes' },
     { path: '/syllabus', label: 'Syllabus' },
-    { path: '/search', label: 'Search' },
     { path: '/forum', label: 'Forum' }
   ];
 
