@@ -489,7 +489,7 @@ const Syllabus = () => {
                       
                       {isAdmin && (
                         <Button 
-                          onClick={() => handleDelete(item._id)}
+                          onClick={() => handleDelete(syllabusId)}
                           variant="destructive"
                           size="sm"
                           className="bg-red-600 hover:bg-red-700"
