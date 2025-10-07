@@ -501,7 +501,8 @@ const Syllabus = () => {
                     </div>
                   </CardContent>
                 </Card>
-              ))}
+              );
+              })}
             </div>
           </TabsContent>
 
