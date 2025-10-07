@@ -91,7 +91,8 @@ const Syllabus = () => {
       return;
     }
 
-    syllabusAPI.download(item._id);
+    const syllabusId = item.id || item._id;
+    syllabusAPI.download(syllabusId);
     toast({
       title: "Download Started",
       description: `Downloading: ${item.title}`,
