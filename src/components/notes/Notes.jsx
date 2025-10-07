@@ -390,7 +390,7 @@ const Notes = () => {
                         checked={selectedNotes.includes(noteId)}
                         onCheckedChange={() => toggleNoteSelection(noteId)}
                         className="mb-2"
-                        data-testid={`note-checkbox-${note._id}`}
+                        data-testid={`note-checkbox-${noteId}`}
                       />
                     )}
                     <CardTitle className="text-lg leading-tight mb-2 dark:text-white">
