@@ -101,7 +101,8 @@ const Notes = () => {
       return;
     }
 
-    notesAPI.view(note._id);
+    const noteId = note.id || note._id;
+    notesAPI.view(noteId);
     toast({
       title: "Opening Preview",
       description: `Opening preview: ${note.title}`,
