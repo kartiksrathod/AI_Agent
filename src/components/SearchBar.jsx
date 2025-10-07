@@ -121,7 +121,7 @@ const SearchBar = () => {
         navigate('/syllabus');
         break;
       default:
-        navigate('/search');
+        navigate('/papers');
     }
     setIsOpen(false);
     setSearchQuery('');
