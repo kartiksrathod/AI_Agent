@@ -383,7 +383,6 @@ const Notes = () => {
                   <div className="flex-1">
                     {isAdmin && (
                       <Checkbox
-                        key={`note-checkbox-${note._id}`}
                         checked={selectedNotes.includes(note._id)}
                         onCheckedChange={() => toggleNoteSelection(note._id)}
                         className="mb-2"
