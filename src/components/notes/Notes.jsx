@@ -83,7 +83,8 @@ const Notes = () => {
       return;
     }
 
-    notesAPI.download(note._id);
+    const noteId = note.id || note._id;
+    notesAPI.download(noteId);
     toast({
       title: "Download Started",
       description: `Downloading: ${note.title}`,
