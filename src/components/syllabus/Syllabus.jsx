@@ -534,8 +534,8 @@ const Syllabus = () => {
                               <div className="flex-1">
                                 {isAdmin && (
                                   <Checkbox
-                                    checked={selectedSyllabus.includes(item._id)}
-                                    onCheckedChange={() => toggleSyllabusSelection(item._id)}
+                                    checked={selectedSyllabus.includes(syllabusId)}
+                                    onCheckedChange={() => toggleSyllabusSelection(syllabusId)}
                                     className="mb-2"
                                     data-testid={`syllabus-year-checkbox-${item._id}`}
                                   />
