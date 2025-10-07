@@ -51,7 +51,7 @@ function App() {
                 <Route path="/notes" element={<Notes />} />
                 <Route path="/syllabus" element={<Syllabus />} />
                 <Route path="/forum" element={<Forum />} />
-                <Route path="/search" element={<GlobalSearch />} />
+                {/* GlobalSearch route removed as per requirements */}
                 <Route 
                   path="/profile" 
                   element={
