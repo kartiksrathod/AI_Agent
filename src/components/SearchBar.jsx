@@ -101,7 +101,8 @@ const SearchBar = () => {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+      // Navigate to papers page with search functionality
+      navigate('/papers');
       setIsOpen(false);
       setSearchQuery('');
     }
