@@ -1,123 +1,105 @@
 {
-  "timestamp": "2025-10-06T18:38:02.337599",
+  "timestamp": "2025-10-07T11:07:39.271901",
   "backend_url": "https://quick-finder-8.preview.emergentagent.com",
-  "total_tests": 19,
-  "passed_tests": 15,
-  "success_rate": 78.94736842105263,
+  "total_tests": 16,
+  "passed_tests": 10,
+  "success_rate": 62.5,
   "test_details": [
     {
       "test": "Root endpoint",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-10-06T18:37:53.851509"
+      "timestamp": "2025-10-07T11:07:29.908897"
     },
     {
       "test": "Root endpoint",
       "success": false,
       "details": "Exception: Expecting value: line 1 column 1 (char 0)",
-      "timestamp": "2025-10-06T18:37:53.851572"
+      "timestamp": "2025-10-07T11:07:29.908947"
     },
     {
       "test": "Health check",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-10-06T18:37:53.886579"
+      "timestamp": "2025-10-07T11:07:29.948788"
     },
     {
       "test": "Health check",
       "success": false,
       "details": "Exception: Expecting value: line 1 column 1 (char 0)",
-      "timestamp": "2025-10-06T18:37:53.886624"
+      "timestamp": "2025-10-07T11:07:29.948830"
     },
     {
       "test": "Normal user registration",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-10-06T18:37:54.161489"
+      "timestamp": "2025-10-07T11:07:30.274566"
     },
     {
       "test": "User registered without admin privileges",
       "success": true,
       "details": "",
-      "timestamp": "2025-10-06T18:37:54.162108"
+      "timestamp": "2025-10-07T11:07:30.275216"
     },
     {
       "test": "Admin login",
-      "success": true,
-      "details": "Status: 200",
-      "timestamp": "2025-10-06T18:37:54.438355"
+      "success": false,
+      "details": "Status: 401, Error: Incorrect email or password",
+      "timestamp": "2025-10-07T11:07:30.315051"
     },
     {
-      "test": "Admin user has admin privileges",
-      "success": true,
-      "details": "",
-      "timestamp": "2025-10-06T18:37:54.438995"
-    },
-    {
-      "test": "Upload paper (admin)",
-      "success": true,
-      "details": "Status: 200",
-      "timestamp": "2025-10-06T18:37:54.477868"
-    },
-    {
-      "test": "Upload notes (admin)",
-      "success": true,
-      "details": "Status: 200",
-      "timestamp": "2025-10-06T18:37:54.512801"
-    },
-    {
-      "test": "Upload syllabus (admin)",
-      "success": true,
-      "details": "Status: 200",
-      "timestamp": "2025-10-06T18:37:54.561531"
+      "test": "File upload tests",
+      "success": false,
+      "details": "No admin token available",
+      "timestamp": "2025-10-07T11:07:30.315615"
     },
     {
       "test": "Get papers",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-10-06T18:37:54.599879"
+      "timestamp": "2025-10-07T11:07:30.348731"
     },
     {
       "test": "Get notes",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-10-06T18:37:54.636465"
+      "timestamp": "2025-10-07T11:07:30.391667"
     },
     {
       "test": "Get syllabus",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-10-06T18:37:54.669701"
+      "timestamp": "2025-10-07T11:07:30.432402"
     },
     {
       "test": "Get stats",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-10-06T18:37:54.703129"
+      "timestamp": "2025-10-07T11:07:30.472948"
     },
     {
       "test": "AI Assistant chat",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-10-06T18:38:02.238754"
+      "timestamp": "2025-10-07T11:07:39.168500"
     },
     {
       "test": "AI Assistant provides meaningful response",
       "success": true,
       "details": "",
-      "timestamp": "2025-10-06T18:38:02.239444"
+      "timestamp": "2025-10-07T11:07:39.169163"
     },
     {
       "test": "Unauthorized paper upload",
       "success": false,
       "details": "Status: 403, Error: Not authenticated",
-      "timestamp": "2025-10-06T18:38:02.299150"
+      "timestamp": "2025-10-07T11:07:39.231776"
     },
     {
       "test": "Unauthorized AI chat",
       "success": false,
       "details": "Status: 403, Error: Not authenticated",
-      "timestamp": "2025-10-06T18:38:02.336911"
+      "timestamp": "2025-10-07T11:07:39.271269"
     }
   ]
 }
