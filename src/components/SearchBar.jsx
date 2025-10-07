@@ -245,20 +245,7 @@ const SearchBar = () => {
               </div>
             )}
 
-            {/* View All Results Link */}
-            {searchResults.length > 0 && (
-              <div className="mt-4 pt-3 border-t border-gray-200 dark:border-gray-600">
-                <Button
-                  onClick={handleSearchSubmit}
-                  variant="ghost"
-                  size="sm"
-                  className="w-full text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950"
-                  data-testid="view-all-results-btn"
-                >
-                  View all results for "{searchQuery}"
-                </Button>
-              </div>
-            )}
+            {/* Enhanced search - click on results navigates to specific pages */}
           </div>
         </div>
       )}
