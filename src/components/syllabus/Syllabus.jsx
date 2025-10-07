@@ -525,8 +525,10 @@ const Syllabus = () => {
                       {year}
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {yearSyllabus.map((item) => (
-                        <Card key={item._id} className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 dark:bg-gray-800 dark:border-gray-700">
+                      {yearSyllabus.map((item) => {
+                        const syllabusId = item.id || item._id;
+                        return (
+                        <Card key={syllabusId} className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 dark:bg-gray-800 dark:border-gray-700">
                           <CardHeader>
                             <div className="flex items-start justify-between">
                               <div className="flex-1">
