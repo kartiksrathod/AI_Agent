@@ -17,7 +17,7 @@ import Syllabus from "./components/syllabus/Syllabus";
 import Forum from "./components/forum/Forum";
 import AIAssistant from "./components/ai/AIAssistant";
 import ProfileDashboard from "./components/dashboard/ProfileDashboard";
-import GlobalSearch from "./components/search/GlobalSearch";
+// GlobalSearch component removed as per requirements
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
