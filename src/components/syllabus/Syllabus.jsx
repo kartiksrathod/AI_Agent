@@ -594,7 +594,8 @@ const Syllabus = () => {
                             </div>
                           </CardContent>
                         </Card>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
                 );
