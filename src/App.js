@@ -40,7 +40,36 @@ function App() {
       <BrowserRouter>
         <ThemeProvider>
           <AuthProvider>
-            <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
+            <div className="min-h-screen relative">
+              {/* Modern Abstract Background for entire app */}
+              <div className="fixed inset-0 z-0">
+                {/* Light Mode Background */}
+                <div className="absolute inset-0 bg-background dark:hidden"></div>
+                <div 
+                  className="absolute inset-0 opacity-10 dark:hidden"
+                  style={{
+                    backgroundImage: 'url(https://images.pexels.com/photos/3653997/pexels-photo-3653997.jpeg)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat'
+                  }}
+                ></div>
+                
+                {/* Dark Mode Background */}
+                <div className="absolute inset-0 bg-background hidden dark:block"></div>
+                <div 
+                  className="absolute inset-0 opacity-15 hidden dark:block"
+                  style={{
+                    backgroundImage: 'url(https://images.unsplash.com/photo-1579548122080-c35fd6820ecb?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzR8MHwxfHNlYXJjaHw0fHxhYnN0cmFjdCUyMHRlY2hub2xvZ3l8ZW58MHx8fHwxNzU5ODU5MDgwfDA&ixlib=rb-4.1.0&q=85)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat'
+                  }}
+                ></div>
+              </div>
+              
+              {/* Main Content */}
+              <div className="relative z-10 min-h-screen text-foreground transition-colors duration-300">
               <Navbar />
               <Routes>
                 <Route path="/" element={<Home />} />
