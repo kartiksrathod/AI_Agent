@@ -295,6 +295,8 @@ const Home = () => {
           </motion.div>
         </div>
       </motion.div>
+      
+      </div> {/* Close Content Container */}
     </div>
   );
 };
