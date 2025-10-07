@@ -408,8 +408,10 @@ const Syllabus = () => {
 
           <TabsContent value="all" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-              {filteredSyllabus.map((item) => (
-                <Card key={item._id} className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 dark:bg-gray-800 dark:border-gray-700">
+              {filteredSyllabus.map((item) => {
+                const syllabusId = item.id || item._id;
+                return (
+                <Card key={syllabusId} className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 dark:bg-gray-800 dark:border-gray-700">
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
