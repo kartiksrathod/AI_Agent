@@ -466,7 +466,8 @@ const Notes = () => {
                 </div>
               </CardContent>
             </Card>
-          ))}
+          );
+          })}
         </div>
 
         {/* No Results */}
