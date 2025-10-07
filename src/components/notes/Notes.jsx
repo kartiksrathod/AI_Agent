@@ -454,7 +454,7 @@ const Notes = () => {
                   
                   {isAdmin && (
                     <Button 
-                      onClick={() => handleDelete(note._id)}
+                      onClick={() => handleDelete(noteId)}
                       variant="destructive"
                       size="sm"
                       className="bg-red-600 hover:bg-red-700"
