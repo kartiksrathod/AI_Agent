@@ -109,7 +109,8 @@ const Syllabus = () => {
       return;
     }
 
-    syllabusAPI.view(item._id);
+    const syllabusId = item.id || item._id;
+    syllabusAPI.view(syllabusId);
     toast({
       title: "Opening Preview",
       description: `Opening preview: ${item.title}`,
