@@ -338,6 +338,56 @@ const ProfileDashboard = () => {
     }
   };
 
+  const handleQuickView = (bookmark) => {
+    const resourceId = bookmark.resource_id;
+    let viewAPI;
+    
+    switch (bookmark.resource_type) {
+      case 'paper':
+        viewAPI = papersAPI;
+        break;
+      case 'note':
+        viewAPI = notesAPI;
+        break;
+      case 'syllabus':
+        viewAPI = syllabusAPI;
+        break;
+      default:
+        return;
+    }
+
+    viewAPI.view(resourceId);
+    toast({
+      title: "Opening Preview",
+      description: `Opening: ${bookmark.title}`
+    });
+  };
+
+  const handleQuickDownload = (bookmark) => {
+    const resourceId = bookmark.resource_id;
+    let downloadAPI;
+    
+    switch (bookmark.resource_type) {
+      case 'paper':
+        downloadAPI = papersAPI;
+        break;
+      case 'note':
+        downloadAPI = notesAPI;
+        break;
+      case 'syllabus':
+        downloadAPI = syllabusAPI;
+        break;
+      default:
+        return;
+    }
+
+    downloadAPI.download(resourceId);
+    toast({
+      title: "Download Started",
+      description: `Downloading: ${bookmark.title}`
+    });
+  };
+
   const getGreeting = () => {
     const hour = new Date().getHours();
     if (hour < 12) return 'Good Morning';
