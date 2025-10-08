@@ -47,7 +47,7 @@ EMERGENT_LLM_KEY = os.getenv("EMERGENT_LLM_KEY")
 
 # Create upload directory
 Path(UPLOAD_DIR).mkdir(exist_ok=True)
-for folder in ["papers", "notes", "syllabus"]:
+for folder in ["papers", "notes", "syllabus", "profile_photos"]:
     Path(f"{UPLOAD_DIR}/{folder}").mkdir(exist_ok=True)
 
 # MongoDB setup
