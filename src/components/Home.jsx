@@ -321,13 +321,9 @@ const Home = () => {
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
       >
-        {/* Animated Background */}
-        <motion.div
+        {/* Static Background */}
+        <div
           className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-20"
-          animate={{ 
-            backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"]
-          }}
-          transition={{ duration: 5, repeat: Infinity }}
         />
         
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
