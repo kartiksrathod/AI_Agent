@@ -141,8 +141,8 @@ const Home = () => {
                 </motion.span>
                 <motion.div
                   className="inline-block ml-2"
-                  animate={{ rotate: [0, 15, -15, 0] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+                  animate={{ rotate: [0, 10, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, delay: 1.5 }}
                 >
                   <Sparkles className="h-8 w-8 text-yellow-400 inline" />
                 </motion.div>
