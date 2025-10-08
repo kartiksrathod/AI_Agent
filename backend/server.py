@@ -223,7 +223,8 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
         id=user["_id"],
         name=user["name"],
         email=user["email"],
-        is_admin=user.get("is_admin", False)
+        is_admin=user.get("is_admin", False),
+        profile_photo=user.get("profile_photo")
     )
 
 def get_current_admin_user(current_user: User = Depends(get_current_user)):
