@@ -92,6 +92,35 @@ const ProfileDashboard = () => {
     }
   }, [activeTab]);
 
+  // Filter bookmarks based on selected filters
+  useEffect(() => {
+    let filtered = [...bookmarks];
+
+    if (bookmarkTypeFilter !== 'all') {
+      filtered = filtered.filter(bookmark => bookmark.resource_type === bookmarkTypeFilter);
+    }
+
+    if (bookmarkCategoryFilter !== 'all') {
+      filtered = filtered.filter(bookmark => bookmark.category === bookmarkCategoryFilter);
+    }
+
+    if (bookmarkBranchFilter !== 'all') {
+      filtered = filtered.filter(bookmark => bookmark.branch === bookmarkBranchFilter);
+    }
+
+    setFilteredBookmarks(filtered);
+  }, [bookmarks, bookmarkTypeFilter, bookmarkCategoryFilter, bookmarkBranchFilter]);
+
+  // Extract unique categories and branches when bookmarks change
+  useEffect(() => {
+    if (bookmarks.length > 0) {
+      const categories = [...new Set(bookmarks.map(b => b.category))].sort();
+      const branches = [...new Set(bookmarks.map(b => b.branch))].sort();
+      setBookmarkCategories(categories);
+      setBookmarkBranches(branches);
+    }
+  }, [bookmarks]);
+
   const fetchDashboardData = async () => {
     try {
       const statsResponse = await statsAPI.get();
