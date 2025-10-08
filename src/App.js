@@ -99,6 +99,9 @@ function App() {
                 ></div>
               </div>
               
+              {/* Interactive Background */}
+              <InteractiveBackground />
+              
               {/* Main Content Container */}
               <div className="relative z-10 flex flex-col min-h-screen text-foreground transition-colors duration-300">
                 <Navbar />
