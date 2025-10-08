@@ -351,7 +351,12 @@ const Home = () => {
             whileTap={{ scale: 0.95 }}
           >
             <Link to="/register">
-              <Button size="lg" variant="secondary" className="px-8 bg-white text-blue-600 hover:bg-gray-100 dark:bg-gray-200 dark:hover:bg-gray-300 shadow-lg hover:shadow-xl transition-all duration-300">
+              <Button 
+                data-testid="get-started-btn"
+                size="lg" 
+                variant="secondary" 
+                className="px-8 bg-white text-blue-600 hover:bg-gray-100 dark:bg-gray-200 dark:hover:bg-gray-300 shadow-lg hover:shadow-xl transition-all duration-300"
+              >
                 Get Started Today
               </Button>
             </Link>
