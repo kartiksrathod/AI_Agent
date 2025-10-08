@@ -43,6 +43,12 @@ const Notes = () => {
     handleSearch();
   }, [searchQuery, selectedBranch, notes]);
 
+  useEffect(() => {
+    if (currentUser && notes.length > 0) {
+      checkBookmarks();
+    }
+  }, [currentUser, notes]);
+
   const fetchNotes = async () => {
     try {
       const response = await notesAPI.getAll();
