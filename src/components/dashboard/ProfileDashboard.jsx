@@ -54,7 +54,13 @@ const ProfileDashboard = () => {
   
   // Bookmarks states
   const [bookmarks, setBookmarks] = useState([]);
+  const [filteredBookmarks, setFilteredBookmarks] = useState([]);
   const [isLoadingBookmarks, setIsLoadingBookmarks] = useState(false);
+  const [bookmarkTypeFilter, setBookmarkTypeFilter] = useState('all');
+  const [bookmarkCategoryFilter, setBookmarkCategoryFilter] = useState('all');
+  const [bookmarkBranchFilter, setBookmarkBranchFilter] = useState('all');
+  const [bookmarkCategories, setBookmarkCategories] = useState([]);
+  const [bookmarkBranches, setBookmarkBranches] = useState([]);
   
   // Achievements states
   const [achievements, setAchievements] = useState([]);
