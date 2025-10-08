@@ -229,13 +229,11 @@ const Home = () => {
                 >
                   <motion.div 
                     className={`text-3xl font-bold ${stat.color} dark:opacity-90`}
-                    animate={{ 
-                      scale: [1, 1.05, 1],
+                    whileHover={{ 
+                      scale: 1.05,
                     }}
                     transition={{ 
-                      duration: 2, 
-                      repeat: Infinity, 
-                      delay: index * 0.2 
+                      duration: 0.2 
                     }}
                   >
                     {stat.value}
