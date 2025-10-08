@@ -232,6 +232,7 @@ function App() {
                 </footer>
               </div>
             </div>
+            </ToastProvider>
           </AuthProvider>
         </ThemeProvider>
       </BrowserRouter>
