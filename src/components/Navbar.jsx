@@ -113,11 +113,11 @@ const Navbar = () => {
                   
                   <DropdownMenuSeparator className="dark:border-gray-600" />
                   
-                  <DropdownMenuItem onClick={handleProfileClick} className="dark:text-white dark:hover:bg-gray-700 cursor-pointer">
+                  <DropdownMenuItem data-testid="profile-menu-item" onClick={handleProfileClick} className="dark:text-white dark:hover:bg-gray-700 cursor-pointer">
                     <User className="mr-2 h-4 w-4" />
                     <span>Profile</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleLogout} className="dark:text-white dark:hover:bg-gray-700">
+                  <DropdownMenuItem data-testid="logout-menu-item" onClick={handleLogout} className="dark:text-white dark:hover:bg-gray-700">
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Log out</span>
                   </DropdownMenuItem>
