@@ -132,6 +132,56 @@ class ChatResponse(BaseModel):
     response: str
     timestamp: datetime
 
+# New Models for Profile Enhancement
+class ProfileUpdate(BaseModel):
+    name: Optional[str] = None
+    
+class PasswordUpdate(BaseModel):
+    current_password: str
+    new_password: str
+
+class BookmarkCreate(BaseModel):
+    resource_type: str  # 'paper', 'note', 'syllabus'
+    resource_id: str
+    category: Optional[str] = "General"
+
+class BookmarkResponse(BaseModel):
+    id: str
+    resource_type: str
+    resource_id: str
+    category: str
+    title: str
+    branch: str
+    created_at: datetime
+
+class Achievement(BaseModel):
+    id: str
+    name: str
+    description: str
+    icon: str
+    earned_at: datetime
+    
+class LearningGoal(BaseModel):
+    id: str
+    title: str
+    description: str
+    target_date: datetime
+    progress: int  # 0-100
+    completed: bool
+    created_at: datetime
+
+class LearningGoalCreate(BaseModel):
+    title: str
+    description: str
+    target_date: datetime
+
+class LearningGoalUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    target_date: Optional[datetime] = None
+    progress: Optional[int] = None
+    completed: Optional[bool] = None
+
 # Utility Functions
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
