@@ -234,6 +234,75 @@ const Papers = () => {
     );
   };
 
+  const checkBookmarks = async () => {
+    try {
+      const bookmarkChecks = await Promise.all(
+        papers.map(async (paper) => {
+          const paperId = paper.id || paper._id;
+          try {
+            const response = await bookmarksAPI.check('paper', paperId);
+            return { id: paperId, bookmarked: response.data.bookmarked };
+          } catch (error) {
+            return { id: paperId, bookmarked: false };
+          }
+        })
+      );
+      
+      const bookmarked = new Set(
+        bookmarkChecks.filter(check => check.bookmarked).map(check => check.id)
+      );
+      setBookmarkedPapers(bookmarked);
+    } catch (error) {
+      console.error('Error checking bookmarks:', error);
+    }
+  };
+
+  const handleBookmarkToggle = async (paper) => {
+    if (!currentUser) {
+      toast({
+        title: "Login Required",
+        description: "Please login to bookmark papers.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const paperId = paper.id || paper._id;
+    const isBookmarked = bookmarkedPapers.has(paperId);
+
+    try {
+      if (isBookmarked) {
+        await bookmarksAPI.remove('paper', paperId);
+        setBookmarkedPapers(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(paperId);
+          return newSet;
+        });
+        toast({
+          title: "Removed",
+          description: "Paper removed from bookmarks"
+        });
+      } else {
+        await bookmarksAPI.create({
+          resource_type: 'paper',
+          resource_id: paperId,
+          category: 'General'
+        });
+        setBookmarkedPapers(prev => new Set([...prev, paperId]));
+        toast({
+          title: "Bookmarked",
+          description: "Paper added to bookmarks"
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.response?.data?.detail || "Failed to update bookmark",
+        variant: "destructive"
+      });
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-blue-950 dark:via-gray-900 dark:to-purple-950 flex items-center justify-center">
