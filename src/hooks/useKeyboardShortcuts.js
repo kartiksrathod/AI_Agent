@@ -1,10 +1,14 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '../components/ui/advanced-toast';
 
 const useKeyboardShortcuts = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  // Track key sequence for multi-key shortcuts
+  const [keySequence, setKeySequence] = useState('');
+  const [sequenceTimeout, setSequenceTimeout] = useState(null);
 
   const shortcuts = {
     // Navigation shortcuts
@@ -19,10 +23,6 @@ const useKeyboardShortcuts = () => {
     '?': { action: () => showShortcutsHelp(), description: 'Show keyboard shortcuts' },
     'Escape': { action: () => handleEscape(), description: 'Close modals/dropdowns' },
   };
-
-  // Track key sequence for multi-key shortcuts
-  const [keySequence, setKeySequence] = useState('');
-  const [sequenceTimeout, setSequenceTimeout] = useState(null);
 
   const showShortcutsHelp = useCallback(() => {
     toast.info('Keyboard Shortcuts Available', {
