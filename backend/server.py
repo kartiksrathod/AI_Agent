@@ -280,7 +280,8 @@ async def register(user_data: UserCreate):
         id=user_id,
         name=user_data.name,
         email=user_data.email,
-        is_admin=False
+        is_admin=False,
+        profile_photo=None
     )
     
     return Token(access_token=access_token, token_type="bearer", user=user)
