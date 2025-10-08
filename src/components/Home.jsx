@@ -253,6 +253,9 @@ const Home = () => {
         </div>
       </div>
 
+      {/* Features Section */}
+      <FeaturesSection />
+
       {/* Quick Access Cards */}
       <div className="py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
