@@ -43,6 +43,12 @@ const Papers = () => {
     handleSearch();
   }, [searchQuery, selectedBranch, papers]);
 
+  useEffect(() => {
+    if (currentUser && papers.length > 0) {
+      checkBookmarks();
+    }
+  }, [currentUser, papers]);
+
   const fetchPapers = async () => {
     try {
       const response = await papersAPI.getAll();
