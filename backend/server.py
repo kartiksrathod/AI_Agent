@@ -1115,6 +1115,8 @@ async def update_learning_goal(
         # Award achievement for first completed goal
         if goal_data.completed and not goal["completed"]:
             await check_and_award_achievement(current_user.id, "goal_achiever")
+            # Check for additional goal achievements
+            await check_goal_achievements(current_user.id)
     
     if update_fields:
         learning_goals_collection.update_one(
