@@ -43,8 +43,11 @@ const ProtectedRoute = ({ children }) => {
 };
 
 // AppContent component that uses router hooks
-const AppContent = ({ trackActivity }) => {
+const AppContent = () => {
   const [showShortcutsModal, setShowShortcutsModal] = useState(false);
+  
+  // Initialize user state hook (now inside ToastProvider context)
+  const { trackActivity, saveScrollPosition, getScrollPosition } = useUserState();
   
   // Initialize keyboard shortcuts inside Router context
   useKeyboardShortcuts();
