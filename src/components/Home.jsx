@@ -121,20 +121,39 @@ const Home = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1, delay: 0.2 }}
               >
-                Your Engineering
+                <motion.span
+                  initial={{ opacity: 0, x: -50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8, delay: 0.3 }}
+                >
+                  Your Engineering
+                </motion.span>
+                <br />
                 <motion.span 
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent"
+                  className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent"
+                  style={{ backgroundSize: '200% 100%' }}
                   animate={{ 
                     backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"]
                   }}
                   transition={{ duration: 3, repeat: Infinity }}
-                > Success Hub</motion.span>
+                  initial={{ opacity: 0, x: 50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                >
+                  Success Hub
+                </motion.span>
                 <motion.div
                   className="inline-block ml-2"
-                  animate={{ rotate: [0, 15, -15, 0] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+                  animate={{ 
+                    rotate: [0, 15, -15, 0],
+                    scale: [1, 1.2, 1]
+                  }}
+                  transition={{ 
+                    rotate: { duration: 2, repeat: Infinity, delay: 1 },
+                    scale: { duration: 1.5, repeat: Infinity, repeatType: "reverse" }
+                  }}
                 >
-                  <Sparkles className="h-8 w-8 text-yellow-400 inline" />
+                  <Sparkles className="h-8 w-8 text-yellow-400 inline drop-shadow-lg" />
                 </motion.div>
               </motion.h1>
             </motion.div>
@@ -150,31 +169,89 @@ const Home = () => {
             </motion.p>
             
             <motion.div 
-              className="flex flex-col sm:flex-row gap-4 justify-center"
+              className="flex flex-col sm:flex-row gap-4 justify-center items-center"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
               <Link to="/papers">
                 <motion.div
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ 
+                    scale: 1.05,
+                    boxShadow: "0 20px 40px rgba(59, 130, 246, 0.4)"
+                  }}
                   whileTap={{ scale: 0.95 }}
+                  className="relative"
                 >
-                  <Button size="lg" className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 px-8">
-                    Explore Resources
+                  <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 dark:from-blue-700 dark:to-purple-700 px-8 relative overflow-hidden">
+                    <motion.span
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                      initial={{ x: "-100%" }}
+                      whileHover={{ x: "100%" }}
+                      transition={{ duration: 0.6 }}
+                    />
+                    <span className="relative z-10">Explore Resources</span>
                   </Button>
                 </motion.div>
               </Link>
               <Link to="/forum">
                 <motion.div
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ 
+                    scale: 1.05,
+                    boxShadow: "0 20px 40px rgba(0, 0, 0, 0.1)"
+                  }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <Button size="lg" variant="outline" className="px-8 border-gray-300 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800">
-                    Join Community
+                  <Button size="lg" variant="outline" className="px-8 border-2 border-gray-300 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 relative group overflow-hidden">
+                    <motion.span
+                      className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-0 group-hover:opacity-10"
+                      initial={false}
+                      whileHover={{ opacity: 0.1 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                    <span className="relative z-10">Join Community</span>
                   </Button>
                 </motion.div>
               </Link>
+            </motion.div>
+
+            {/* Stats Section */}
+            <motion.div
+              className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+            >
+              {[
+                { label: "Resources", value: "10K+", color: "text-blue-600" },
+                { label: "Students", value: "5K+", color: "text-green-600" },
+                { label: "Universities", value: "100+", color: "text-purple-600" },
+                { label: "Success Rate", value: "95%", color: "text-orange-600" }
+              ].map((stat, index) => (
+                <motion.div
+                  key={index}
+                  className="text-center"
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6, delay: 0.9 + index * 0.1 }}
+                  whileHover={{ scale: 1.1 }}
+                >
+                  <motion.div 
+                    className={`text-3xl font-bold ${stat.color} dark:opacity-90`}
+                    animate={{ 
+                      scale: [1, 1.05, 1],
+                    }}
+                    transition={{ 
+                      duration: 2, 
+                      repeat: Infinity, 
+                      delay: index * 0.2 
+                    }}
+                  >
+                    {stat.value}
+                  </motion.div>
+                  <div className="text-gray-600 dark:text-gray-400 font-medium">{stat.label}</div>
+                </motion.div>
+              ))}
             </motion.div>
           </div>
         </div>
