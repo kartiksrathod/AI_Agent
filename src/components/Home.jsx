@@ -168,19 +168,16 @@ const Home = () => {
               <Link to="/papers">
                 <motion.div
                   whileHover={{ 
-                    scale: 1.05,
-                    boxShadow: "0 20px 40px rgba(59, 130, 246, 0.4)"
+                    scale: 1.02,
                   }}
-                  whileTap={{ scale: 0.95 }}
+                  whileTap={{ scale: 0.98 }}
                   className="relative"
                 >
-                  <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 dark:from-blue-700 dark:to-purple-700 px-8 relative overflow-hidden">
-                    <motion.span
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                      initial={{ x: "-100%" }}
-                      whileHover={{ x: "100%" }}
-                      transition={{ duration: 0.6 }}
-                    />
+                  <Button 
+                    data-testid="explore-resources-btn"
+                    size="lg" 
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 dark:from-blue-700 dark:to-purple-700 px-8 relative overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+                  >
                     <span className="relative z-10">Explore Resources</span>
                   </Button>
                 </motion.div>
