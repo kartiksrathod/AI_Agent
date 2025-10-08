@@ -61,6 +61,9 @@ try:
     notes_collection = db.notes
     syllabus_collection = db.syllabus
     chat_messages_collection = db.chat_messages
+    bookmarks_collection = db.bookmarks
+    achievements_collection = db.achievements
+    learning_goals_collection = db.learning_goals
     
     # Test connection
     client.admin.command('ping')
