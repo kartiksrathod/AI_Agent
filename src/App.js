@@ -221,18 +221,15 @@ const AppContent = ({ trackActivity }) => {
   );
 };
 
-function App() {
+// Main App wrapper that provides ToastProvider at the top level
+const AppWithProviders = () => {
   const [showIntro, setShowIntro] = useState(true);
   const [introComplete, setIntroComplete] = useState(false);
-
-  // Initialize user state hook (doesn't need router)
-  const { trackActivity, saveScrollPosition, getScrollPosition } = useUserState();
 
   // Handle intro completion
   const handleIntroComplete = () => {
     setShowIntro(false);
     setTimeout(() => setIntroComplete(true), 500);
-    trackActivity({ type: 'intro_completed' });
   };
 
   // Check if user has seen intro before (optional - comment out if you want intro every time)
@@ -252,19 +249,23 @@ function App() {
   }, [showIntro, introComplete]);
 
   if (showIntro) {
-    return (
-      <ToastProvider>
-        <AnimatedIntro onComplete={handleIntroComplete} />
-      </ToastProvider>
-    );
+    return <AnimatedIntro onComplete={handleIntroComplete} />;
   }
 
   return (
     <div className="App">
       <BrowserRouter>
-        <AppContent trackActivity={trackActivity} />
+        <AppContent />
       </BrowserRouter>
     </div>
+  );
+};
+
+function App() {
+  return (
+    <ToastProvider>
+      <AppWithProviders />
+    </ToastProvider>
   );
 }
 
