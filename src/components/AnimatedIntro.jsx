@@ -210,7 +210,18 @@ const AnimatedIntro = ({ onComplete }) => {
                 className="mb-6"
               >
                 <motion.h1 
-                  className="text-5xl font-bold mb-2 bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent"
+                  className="text-5xl font-bold mb-2"
+                  animate={{
+                    backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"]
+                  }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                  style={{
+                    background: 'linear-gradient(90deg, #ffffff, #60a5fa, #a855f7, #ec4899, #ffffff)',
+                    backgroundSize: '200% 100%',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text'
+                  }}
                 >
                   EduResources
                 </motion.h1>
