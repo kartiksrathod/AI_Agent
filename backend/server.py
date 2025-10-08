@@ -1235,6 +1235,38 @@ async def check_and_award_achievement(user_id: str, achievement_type: str):
     
     achievements_collection.insert_one(achievement_doc)
 
+async def check_bookmark_achievements(user_id: str):
+    """Check and award bookmark-related achievements"""
+    bookmark_count = bookmarks_collection.count_documents({"user_id": user_id})
+    
+    # First bookmark
+    if bookmark_count == 1:
+        await check_and_award_achievement(user_id, "first_bookmark")
+    
+    # Bookmark collector (10+ bookmarks)
+    elif bookmark_count == 10:
+        await check_and_award_achievement(user_id, "bookmark_collector")
+    
+    # Bookmark master (25+ bookmarks)
+    elif bookmark_count == 25:
+        await check_and_award_achievement(user_id, "bookmark_master")
+
+async def check_goal_achievements(user_id: str):
+    """Check and award goal-related achievements"""
+    completed_goals = learning_goals_collection.count_documents({"user_id": user_id, "completed": True})
+    
+    # Goal master (5+ completed goals)
+    if completed_goals == 5:
+        await check_and_award_achievement(user_id, "goal_master")
+
+async def check_profile_achievements(user_id: str):
+    """Check profile completion achievements"""
+    user = users_collection.find_one({"_id": user_id})
+    
+    # Profile complete (has photo and updated info)
+    if user and user.get("profile_photo"):
+        await check_and_award_achievement(user_id, "profile_complete")
+
 # Health Check
 @app.get("/")
 async def root():
