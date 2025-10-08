@@ -126,10 +126,10 @@ const Navbar = () => {
             ) : (
               <div className="hidden md:flex items-center space-x-2">
                 <Link to="/login">
-                  <Button variant="ghost" size="sm" className="dark:text-gray-300 dark:hover:bg-gray-800">Login</Button>
+                  <Button data-testid="login-btn" variant="ghost" size="sm" className="dark:text-gray-300 dark:hover:bg-gray-800">Login</Button>
                 </Link>
                 <Link to="/register">
-                  <Button size="sm" className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800">Register</Button>
+                  <Button data-testid="register-btn" size="sm" className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800">Register</Button>
                 </Link>
               </div>
             )}
