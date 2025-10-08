@@ -43,8 +43,20 @@ const ProtectedRoute = ({ children }) => {
 
 // AppContent component that uses router hooks
 const AppContent = ({ trackActivity }) => {
+  const [showShortcutsModal, setShowShortcutsModal] = useState(false);
+  
   // Initialize keyboard shortcuts inside Router context
   useKeyboardShortcuts();
+
+  // Listen for keyboard shortcuts modal event
+  useEffect(() => {
+    const handleShowShortcuts = () => {
+      setShowShortcutsModal(true);
+    };
+    
+    window.addEventListener('showKeyboardShortcuts', handleShowShortcuts);
+    return () => window.removeEventListener('showKeyboardShortcuts', handleShowShortcuts);
+  }, []);
 
   // Track page views
   useEffect(() => {
