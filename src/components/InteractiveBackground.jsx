@@ -5,9 +5,18 @@ const InteractiveBackground = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
 
-  // Update mouse position
+  // Throttled mouse position update for better performance
   const updateMousePosition = useCallback((e) => {
-    setMousePosition({ x: e.clientX, y: e.clientY });
+    // Only update every few pixels to reduce computations
+    const newX = Math.round(e.clientX / 10) * 10;
+    const newY = Math.round(e.clientY / 10) * 10;
+    
+    setMousePosition(prev => {
+      if (Math.abs(prev.x - newX) > 10 || Math.abs(prev.y - newY) > 10) {
+        return { x: newX, y: newY };
+      }
+      return prev;
+    });
   }, []);
 
   // Update window size
@@ -17,19 +26,32 @@ const InteractiveBackground = () => {
 
   useEffect(() => {
     updateWindowSize();
-    window.addEventListener('mousemove', updateMousePosition);
+    
+    // Throttle mouse move events
+    let throttleTimer = null;
+    const throttledMouseMove = (e) => {
+      if (throttleTimer === null) {
+        throttleTimer = setTimeout(() => {
+          updateMousePosition(e);
+          throttleTimer = null;
+        }, 16); // ~60fps
+      }
+    };
+
+    window.addEventListener('mousemove', throttledMouseMove, { passive: true });
     window.addEventListener('resize', updateWindowSize);
 
     return () => {
-      window.removeEventListener('mousemove', updateMousePosition);
+      window.removeEventListener('mousemove', throttledMouseMove);
       window.removeEventListener('resize', updateWindowSize);
+      if (throttleTimer) clearTimeout(throttleTimer);
     };
   }, [updateMousePosition, updateWindowSize]);
 
-  // Generate floating elements that follow mouse
+  // Reduced floating elements for better performance
   const generateFloatingElements = () => {
     const elements = [];
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 8; i++) {
       elements.push(
         <motion.div
           key={`floating-${i}`}
@@ -39,28 +61,27 @@ const InteractiveBackground = () => {
             top: windowSize.height * Math.random(),
           }}
           animate={{
-            x: mousePosition.x * (0.02 + i * 0.001),
-            y: mousePosition.y * (0.02 + i * 0.001),
-            rotate: mousePosition.x * 0.01,
+            x: mousePosition.x * (0.01 + i * 0.002),
+            y: mousePosition.y * (0.01 + i * 0.002),
           }}
           transition={{
             type: "spring",
-            stiffness: 20 + i * 2,
-            damping: 30,
-            mass: 1
+            stiffness: 10 + i,
+            damping: 25,
+            mass: 0.8
           }}
         >
           <div
-            className={`rounded-full bg-gradient-to-r ${
+            className={`rounded-full ${
               i % 3 === 0 
-                ? 'from-blue-400/20 to-purple-400/20' 
+                ? 'bg-blue-400/10' 
                 : i % 3 === 1 
-                ? 'from-purple-400/20 to-pink-400/20' 
-                : 'from-pink-400/20 to-blue-400/20'
+                ? 'bg-purple-400/10' 
+                : 'bg-pink-400/10'
             } backdrop-blur-sm`}
             style={{
-              width: 8 + (i % 5) * 3,
-              height: 8 + (i % 5) * 3,
+              width: 6 + (i % 3) * 2,
+              height: 6 + (i % 3) * 2,
             }}
           />
         </motion.div>
@@ -71,15 +92,32 @@ const InteractiveBackground = () => {
 
   return (
     <div className="fixed inset-0 pointer-events-none z-[1]">
-      {/* Mouse following gradient */}
+      {/* Optimized mouse following gradient */}
       <motion.div
-        className="absolute w-96 h-96 rounded-full opacity-30 blur-3xl"
+        className="absolute w-72 h-72 rounded-full opacity-20 blur-3xl"
         style={{
-          background: 'radial-gradient(circle, rgba(59,130,246,0.2) 0%, rgba(147,51,234,0.1) 50%, transparent 100%)',
+          background: 'radial-gradient(circle, rgba(59,130,246,0.15) 0%, rgba(147,51,234,0.08) 50%, transparent 100%)',
         }}
         animate={{
-          x: mousePosition.x - 192,
-          y: mousePosition.y - 192,
+          x: mousePosition.x - 144,
+          y: mousePosition.y - 144,
+        }}
+        transition={{
+          type: "spring",
+          stiffness: 30,
+          damping: 25,
+        }}
+      />
+
+      {/* Secondary following element */}
+      <motion.div
+        className="absolute w-48 h-48 rounded-full opacity-15 blur-2xl"
+        style={{
+          background: 'radial-gradient(circle, rgba(236,72,153,0.2) 0%, rgba(59,130,246,0.08) 70%, transparent 100%)',
+        }}
+        animate={{
+          x: mousePosition.x - 96,
+          y: mousePosition.y - 96,
         }}
         transition={{
           type: "spring",
@@ -88,97 +126,54 @@ const InteractiveBackground = () => {
         }}
       />
 
-      {/* Secondary following element */}
-      <motion.div
-        className="absolute w-64 h-64 rounded-full opacity-20 blur-2xl"
-        style={{
-          background: 'radial-gradient(circle, rgba(236,72,153,0.3) 0%, rgba(59,130,246,0.1) 70%, transparent 100%)',
-        }}
-        animate={{
-          x: mousePosition.x - 128,
-          y: mousePosition.y - 128,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 80,
-          damping: 40,
-        }}
-      />
-
       {/* Floating elements */}
       {generateFloatingElements()}
 
-      {/* Grid animation that responds to mouse */}
-      <div className="absolute inset-0 opacity-10">
+      {/* Simplified grid animation */}
+      <div className="absolute inset-0 opacity-5">
         <svg width="100%" height="100%" className="absolute inset-0">
           <defs>
             <pattern 
               id="grid" 
-              width="60" 
-              height="60" 
+              width="80" 
+              height="80" 
               patternUnits="userSpaceOnUse"
             >
-              <motion.path
-                d="M 60 0 L 0 0 0 60"
+              <path
+                d="M 80 0 L 0 0 0 80"
                 fill="none"
-                stroke="url(#gradient)"
+                stroke="currentColor"
                 strokeWidth="1"
-                animate={{
-                  strokeOpacity: [0.1, 0.3, 0.1],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
+                className="text-blue-400/20"
               />
             </pattern>
-            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#3B82F6" />
-              <stop offset="50%" stopColor="#8B5CF6" />
-              <stop offset="100%" stopColor="#EC4899" />
-            </linearGradient>
           </defs>
           <rect width="100%" height="100%" fill="url(#grid)" />
         </svg>
       </div>
 
-      {/* Corner decorative elements */}
+      {/* Simplified corner decorative elements */}
       <motion.div
-        className="absolute top-10 left-10 w-20 h-20 border-2 border-blue-400/30 rounded-full"
+        className="absolute top-8 left-8 w-16 h-16 border border-blue-400/20 rounded-full"
         animate={{
-          rotate: mousePosition.x * 0.1,
-          scale: [1, 1.1, 1],
+          rotate: mousePosition.x * 0.05,
+          scale: [1, 1.05, 1],
         }}
         transition={{
-          rotate: { type: "spring", stiffness: 100, damping: 10 },
-          scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+          rotate: { type: "spring", stiffness: 50, damping: 15 },
+          scale: { duration: 3, repeat: Infinity, ease: "easeInOut" }
         }}
       />
       
       <motion.div
-        className="absolute bottom-10 right-10 w-16 h-16 border-2 border-purple-400/30 rounded-lg"
+        className="absolute bottom-8 right-8 w-12 h-12 border border-purple-400/20 rounded-lg"
         animate={{
-          rotate: -mousePosition.y * 0.1,
-          scale: [1, 1.2, 1],
+          rotate: -mousePosition.y * 0.05,
+          scale: [1, 1.1, 1],
         }}
         transition={{
-          rotate: { type: "spring", stiffness: 100, damping: 10 },
-          scale: { duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }
-        }}
-      />
-
-      <motion.div
-        className="absolute top-1/2 right-10 w-12 h-12 border-2 border-pink-400/30 rounded-full"
-        animate={{
-          x: mousePosition.x * 0.02,
-          y: mousePosition.y * 0.02,
-          rotate: 360,
-        }}
-        transition={{
-          x: { type: "spring", stiffness: 50, damping: 20 },
-          y: { type: "spring", stiffness: 50, damping: 20 },
-          rotate: { duration: 20, repeat: Infinity, ease: "linear" }
+          rotate: { type: "spring", stiffness: 50, damping: 15 },
+          scale: { duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }
         }}
       />
     </div>

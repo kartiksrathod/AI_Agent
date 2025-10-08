@@ -6,55 +6,55 @@ const AnimatedIntro = ({ onComplete }) => {
   const [stage, setStage] = useState(0);
   const [particles, setParticles] = useState([]);
 
-  // Generate random particles
+  // Reduced particles for better performance
   useEffect(() => {
-    const newParticles = Array.from({ length: 50 }, (_, i) => ({
+    const newParticles = Array.from({ length: 20 }, (_, i) => ({
       id: i,
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      size: Math.random() * 4 + 2,
-      opacity: Math.random() * 0.6 + 0.2,
-      speed: Math.random() * 2 + 0.5,
+      x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1200),
+      y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 800),
+      size: Math.random() * 3 + 1,
+      opacity: Math.random() * 0.4 + 0.1,
+      speed: Math.random() * 1 + 0.3,
     }));
     setParticles(newParticles);
   }, []);
 
-  // Stage progression
+  // Faster stage progression for better UX
   useEffect(() => {
     const timers = [
-      setTimeout(() => setStage(1), 500),   // Logo animation
-      setTimeout(() => setStage(2), 1500),  // Text animation
-      setTimeout(() => setStage(3), 2500),  // Features animation
-      setTimeout(() => setStage(4), 4000),  // Final animation
-      setTimeout(() => onComplete(), 5200)  // Complete intro
+      setTimeout(() => setStage(1), 300),   // Logo animation
+      setTimeout(() => setStage(2), 800),   // Text animation
+      setTimeout(() => setStage(3), 1400),  // Features animation
+      setTimeout(() => setStage(4), 2200),  // Final animation
+      setTimeout(() => onComplete(), 2800)  // Complete intro
     ];
 
     return () => timers.forEach(clearTimeout);
   }, [onComplete]);
 
   const iconVariants = {
-    hidden: { scale: 0, rotate: -180, opacity: 0 },
+    hidden: { scale: 0, rotate: -90, opacity: 0 },
     visible: (i) => ({
       scale: 1,
       rotate: 0,
       opacity: 1,
       transition: {
-        delay: i * 0.2,
-        duration: 0.8,
+        delay: i * 0.1,
+        duration: 0.5,
         type: "spring",
-        stiffness: 100,
-        damping: 10
+        stiffness: 150,
+        damping: 15
       }
     })
   };
 
   const textVariants = {
-    hidden: { y: 100, opacity: 0 },
+    hidden: { y: 50, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 0.8,
+        duration: 0.6,
         ease: "easeOut"
       }
     }
@@ -62,23 +62,23 @@ const AnimatedIntro = ({ onComplete }) => {
 
   const featureIcons = [
     { icon: GraduationCap, color: "text-blue-400", delay: 0 },
-    { icon: Brain, color: "text-purple-400", delay: 0.2 },
-    { icon: Target, color: "text-green-400", delay: 0.4 },
-    { icon: Zap, color: "text-yellow-400", delay: 0.6 }
+    { icon: Brain, color: "text-purple-400", delay: 0.1 },
+    { icon: Target, color: "text-green-400", delay: 0.2 },
+    { icon: Zap, color: "text-yellow-400", delay: 0.3 }
   ];
 
   return (
     <AnimatePresence>
       <motion.div
         initial={{ opacity: 1 }}
-        exit={{ opacity: 0, scale: 1.1 }}
-        transition={{ duration: 0.8, ease: "easeInOut" }}
+        exit={{ opacity: 0, scale: 1.05 }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
         className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden"
         style={{
           background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
         }}
       >
-        {/* Animated Background Particles */}
+        {/* Optimized Background Particles */}
         <div className="absolute inset-0">
           {particles.map((particle) => (
             <motion.div
@@ -91,40 +91,40 @@ const AnimatedIntro = ({ onComplete }) => {
                 opacity: 0
               }}
               animate={{
-                x: particle.x + Math.sin(Date.now() * 0.001 + particle.id) * 50,
-                y: particle.y + Math.cos(Date.now() * 0.001 + particle.id) * 30,
+                x: particle.x + Math.sin(particle.id * 0.5) * 20,
+                y: particle.y + Math.cos(particle.id * 0.5) * 15,
                 scale: particle.size,
                 opacity: particle.opacity
               }}
               transition={{
-                duration: particle.speed,
+                duration: particle.speed * 2,
                 repeat: Infinity,
                 repeatType: "reverse",
                 ease: "easeInOut"
               }}
               style={{
-                width: particle.size,
-                height: particle.size,
+                width: particle.size + 'px',
+                height: particle.size + 'px',
               }}
             />
           ))}
         </div>
 
-        {/* Animated Grid Background */}
+        {/* Simplified Grid Background */}
         <motion.div
-          className="absolute inset-0 opacity-10"
-          initial={{ scale: 0.8, rotate: -5 }}
-          animate={{ scale: 1.2, rotate: 5 }}
-          transition={{ duration: 8, repeat: Infinity, repeatType: "reverse", ease: "linear" }}
+          className="absolute inset-0 opacity-5"
+          initial={{ scale: 0.9 }}
+          animate={{ scale: 1.1 }}
+          transition={{ duration: 4, repeat: Infinity, repeatType: "reverse", ease: "linear" }}
         >
-          <div className="grid grid-cols-12 grid-rows-8 gap-4 h-full w-full">
-            {Array.from({ length: 96 }).map((_, i) => (
+          <div className="grid grid-cols-8 grid-rows-6 gap-6 h-full w-full">
+            {Array.from({ length: 48 }).map((_, i) => (
               <motion.div
                 key={i}
-                className="border border-white/10 rounded"
+                className="border border-white/5 rounded"
                 initial={{ opacity: 0 }}
-                animate={{ opacity: Math.random() * 0.3 }}
-                transition={{ delay: i * 0.01, duration: 2, repeat: Infinity, repeatType: "reverse" }}
+                animate={{ opacity: 0.2 }}
+                transition={{ delay: i * 0.02, duration: 1 }}
               />
             ))}
           </div>
@@ -137,64 +137,61 @@ const AnimatedIntro = ({ onComplete }) => {
           <AnimatePresence>
             {stage >= 1 && (
               <motion.div
-                initial={{ scale: 0, rotate: -360 }}
+                initial={{ scale: 0, rotate: -180 }}
                 animate={{ scale: 1, rotate: 0 }}
-                transition={{ duration: 1.2, type: "spring", stiffness: 80, damping: 12 }}
+                transition={{ duration: 0.8, type: "spring", stiffness: 100, damping: 15 }}
                 className="mb-8"
               >
                 <motion.div
                   animate={{ 
                     rotateY: [0, 360],
-                    scale: [1, 1.1, 1]
                   }}
                   transition={{ 
-                    rotateY: { duration: 2, repeat: Infinity, ease: "linear" },
-                    scale: { duration: 2, repeat: Infinity, repeatType: "reverse" }
+                    rotateY: { duration: 3, repeat: Infinity, ease: "linear" },
                   }}
                   className="relative inline-block"
                 >
-                  <BookOpen className="h-20 w-20 mx-auto text-white drop-shadow-2xl" />
+                  <BookOpen className="h-16 w-16 mx-auto text-white drop-shadow-2xl" />
                   
-                  {/* Glowing effect */}
+                  {/* Simplified glowing effect */}
                   <motion.div
-                    className="absolute inset-0 h-20 w-20 mx-auto"
+                    className="absolute inset-0 h-16 w-16 mx-auto rounded-full"
                     animate={{
                       boxShadow: [
-                        "0 0 20px rgba(255, 255, 255, 0.5)",
-                        "0 0 40px rgba(255, 255, 255, 0.8)",
-                        "0 0 20px rgba(255, 255, 255, 0.5)"
+                        "0 0 20px rgba(255, 255, 255, 0.3)",
+                        "0 0 30px rgba(255, 255, 255, 0.5)",
+                        "0 0 20px rgba(255, 255, 255, 0.3)"
                       ]
                     }}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                    style={{ borderRadius: "50%" }}
                   />
                   
-                  {/* Sparkles around logo */}
-                  {[...Array(6)].map((_, i) => (
+                  {/* Reduced sparkles */}
+                  {[...Array(4)].map((_, i) => (
                     <motion.div
                       key={i}
                       className="absolute"
                       initial={{ scale: 0, rotate: 0 }}
                       animate={{
                         scale: [0, 1, 0],
-                        rotate: 360,
-                        x: Math.cos((i * 60) * Math.PI / 180) * 60,
-                        y: Math.sin((i * 60) * Math.PI / 180) * 60,
+                        rotate: 180,
+                        x: Math.cos((i * 90) * Math.PI / 180) * 40,
+                        y: Math.sin((i * 90) * Math.PI / 180) * 40,
                       }}
                       transition={{
-                        duration: 3,
-                        delay: i * 0.2,
+                        duration: 2,
+                        delay: i * 0.15,
                         repeat: Infinity,
                         ease: "easeInOut"
                       }}
                       style={{
                         left: '50%',
                         top: '50%',
-                        marginLeft: -6,
-                        marginTop: -6
+                        marginLeft: -4,
+                        marginTop: -4
                       }}
                     >
-                      <Sparkles className="h-3 w-3 text-yellow-300" />
+                      <Sparkles className="h-2 w-2 text-yellow-300" />
                     </motion.div>
                   ))}
                 </motion.div>
@@ -212,27 +209,16 @@ const AnimatedIntro = ({ onComplete }) => {
                 className="mb-6"
               >
                 <motion.h1 
-                  className="text-6xl font-bold mb-2"
-                  animate={{
-                    backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"]
-                  }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                  style={{
-                    background: 'linear-gradient(90deg, #ffffff, #a855f7, #3b82f6, #ffffff)',
-                    backgroundSize: '200% 100%',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text'
-                  }}
+                  className="text-5xl font-bold mb-2 bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent"
                 >
                   EduResources
                 </motion.h1>
                 
                 <motion.p
-                  className="text-xl font-light tracking-wide opacity-90"
+                  className="text-lg font-light tracking-wide opacity-90"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3, duration: 0.8 }}
+                  transition={{ delay: 0.2, duration: 0.6 }}
                 >
                   Your Engineering Success Hub
                 </motion.p>
@@ -244,10 +230,10 @@ const AnimatedIntro = ({ onComplete }) => {
           <AnimatePresence>
             {stage >= 3 && (
               <motion.div
-                className="flex justify-center space-x-8 mb-8"
+                className="flex justify-center space-x-6 mb-8"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.8 }}
+                transition={{ duration: 0.6 }}
               >
                 {featureIcons.map((item, index) => (
                   <motion.div
@@ -259,26 +245,11 @@ const AnimatedIntro = ({ onComplete }) => {
                     className="relative"
                   >
                     <motion.div
-                      whileHover={{ scale: 1.2, rotate: 15 }}
-                      className={`p-4 rounded-full bg-white/10 backdrop-blur-sm ${item.color}`}
+                      whileHover={{ scale: 1.1 }}
+                      className={`p-3 rounded-full bg-white/10 backdrop-blur-sm ${item.color}`}
                     >
-                      <item.icon className="h-8 w-8" />
+                      <item.icon className="h-6 w-6" />
                     </motion.div>
-                    
-                    {/* Ripple effect */}
-                    <motion.div
-                      className="absolute inset-0 rounded-full border-2 border-white/30"
-                      animate={{
-                        scale: [1, 1.5, 1],
-                        opacity: [0.5, 0, 0.5]
-                      }}
-                      transition={{
-                        duration: 2,
-                        delay: item.delay,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                      }}
-                    />
                   </motion.div>
                 ))}
               </motion.div>
@@ -289,33 +260,33 @@ const AnimatedIntro = ({ onComplete }) => {
           <AnimatePresence>
             {stage >= 4 && (
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="w-64 mx-auto"
+                transition={{ duration: 0.4 }}
+                className="w-48 mx-auto"
               >
                 <motion.div
-                  className="h-1 bg-white/20 rounded-full overflow-hidden mb-4"
+                  className="h-1 bg-white/20 rounded-full overflow-hidden mb-3"
                   initial={{ width: 0 }}
                   animate={{ width: "100%" }}
-                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
                 >
                   <motion.div
-                    className="h-full bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400"
+                    className="h-full bg-gradient-to-r from-blue-400 to-purple-400"
                     initial={{ x: "-100%" }}
                     animate={{ x: "0%" }}
-                    transition={{ duration: 1.2, ease: "easeInOut" }}
+                    transition={{ duration: 0.8, ease: "easeInOut" }}
                   />
                 </motion.div>
                 
                 <motion.p
-                  className="text-sm opacity-75 tracking-widest"
+                  className="text-sm opacity-75 tracking-wider"
                   animate={{
                     opacity: [0.5, 1, 0.5]
                   }}
-                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                  transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
                 >
-                  L O A D I N G
+                  LOADING
                 </motion.p>
               </motion.div>
             )}
@@ -325,33 +296,33 @@ const AnimatedIntro = ({ onComplete }) => {
         {/* Skip Button */}
         <motion.button
           onClick={onComplete}
-          className="absolute top-8 right-8 px-4 py-2 text-white/80 hover:text-white border border-white/30 hover:border-white/60 rounded-full text-sm backdrop-blur-sm hover:bg-white/10 transition-all duration-300"
+          className="absolute top-6 right-6 px-3 py-2 text-white/80 hover:text-white border border-white/30 hover:border-white/60 rounded-full text-sm backdrop-blur-sm hover:bg-white/10 transition-all duration-300"
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 2, duration: 0.6 }}
+          transition={{ delay: 1, duration: 0.4 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          Skip Intro →
+          Skip →
         </motion.button>
 
         {/* Corner Elements */}
         <motion.div
-          className="absolute top-8 left-8"
+          className="absolute top-6 left-6"
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 0.3, x: 0 }}
-          transition={{ delay: 1, duration: 1 }}
+          transition={{ delay: 0.5, duration: 0.6 }}
         >
-          <div className="w-16 h-16 border-l-2 border-t-2 border-white/30"></div>
+          <div className="w-12 h-12 border-l-2 border-t-2 border-white/30"></div>
         </motion.div>
         
         <motion.div
-          className="absolute bottom-8 right-8"
+          className="absolute bottom-6 right-6"
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 0.3, x: 0 }}
-          transition={{ delay: 1, duration: 1 }}
+          transition={{ delay: 0.5, duration: 0.6 }}
         >
-          <div className="w-16 h-16 border-r-2 border-b-2 border-white/30"></div>
+          <div className="w-12 h-12 border-r-2 border-b-2 border-white/30"></div>
         </motion.div>
       </motion.div>
     </AnimatePresence>
