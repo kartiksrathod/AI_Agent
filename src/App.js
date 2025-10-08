@@ -80,7 +80,6 @@ const AppContent = () => {
     <>
       <ThemeProvider>
         <AuthProvider>
-          <ToastProvider>
             <div className="min-h-screen relative">
             {/* Modern Abstract Background for entire app */}
             <div className="fixed inset-0 z-0">
