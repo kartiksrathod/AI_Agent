@@ -216,7 +216,6 @@ const AppContent = () => {
               </footer>
             </div>
           </div>
-          </ToastProvider>
         </AuthProvider>
       </ThemeProvider>
     </>
