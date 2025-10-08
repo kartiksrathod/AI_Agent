@@ -137,25 +137,27 @@ function App() {
                 
                 {/* Main Content Area */}
                 <main className="flex-1">
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/forgot-password" element={<ForgotPassword />} />
-                    <Route path="/papers" element={<Papers />} />
-                    <Route path="/notes" element={<Notes />} />
-                    <Route path="/syllabus" element={<Syllabus />} />
-                    <Route path="/forum" element={<Forum />} />
-                    {/* GlobalSearch route removed as per requirements */}
-                    <Route 
-                      path="/profile" 
-                      element={
-                        <ProtectedRoute>
-                          <ProfileDashboard />
-                        </ProtectedRoute>
-                      } 
-                    />
-                  </Routes>
+                  <PageTransition>
+                    <Routes>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/login" element={<Login />} />
+                      <Route path="/register" element={<Register />} />
+                      <Route path="/forgot-password" element={<ForgotPassword />} />
+                      <Route path="/papers" element={<Papers />} />
+                      <Route path="/notes" element={<Notes />} />
+                      <Route path="/syllabus" element={<Syllabus />} />
+                      <Route path="/forum" element={<Forum />} />
+                      {/* GlobalSearch route removed as per requirements */}
+                      <Route 
+                        path="/profile" 
+                        element={
+                          <ProtectedRoute>
+                            <ProfileDashboard />
+                          </ProtectedRoute>
+                        } 
+                      />
+                    </Routes>
+                  </PageTransition>
                 </main>
                 
                 <AIAssistant />
