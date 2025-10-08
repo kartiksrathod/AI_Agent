@@ -140,6 +140,10 @@ const AppContent = ({ trackActivity }) => {
               
               <AIAssistant />
               <Toaster />
+              <KeyboardShortcutsModal 
+                isOpen={showShortcutsModal} 
+                onClose={() => setShowShortcutsModal(false)} 
+              />
               
               {/* Professional Footer */}
               <footer className="relative z-10 bg-gray-900 dark:bg-gray-950 text-white mt-auto">
