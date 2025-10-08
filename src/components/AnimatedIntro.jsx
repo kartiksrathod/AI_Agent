@@ -322,6 +322,19 @@ const AnimatedIntro = ({ onComplete }) => {
           </AnimatePresence>
         </div>
 
+        {/* Skip Button */}
+        <motion.button
+          onClick={onComplete}
+          className="absolute top-8 right-8 px-4 py-2 text-white/80 hover:text-white border border-white/30 hover:border-white/60 rounded-full text-sm backdrop-blur-sm hover:bg-white/10 transition-all duration-300"
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 2, duration: 0.6 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          Skip Intro →
+        </motion.button>
+
         {/* Corner Elements */}
         <motion.div
           className="absolute top-8 left-8"
