@@ -144,16 +144,10 @@ const Home = () => {
                 </motion.span>
                 <motion.div
                   className="inline-block ml-2"
-                  animate={{ 
-                    rotate: [0, 15, -15, 0],
-                    scale: [1, 1.2, 1]
-                  }}
-                  transition={{ 
-                    rotate: { duration: 2, repeat: Infinity, delay: 1 },
-                    scale: { duration: 1.5, repeat: Infinity, repeatType: "reverse" }
-                  }}
+                  animate={{ rotate: [0, 15, -15, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, delay: 1 }}
                 >
-                  <Sparkles className="h-8 w-8 text-yellow-400 inline drop-shadow-lg" />
+                  <Sparkles className="h-8 w-8 text-yellow-400 inline" />
                 </motion.div>
               </motion.h1>
             </motion.div>
