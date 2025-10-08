@@ -500,6 +500,9 @@ async def create_note(
     
     notes_collection.insert_one(note_doc)
     
+    # Award contributor achievement
+    await check_and_award_achievement(current_user.id, "contributor")
+    
     return {"message": "Notes uploaded successfully", "id": note_id}
 
 @app.delete("/api/notes/{note_id}")
