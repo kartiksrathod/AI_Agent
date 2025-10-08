@@ -10,9 +10,9 @@ import { Textarea } from '../ui/textarea';
 import { Checkbox } from '../ui/checkbox';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { useAuth } from '../../contexts/AuthContext';
-import { syllabusAPI } from '../../api/api';
+import { syllabusAPI, bookmarksAPI } from '../../api/api';
 import { engineeringCourses } from '../../data/mock';
-import { Search, Download, Plus, Trash2, GraduationCap, Upload, FileText, Eye } from 'lucide-react';
+import { Search, Download, Plus, Trash2, GraduationCap, Upload, FileText, Eye, Heart } from 'lucide-react';
 import { useToast } from '../../hooks/use-toast';
 
 const Syllabus = () => {
