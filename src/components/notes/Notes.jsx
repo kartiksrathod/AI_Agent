@@ -9,9 +9,9 @@ import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
 import { Checkbox } from '../ui/checkbox';
 import { useAuth } from '../../contexts/AuthContext';
-import { notesAPI } from '../../api/api';
+import { notesAPI, bookmarksAPI } from '../../api/api';
 import { engineeringCourses } from '../../data/mock';
-import { Search, Download, Plus, Trash2, BookOpen, Upload, FileText, Eye } from 'lucide-react';
+import { Search, Download, Plus, Trash2, BookOpen, Upload, FileText, Eye, Heart } from 'lucide-react';
 import { useToast } from '../../hooks/use-toast';
 
 const Notes = () => {
