@@ -1159,6 +1159,16 @@ async def check_and_award_achievement(user_id: str, achievement_type: str):
             "description": "Created your first bookmark",
             "icon": "📚"
         },
+        "bookmark_collector": {
+            "name": "Bookmark Collector",
+            "description": "Saved 10+ resources to bookmarks",
+            "icon": "⭐"
+        },
+        "bookmark_master": {
+            "name": "Bookmark Master",
+            "description": "Saved 25+ resources across different categories",
+            "icon": "💫"
+        },
         "goal_setter": {
             "name": "Goal Setter", 
             "description": "Set your first learning goal",
@@ -1169,15 +1179,40 @@ async def check_and_award_achievement(user_id: str, achievement_type: str):
             "description": "Completed your first learning goal", 
             "icon": "🏆"
         },
+        "goal_master": {
+            "name": "Goal Master",
+            "description": "Completed 5+ learning goals",
+            "icon": "👑"
+        },
         "active_learner": {
             "name": "Active Learner",
             "description": "Downloaded 10+ resources",
             "icon": "📖"
         },
+        "power_user": {
+            "name": "Power User",
+            "description": "Downloaded 50+ resources",
+            "icon": "⚡"
+        },
         "contributor": {
             "name": "Contributor",
             "description": "Uploaded your first resource",
             "icon": "📝"
+        },
+        "super_contributor": {
+            "name": "Super Contributor",
+            "description": "Uploaded 5+ resources",
+            "icon": "🌟"
+        },
+        "profile_complete": {
+            "name": "Profile Complete",
+            "description": "Added profile photo and updated information",
+            "icon": "✨"
+        },
+        "early_adopter": {
+            "name": "Early Adopter",
+            "description": "One of the first users on the platform",
+            "icon": "🚀"
         }
     }
     
