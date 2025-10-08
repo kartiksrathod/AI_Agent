@@ -366,6 +366,9 @@ async def create_paper(
     
     papers_collection.insert_one(paper_doc)
     
+    # Award contributor achievement
+    await check_and_award_achievement(current_user.id, "contributor")
+    
     return {"message": "Paper uploaded successfully", "id": paper_id}
 
 @app.delete("/api/papers/{paper_id}")
