@@ -170,10 +170,10 @@ const Navbar = () => {
               {!currentUser && (
                 <div className="flex flex-col space-y-2 pt-4 border-t dark:border-gray-700">
                   <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
-                    <Button variant="ghost" className="w-full justify-start dark:text-gray-300 dark:hover:bg-gray-800">Login</Button>
+                    <Button data-testid="mobile-login-btn" variant="ghost" className="w-full justify-start dark:text-gray-300 dark:hover:bg-gray-800">Login</Button>
                   </Link>
                   <Link to="/register" onClick={() => setMobileMenuOpen(false)}>
-                    <Button className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800">Register</Button>
+                    <Button data-testid="mobile-register-btn" className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800">Register</Button>
                   </Link>
                 </div>
               )}
