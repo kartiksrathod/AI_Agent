@@ -76,4 +76,40 @@ export const statsAPI = {
   get: () => api.get('/api/stats')
 };
 
+// Profile API
+export const profileAPI = {
+  get: () => api.get('/api/profile'),
+  update: (profileData) => api.put('/api/profile', profileData),
+  uploadPhoto: (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return api.post('/api/profile/photo', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+  },
+  updatePassword: (passwordData) => api.put('/api/profile/password', passwordData),
+  getPhoto: (userId) => `${API_BASE_URL}/api/profile/photo/${userId}`
+};
+
+// Bookmarks API
+export const bookmarksAPI = {
+  getAll: () => api.get('/api/bookmarks'),
+  create: (bookmarkData) => api.post('/api/bookmarks', bookmarkData),
+  remove: (resourceType, resourceId) => api.delete(`/api/bookmarks/${resourceType}/${resourceId}`),
+  check: (resourceType, resourceId) => api.get(`/api/bookmarks/check/${resourceType}/${resourceId}`)
+};
+
+// Achievements API
+export const achievementsAPI = {
+  getAll: () => api.get('/api/achievements')
+};
+
+// Learning Goals API
+export const learningGoalsAPI = {
+  getAll: () => api.get('/api/learning-goals'),
+  create: (goalData) => api.post('/api/learning-goals', goalData),
+  update: (goalId, goalData) => api.put(`/api/learning-goals/${goalId}`, goalData),
+  delete: (goalId) => api.delete(`/api/learning-goals/${goalId}`)
+};
+
 export default api;
