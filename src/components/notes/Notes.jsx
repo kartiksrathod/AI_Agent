@@ -215,6 +215,75 @@ const Notes = () => {
     );
   };
 
+  const checkBookmarks = async () => {
+    try {
+      const bookmarkChecks = await Promise.all(
+        notes.map(async (note) => {
+          const noteId = note.id || note._id;
+          try {
+            const response = await bookmarksAPI.check('note', noteId);
+            return { id: noteId, bookmarked: response.data.bookmarked };
+          } catch (error) {
+            return { id: noteId, bookmarked: false };
+          }
+        })
+      );
+      
+      const bookmarked = new Set(
+        bookmarkChecks.filter(check => check.bookmarked).map(check => check.id)
+      );
+      setBookmarkedNotes(bookmarked);
+    } catch (error) {
+      console.error('Error checking bookmarks:', error);
+    }
+  };
+
+  const handleBookmarkToggle = async (note) => {
+    if (!currentUser) {
+      toast({
+        title: "Login Required",
+        description: "Please login to bookmark notes.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const noteId = note.id || note._id;
+    const isBookmarked = bookmarkedNotes.has(noteId);
+
+    try {
+      if (isBookmarked) {
+        await bookmarksAPI.remove('note', noteId);
+        setBookmarkedNotes(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(noteId);
+          return newSet;
+        });
+        toast({
+          title: "Removed",
+          description: "Note removed from bookmarks"
+        });
+      } else {
+        await bookmarksAPI.create({
+          resource_type: 'note',
+          resource_id: noteId,
+          category: 'General'
+        });
+        setBookmarkedNotes(prev => new Set([...prev, noteId]));
+        toast({
+          title: "Bookmarked",
+          description: "Note added to bookmarks"
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.response?.data?.detail || "Failed to update bookmark",
+        variant: "destructive"
+      });
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 dark:from-green-950 dark:via-gray-900 dark:to-blue-950 flex items-center justify-center">
