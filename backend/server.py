@@ -980,8 +980,8 @@ async def create_bookmark(
     
     bookmarks_collection.insert_one(bookmark_doc)
     
-    # Award achievement for first bookmark
-    await check_and_award_achievement(current_user.id, "first_bookmark")
+    # Check for bookmark achievements
+    await check_bookmark_achievements(current_user.id)
     
     return {"message": "Bookmark created successfully", "id": bookmark_id}
 
