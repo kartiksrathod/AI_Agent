@@ -637,6 +637,9 @@ async def create_syllabus(
     
     syllabus_collection.insert_one(syllabus_doc)
     
+    # Award contributor achievement
+    await check_and_award_achievement(current_user.id, "contributor")
+    
     return {"message": "Syllabus uploaded successfully", "id": syllabus_id}
 
 @app.delete("/api/syllabus/{syllabus_id}")
