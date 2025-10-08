@@ -10,6 +10,7 @@ import {
   MessageSquare,
   Sparkles
 } from 'lucide-react';
+import TestimonialsSection from './TestimonialsSection';
 
 const Home = () => {
   const quickAccessCards = [
