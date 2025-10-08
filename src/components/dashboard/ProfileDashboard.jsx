@@ -1030,40 +1030,125 @@ const ProfileDashboard = () => {
                 ) : (
                   <div className="space-y-4">
                     {learningGoals.map((goal) => (
-                      <Card key={goal.id} className="p-4 dark:bg-gray-700 dark:border-gray-600" data-testid="learning-goal-card">
+                      <Card key={goal.id} className={`p-4 dark:border-gray-600 transition-all duration-300 hover:shadow-lg ${
+                        goal.completed 
+                          ? 'bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-green-200 dark:border-green-800' 
+                          : 'dark:bg-gray-700 hover:-translate-y-1'
+                      }`} data-testid="learning-goal-card">
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
-                            <div className="flex items-center gap-2">
-                              <h4 className="font-medium dark:text-white">{goal.title}</h4>
-                              {goal.completed && <CheckCircle className="h-5 w-5 text-green-600" />}
+                            <div className="flex items-center gap-2 mb-2">
+                              <h4 className={`font-medium ${goal.completed ? 'text-green-900 dark:text-green-300' : 'dark:text-white'}`}>
+                                {goal.title}
+                              </h4>
+                              {goal.completed && (
+                                <div className="flex items-center gap-1">
+                                  <CheckCircle className="h-5 w-5 text-green-600" />
+                                  <Badge variant="secondary" className="bg-green-200 dark:bg-green-900 text-green-800 dark:text-green-300 text-xs">
+                                    Completed! 🎉
+                                  </Badge>
+                                </div>
+                              )}
                             </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{goal.description}</p>
-                            <div className="mt-3">
-                              <div className="flex items-center justify-between text-sm mb-1">
-                                <span className="dark:text-gray-300">Progress</span>
-                                <span className="dark:text-gray-300">{goal.progress}%</span>
-                              </div>
-                              <Progress value={goal.progress} className="h-2" />
-                            </div>
-                            <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
-                              Target: {new Date(goal.target_date).toLocaleDateString()}
+                            
+                            <p className={`text-sm mt-1 ${
+                              goal.completed 
+                                ? 'text-green-800 dark:text-green-400' 
+                                : 'text-gray-600 dark:text-gray-400'
+                            }`}>
+                              {goal.description}
                             </p>
+                            
+                            <div className="mt-4">
+                              <div className="flex items-center justify-between text-sm mb-2">
+                                <span className={goal.completed ? 'text-green-700 dark:text-green-300' : 'dark:text-gray-300'}>
+                                  Progress
+                                </span>
+                                <span className={`font-medium ${
+                                  goal.completed 
+                                    ? 'text-green-700 dark:text-green-300' 
+                                    : goal.progress >= 75 
+                                      ? 'text-blue-600 dark:text-blue-400'
+                                      : 'dark:text-gray-300'
+                                }`}>
+                                  {goal.progress}%
+                                </span>
+                              </div>
+                              <Progress 
+                                value={goal.progress} 
+                                className={`h-3 ${
+                                  goal.completed 
+                                    ? '[&>div]:bg-green-600' 
+                                    : goal.progress >= 75 
+                                      ? '[&>div]:bg-blue-600' 
+                                      : ''
+                                }`} 
+                              />
+                              
+                              {/* Progress milestones */}
+                              {!goal.completed && (
+                                <div className="flex items-center justify-between mt-2 text-xs">
+                                  <span className={`${goal.progress >= 25 ? 'text-green-600 font-medium' : 'text-gray-400'}`}>
+                                    25%
+                                  </span>
+                                  <span className={`${goal.progress >= 50 ? 'text-green-600 font-medium' : 'text-gray-400'}`}>
+                                    50%
+                                  </span>
+                                  <span className={`${goal.progress >= 75 ? 'text-blue-600 font-medium' : 'text-gray-400'}`}>
+                                    75%
+                                  </span>
+                                  <span className={`${goal.progress >= 100 ? 'text-green-600 font-medium' : 'text-gray-400'}`}>
+                                    100%
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                            
+                            <div className="flex items-center justify-between mt-3">
+                              <p className="text-xs text-gray-500 dark:text-gray-500">
+                                Target: {new Date(goal.target_date).toLocaleDateString()}
+                              </p>
+                              
+                              {/* Days remaining indicator */}
+                              {!goal.completed && (
+                                <Badge variant="outline" className="text-xs">
+                                  {(() => {
+                                    const daysLeft = Math.ceil((new Date(goal.target_date) - new Date()) / (1000 * 60 * 60 * 24));
+                                    return daysLeft > 0 ? `${daysLeft} days left` : 'Overdue';
+                                  })()}
+                                </Badge>
+                              )}
+                            </div>
                           </div>
+                          
                           <div className="flex gap-2 ml-4">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleUpdateGoalProgress(goal.id, Math.min(100, goal.progress + 25))}
-                              disabled={goal.completed}
-                              data-testid="update-progress-btn"
-                            >
-                              +25%
-                            </Button>
+                            {!goal.completed && (
+                              <>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handleUpdateGoalProgress(goal.id, Math.min(100, goal.progress + 25))}
+                                  className="text-xs"
+                                  data-testid="update-progress-btn"
+                                >
+                                  +25%
+                                </Button>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handleUpdateGoalProgress(goal.id, Math.min(100, goal.progress + 10))}
+                                  className="text-xs"
+                                  data-testid="update-progress-small-btn"
+                                >
+                                  +10%
+                                </Button>
+                              </>
+                            )}
                             <Button
                               variant="ghost"
                               size="sm"
                               onClick={() => handleDeleteGoal(goal.id)}
-                              className="text-red-600"
+                              className="text-red-600 hover:text-red-700"
                               data-testid="delete-goal-btn"
                             >
                               <Trash2 className="h-4 w-4" />
