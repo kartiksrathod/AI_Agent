@@ -240,13 +240,10 @@ const AppWithProviders = () => {
     setTimeout(() => setIntroComplete(true), 500);
   };
 
-  // Check if user has seen intro before (optional - comment out if you want intro every time)
+  // Skip intro for better performance and UX
   useEffect(() => {
-    const hasSeenIntro = localStorage.getItem('hasSeenIntro');
-    if (hasSeenIntro) {
-      setShowIntro(false);
-      setIntroComplete(true);
-    }
+    setShowIntro(false);
+    setIntroComplete(true);
   }, []);
 
   // Mark intro as seen (optional - comment out if you want intro every time)
