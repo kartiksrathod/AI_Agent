@@ -25,12 +25,10 @@ const useKeyboardShortcuts = () => {
   };
 
   const showShortcutsHelp = useCallback(() => {
-    toast.info('Keyboard Shortcuts Available', {
-      title: 'Power User Features',
-      description: 'Press Ctrl+Shift+? to see all shortcuts',
-      duration: 5000
-    });
-  }, [toast]);
+    // Trigger keyboard shortcuts modal
+    const event = new CustomEvent('showKeyboardShortcuts');
+    window.dispatchEvent(event);
+  }, []);
 
   const handleEscape = useCallback(() => {
     // Close any open modals, dropdowns, etc.
