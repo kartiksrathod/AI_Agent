@@ -240,14 +240,14 @@ const AppWithProviders = () => {
     setTimeout(() => setIntroComplete(true), 500);
   };
 
-  // Check if user has seen intro before (optional - comment out if you want intro every time)
-  useEffect(() => {
-    const hasSeenIntro = localStorage.getItem('hasSeenIntro');
-    if (hasSeenIntro) {
-      setShowIntro(false);
-      setIntroComplete(true);
-    }
-  }, []);
+  // Show intro every time - it's beautiful!
+  // useEffect(() => {
+  //   const hasSeenIntro = localStorage.getItem('hasSeenIntro');
+  //   if (hasSeenIntro) {
+  //     setShowIntro(false);
+  //     setIntroComplete(true);
+  //   }
+  // }, []);
 
   // Mark intro as seen after delay so it shows each time for now
   useEffect(() => {
