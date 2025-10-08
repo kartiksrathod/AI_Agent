@@ -19,14 +19,14 @@ const AnimatedIntro = ({ onComplete }) => {
     setParticles(newParticles);
   }, []);
 
-  // Faster stage progression for better UX
+  // Optimized timing for great visual impact
   useEffect(() => {
     const timers = [
-      setTimeout(() => setStage(1), 300),   // Logo animation
-      setTimeout(() => setStage(2), 800),   // Text animation
-      setTimeout(() => setStage(3), 1400),  // Features animation
-      setTimeout(() => setStage(4), 2200),  // Final animation
-      setTimeout(() => onComplete(), 2800)  // Complete intro
+      setTimeout(() => setStage(1), 500),   // Logo animation
+      setTimeout(() => setStage(2), 1200),  // Text animation
+      setTimeout(() => setStage(3), 2000),  // Features animation
+      setTimeout(() => setStage(4), 3200),  // Final animation
+      setTimeout(() => onComplete(), 4500)  // Complete intro
     ];
 
     return () => timers.forEach(clearTimeout);
