@@ -62,18 +62,25 @@ const AppContent = () => {
     return () => window.removeEventListener('showKeyboardShortcuts', handleShowShortcuts);
   }, []);
 
-  // Track page views
+  // Track page views with debouncing
   useEffect(() => {
+    let timeout = null;
     const handleLocationChange = () => {
-      trackActivity({ 
-        type: 'page_viewed', 
-        data: window.location.pathname 
-      });
+      if (timeout) clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        trackActivity({ 
+          type: 'page_viewed', 
+          data: window.location.pathname 
+        });
+      }, 100);
     };
 
     handleLocationChange(); // Track initial page
     window.addEventListener('popstate', handleLocationChange);
-    return () => window.removeEventListener('popstate', handleLocationChange);
+    return () => {
+      window.removeEventListener('popstate', handleLocationChange);
+      if (timeout) clearTimeout(timeout);
+    };
   }, [trackActivity]);
 
   return (
