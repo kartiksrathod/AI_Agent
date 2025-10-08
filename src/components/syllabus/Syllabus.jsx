@@ -620,8 +620,23 @@ const Syllabus = () => {
                                   {item.title}
                                 </CardTitle>
                               </div>
-                              <div className="flex items-center gap-1">
-                                <GraduationCap className="h-5 w-5 text-purple-600 dark:text-purple-400 flex-shrink-0" />
+                              <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => handleBookmarkToggle(item)}
+                                  className="p-1 h-auto"
+                                  data-testid="bookmark-syllabus-btn"
+                                >
+                                  <Heart 
+                                    className={`h-5 w-5 ${
+                                      bookmarkedSyllabus.has(syllabusId) 
+                                        ? 'text-red-600 fill-current' 
+                                        : 'text-gray-400 dark:text-gray-500 hover:text-red-600'
+                                    }`} 
+                                  />
+                                </Button>
+                                <GraduationCap className="h-5 w-5 text-purple-600 dark:text-purple-400" />
                                 <FileText className="h-4 w-4 text-red-500" />
                               </div>
                             </div>
