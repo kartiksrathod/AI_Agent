@@ -153,17 +153,18 @@ const AnimatedIntro = ({ onComplete }) => {
                 >
                   <BookOpen className="h-16 w-16 mx-auto text-white drop-shadow-2xl" />
                   
-                  {/* Simplified glowing effect */}
+                  {/* Enhanced glowing effect */}
                   <motion.div
                     className="absolute inset-0 h-16 w-16 mx-auto rounded-full"
                     animate={{
                       boxShadow: [
-                        "0 0 20px rgba(255, 255, 255, 0.3)",
-                        "0 0 30px rgba(255, 255, 255, 0.5)",
-                        "0 0 20px rgba(255, 255, 255, 0.3)"
+                        "0 0 20px rgba(255, 255, 255, 0.4)",
+                        "0 0 40px rgba(59, 130, 246, 0.6)",
+                        "0 0 60px rgba(147, 51, 234, 0.4)",
+                        "0 0 20px rgba(255, 255, 255, 0.4)"
                       ]
                     }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                   />
                   
                   {/* Reduced sparkles */}
