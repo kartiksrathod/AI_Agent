@@ -845,9 +845,22 @@ const ProfileDashboard = () => {
             {/* Achievements Section */}
             <Card className="dark:bg-gray-800 dark:border-gray-700">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 dark:text-white">
-                  <Trophy className="h-5 w-5" />
-                  Achievements ({achievements.length})
+                <CardTitle className="flex items-center justify-between dark:text-white">
+                  <span className="flex items-center gap-2">
+                    <Trophy className="h-5 w-5" />
+                    Achievements ({achievements.length})
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                      Progress: {achievements.length}/12 badges
+                    </div>
+                    <div className="w-20 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                      <div 
+                        className="bg-yellow-600 h-2 rounded-full transition-all duration-500"
+                        style={{ width: `${Math.min(100, (achievements.length / 12) * 100)}%` }}
+                      ></div>
+                    </div>
+                  </div>
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -860,19 +873,71 @@ const ProfileDashboard = () => {
                     <Trophy className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                     <p className="text-gray-600 dark:text-gray-400">No achievements yet</p>
                     <p className="text-sm text-gray-500 dark:text-gray-500">Complete activities to earn your first badge!</p>
+                    
+                    {/* Achievement Hints */}
+                    <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+                      <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                        <h5 className="font-medium text-blue-900 dark:text-blue-300 mb-2">🎯 Getting Started</h5>
+                        <ul className="text-xs text-blue-700 dark:text-blue-400 space-y-1">
+                          <li>• Bookmark your first resource</li>
+                          <li>• Set a learning goal</li>
+                          <li>• Upload a profile photo</li>
+                        </ul>
+                      </div>
+                      <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+                        <h5 className="font-medium text-green-900 dark:text-green-300 mb-2">📚 Learning Path</h5>
+                        <ul className="text-xs text-green-700 dark:text-green-400 space-y-1">
+                          <li>• Download 10+ resources</li>
+                          <li>• Complete learning goals</li>
+                          <li>• Contribute to the platform</li>
+                        </ul>
+                      </div>
+                    </div>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {achievements.map((achievement) => (
-                      <Card key={achievement.id} className="text-center p-4 dark:bg-gray-700 dark:border-gray-600" data-testid="achievement-card">
-                        <div className="text-4xl mb-2">{achievement.icon}</div>
-                        <h4 className="font-bold dark:text-white">{achievement.name}</h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">{achievement.description}</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
-                          {new Date(achievement.earned_at).toLocaleDateString()}
-                        </p>
-                      </Card>
-                    ))}
+                  <div className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {achievements.map((achievement) => (
+                        <Card key={achievement.id} className="relative overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 border-yellow-200 dark:border-yellow-800" data-testid="achievement-card">
+                          {/* Achievement Glow Effect */}
+                          <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 via-transparent to-orange-400/20 animate-pulse"></div>
+                          
+                          <CardContent className="relative p-4 text-center">
+                            <div className="text-4xl mb-3 filter drop-shadow-lg">{achievement.icon}</div>
+                            <h4 className="font-bold text-yellow-900 dark:text-yellow-300 mb-2">{achievement.name}</h4>
+                            <p className="text-sm text-yellow-800 dark:text-yellow-400 mb-3">{achievement.description}</p>
+                            <Badge variant="secondary" className="text-xs bg-yellow-200 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-300">
+                              Earned {new Date(achievement.earned_at).toLocaleDateString()}
+                            </Badge>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+
+                    {/* Achievement Milestones */}
+                    <div className="mt-8 p-4 bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
+                      <h5 className="font-medium text-yellow-900 dark:text-yellow-300 mb-3 flex items-center gap-2">
+                        <Sparkles className="h-4 w-4" />
+                        Next Achievements to Unlock
+                      </h5>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                        {achievements.length < 5 && (
+                          <div className="text-yellow-700 dark:text-yellow-400">
+                            📚 Bookmark Collector - Save 10+ resources
+                          </div>
+                        )}
+                        {achievements.length < 8 && (
+                          <div className="text-yellow-700 dark:text-yellow-400">
+                            ⚡ Power User - Download 50+ resources
+                          </div>
+                        )}
+                        {achievements.length < 10 && (
+                          <div className="text-yellow-700 dark:text-yellow-400">
+                            👑 Goal Master - Complete 5+ goals
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 )}
               </CardContent>
