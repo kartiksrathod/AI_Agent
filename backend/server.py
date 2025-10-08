@@ -855,6 +855,9 @@ async def upload_profile_photo(
         {"$set": {"profile_photo": file_path}}
     )
     
+    # Check for profile completion achievement
+    await check_profile_achievements(current_user.id)
+    
     return {"message": "Profile photo updated successfully", "file_path": file_path}
 
 @app.put("/api/profile/password")
