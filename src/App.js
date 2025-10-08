@@ -36,6 +36,35 @@ const ProtectedRoute = ({ children }) => {
 };
 
 function App() {
+  const [showIntro, setShowIntro] = useState(true);
+  const [introComplete, setIntroComplete] = useState(false);
+
+  // Handle intro completion
+  const handleIntroComplete = () => {
+    setShowIntro(false);
+    setTimeout(() => setIntroComplete(true), 500);
+  };
+
+  // Check if user has seen intro before (optional - comment out if you want intro every time)
+  useEffect(() => {
+    const hasSeenIntro = localStorage.getItem('hasSeenIntro');
+    if (hasSeenIntro) {
+      setShowIntro(false);
+      setIntroComplete(true);
+    }
+  }, []);
+
+  // Mark intro as seen (optional - comment out if you want intro every time)
+  useEffect(() => {
+    if (!showIntro && introComplete) {
+      localStorage.setItem('hasSeenIntro', 'true');
+    }
+  }, [showIntro, introComplete]);
+
+  if (showIntro) {
+    return <AnimatedIntro onComplete={handleIntroComplete} />;
+  }
+
   return (
     <div className="App">
       <BrowserRouter>
