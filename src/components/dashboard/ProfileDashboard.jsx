@@ -37,6 +37,7 @@ import {
   Trophy,
   CheckCircle
 } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 
 const ProfileDashboard = () => {
   const { currentUser, isAdmin, updateUser } = useAuth();
