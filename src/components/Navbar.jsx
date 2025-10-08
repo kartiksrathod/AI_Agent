@@ -16,6 +16,7 @@ import { useAuth } from '../contexts/AuthContext';
 import ThemeToggle from './ThemeToggle';
 import SmartSearchBar from './SmartSearchBar';
 import ProfileAvatar from './ProfileAvatar';
+import NotificationCenter from './NotificationCenter';
 import { BookOpen, User, LogOut, Menu, X, Shield } from 'lucide-react';
 
 const Navbar = () => {
