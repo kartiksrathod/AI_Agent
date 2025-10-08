@@ -8,6 +8,8 @@ import { Toaster } from "./components/ui/toaster";
 // Components
 import AnimatedIntro from "./components/AnimatedIntro";
 import InteractiveBackground from "./components/InteractiveBackground";
+import PageTransition from "./components/PageTransition";
+import { ToastProvider } from "./components/ui/advanced-toast";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import Login from "./components/auth/Login";
