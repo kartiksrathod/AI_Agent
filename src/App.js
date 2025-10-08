@@ -249,10 +249,11 @@ const AppWithProviders = () => {
     }
   }, []);
 
-  // Mark intro as seen (optional - comment out if you want intro every time)
+  // Mark intro as seen after delay so it shows each time for now
   useEffect(() => {
     if (!showIntro && introComplete) {
-      localStorage.setItem('hasSeenIntro', 'true');
+      // Commented out to show intro every time
+      // localStorage.setItem('hasSeenIntro', 'true');
     }
   }, [showIntro, introComplete]);
 
