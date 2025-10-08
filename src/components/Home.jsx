@@ -83,26 +83,25 @@ const Home = () => {
 
       {/* Content Container */}
       <div className="relative z-10">
-        {/* Animated Background Particles */}
+        {/* Optimized Background Particles */}
         <div className="fixed inset-0 pointer-events-none z-5">
-          {[...Array(6)].map((_, i) => (
+          {[...Array(3)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-2 h-2 bg-blue-400/20 rounded-full"
-              initial={{ 
-                x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1200), 
-                y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 800),
-                scale: 0 
+              className="absolute w-1 h-1 bg-blue-400/15 rounded-full"
+              style={{
+                left: `${20 + i * 30}%`,
+                top: `${20 + i * 25}%`,
               }}
               animate={{ 
-                x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1200), 
-                y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 800),
-                scale: [0, 1, 0]
+                scale: [0, 1, 0],
+                opacity: [0, 0.3, 0]
               }}
               transition={{ 
-                duration: Math.random() * 10 + 10, 
+                duration: 8, 
                 repeat: Infinity, 
-                ease: "linear" 
+                ease: "easeInOut",
+                delay: i * 2
               }}
             />
           ))}
