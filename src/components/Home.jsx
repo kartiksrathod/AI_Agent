@@ -185,18 +185,16 @@ const Home = () => {
               <Link to="/forum">
                 <motion.div
                   whileHover={{ 
-                    scale: 1.05,
-                    boxShadow: "0 20px 40px rgba(0, 0, 0, 0.1)"
+                    scale: 1.02,
                   }}
-                  whileTap={{ scale: 0.95 }}
+                  whileTap={{ scale: 0.98 }}
                 >
-                  <Button size="lg" variant="outline" className="px-8 border-2 border-gray-300 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 relative group overflow-hidden">
-                    <motion.span
-                      className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-0 group-hover:opacity-10"
-                      initial={false}
-                      whileHover={{ opacity: 0.1 }}
-                      transition={{ duration: 0.3 }}
-                    />
+                  <Button 
+                    data-testid="join-community-btn"
+                    size="lg" 
+                    variant="outline" 
+                    className="px-8 border-2 border-gray-300 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 relative group overflow-hidden hover:shadow-lg transition-shadow duration-300"
+                  >
                     <span className="relative z-10">Join Community</span>
                   </Button>
                 </motion.div>
