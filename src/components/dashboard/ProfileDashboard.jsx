@@ -581,11 +581,90 @@ const ProfileDashboard = () => {
 
           {/* Bookmarks Tab */}
           <TabsContent value="bookmarks" className="space-y-6">
+            {/* Bookmark Filters */}
+            <Card className="dark:bg-gray-800 dark:border-gray-700">
+              <CardContent className="pt-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {/* Resource Type Filter */}
+                  <div>
+                    <Label className="dark:text-white">Filter by Type</Label>
+                    <Select 
+                      value={bookmarkTypeFilter} 
+                      onValueChange={setBookmarkTypeFilter}
+                    >
+                      <SelectTrigger className="dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        <SelectValue placeholder="All Types" />
+                      </SelectTrigger>
+                      <SelectContent className="dark:bg-gray-700 dark:border-gray-600">
+                        <SelectItem value="all" className="dark:text-white dark:hover:bg-gray-600">All Types</SelectItem>
+                        <SelectItem value="paper" className="dark:text-white dark:hover:bg-gray-600">Papers</SelectItem>
+                        <SelectItem value="note" className="dark:text-white dark:hover:bg-gray-600">Notes</SelectItem>
+                        <SelectItem value="syllabus" className="dark:text-white dark:hover:bg-gray-600">Syllabus</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Category Filter */}
+                  <div>
+                    <Label className="dark:text-white">Filter by Category</Label>
+                    <Select 
+                      value={bookmarkCategoryFilter} 
+                      onValueChange={setBookmarkCategoryFilter}
+                    >
+                      <SelectTrigger className="dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        <SelectValue placeholder="All Categories" />
+                      </SelectTrigger>
+                      <SelectContent className="dark:bg-gray-700 dark:border-gray-600">
+                        <SelectItem value="all" className="dark:text-white dark:hover:bg-gray-600">All Categories</SelectItem>
+                        {bookmarkCategories.map(category => (
+                          <SelectItem key={category} value={category} className="dark:text-white dark:hover:bg-gray-600">
+                            {category}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Branch Filter */}
+                  <div>
+                    <Label className="dark:text-white">Filter by Branch</Label>
+                    <Select 
+                      value={bookmarkBranchFilter} 
+                      onValueChange={setBookmarkBranchFilter}
+                    >
+                      <SelectTrigger className="dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        <SelectValue placeholder="All Branches" />
+                      </SelectTrigger>
+                      <SelectContent className="dark:bg-gray-700 dark:border-gray-600">
+                        <SelectItem value="all" className="dark:text-white dark:hover:bg-gray-600">All Branches</SelectItem>
+                        {bookmarkBranches.map(branch => (
+                          <SelectItem key={branch} value={branch} className="dark:text-white dark:hover:bg-gray-600">
+                            {branch}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Bookmarks Grid */}
             <Card className="dark:bg-gray-800 dark:border-gray-700">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 dark:text-white">
-                  <Heart className="h-5 w-5" />
-                  My Bookmarks ({bookmarks.length})
+                <CardTitle className="flex items-center justify-between dark:text-white">
+                  <span className="flex items-center gap-2">
+                    <Heart className="h-5 w-5" />
+                    My Bookmarks ({filteredBookmarks.length})
+                  </span>
+                  <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                    <FileText className="h-4 w-4 text-blue-600" />
+                    <span>{filteredBookmarks.filter(b => b.resource_type === 'paper').length} Papers</span>
+                    <BookOpen className="h-4 w-4 text-green-600" />
+                    <span>{filteredBookmarks.filter(b => b.resource_type === 'note').length} Notes</span>
+                    <GraduationCap className="h-4 w-4 text-purple-600" />
+                    <span>{filteredBookmarks.filter(b => b.resource_type === 'syllabus').length} Syllabus</span>
+                  </div>
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -593,22 +672,29 @@ const ProfileDashboard = () => {
                   <div className="text-center py-8">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
                   </div>
-                ) : bookmarks.length === 0 ? (
+                ) : filteredBookmarks.length === 0 ? (
                   <div className="text-center py-8">
                     <Heart className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-600 dark:text-gray-400">No bookmarks yet</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-500">Start exploring and bookmark your favorite resources!</p>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      {bookmarks.length === 0 ? "No bookmarks yet" : "No bookmarks match your filters"}
+                    </p>
+                    <p className="text-sm text-gray-500 dark:text-gray-500">
+                      {bookmarks.length === 0 
+                        ? "Start exploring and bookmark your favorite resources!" 
+                        : "Try adjusting your filter criteria"}
+                    </p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {bookmarks.map((bookmark) => (
-                      <Card key={bookmark.id} className="hover:shadow-md transition-shadow dark:bg-gray-700 dark:border-gray-600" data-testid="bookmark-card">
+                    {filteredBookmarks.map((bookmark) => (
+                      <Card key={bookmark.id} className="hover:shadow-md transition-all duration-300 hover:-translate-y-1 dark:bg-gray-700 dark:border-gray-600" data-testid="bookmark-card">
                         <CardContent className="p-4">
-                          <div className="flex items-start justify-between">
-                            <div className="flex-1">
-                              <h4 className="font-medium dark:text-white line-clamp-1">{bookmark.title}</h4>
-                              <p className="text-sm text-gray-600 dark:text-gray-400">{bookmark.branch}</p>
-                              <Badge variant="outline" className="mt-2 text-xs">
+                          <div className="flex items-start justify-between mb-3">
+                            <div className="flex items-center gap-2">
+                              {bookmark.resource_type === 'paper' && <FileText className="h-4 w-4 text-blue-600" />}
+                              {bookmark.resource_type === 'note' && <BookOpen className="h-4 w-4 text-green-600" />}
+                              {bookmark.resource_type === 'syllabus' && <GraduationCap className="h-4 w-4 text-purple-600" />}
+                              <Badge variant="outline" className="text-xs capitalize">
                                 {bookmark.resource_type}
                               </Badge>
                             </div>
@@ -616,10 +702,47 @@ const ProfileDashboard = () => {
                               variant="ghost"
                               size="sm"
                               onClick={() => handleRemoveBookmark(bookmark.resource_type, bookmark.resource_id)}
-                              className="text-red-600 hover:text-red-700"
+                              className="text-red-600 hover:text-red-700 p-1 h-auto"
                               data-testid="remove-bookmark-btn"
                             >
                               <Heart className="h-4 w-4 fill-current" />
+                            </Button>
+                          </div>
+
+                          <div className="space-y-2">
+                            <h4 className="font-medium dark:text-white line-clamp-2 leading-snug">{bookmark.title}</h4>
+                            <div className="flex items-center justify-between text-sm">
+                              <span className="text-gray-600 dark:text-gray-400">{bookmark.branch}</span>
+                              <Badge variant="secondary" className="text-xs">
+                                {bookmark.category}
+                              </Badge>
+                            </div>
+                            <p className="text-xs text-gray-500 dark:text-gray-500">
+                              Saved {new Date(bookmark.created_at).toLocaleDateString()}
+                            </p>
+                          </div>
+
+                          {/* Quick Actions */}
+                          <div className="flex gap-2 mt-4">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleQuickView(bookmark)}
+                              className="flex-1 text-xs"
+                              data-testid="quick-view-bookmark-btn"
+                            >
+                              <Eye className="h-3 w-3 mr-1" />
+                              View
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleQuickDownload(bookmark)}
+                              className="flex-1 text-xs"
+                              data-testid="quick-download-bookmark-btn"
+                            >
+                              <Download className="h-3 w-3 mr-1" />
+                              Download
                             </Button>
                           </div>
                         </CardContent>
