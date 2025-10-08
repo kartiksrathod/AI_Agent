@@ -306,7 +306,8 @@ async def login(login_data: UserLogin):
         id=user["_id"],
         name=user["name"],
         email=user["email"],
-        is_admin=user.get("is_admin", False)
+        is_admin=user.get("is_admin", False),
+        profile_photo=user.get("profile_photo")
     )
     
     return Token(access_token=access_token, token_type="bearer", user=user_obj)
