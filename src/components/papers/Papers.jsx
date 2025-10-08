@@ -501,7 +501,24 @@ const Papers = () => {
                         {paper.branch}
                       </Badge>
                     </div>
-                    <FileText className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 ml-2" />
+                    <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleBookmarkToggle(paper)}
+                        className="p-1 h-auto"
+                        data-testid="bookmark-paper-btn"
+                      >
+                        <Heart 
+                          className={`h-5 w-5 ${
+                            bookmarkedPapers.has(paperId) 
+                              ? 'text-red-600 fill-current' 
+                              : 'text-gray-400 dark:text-gray-500 hover:text-red-600'
+                          }`} 
+                        />
+                      </Button>
+                      <FileText className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                    </div>
                   </div>
                 </CardHeader>
                 
