@@ -136,6 +136,7 @@ const Navbar = () => {
 
             {/* Mobile menu button */}
             <Button
+              data-testid="mobile-menu-btn"
               variant="ghost"
               size="sm"
               className="md:hidden dark:text-white"
