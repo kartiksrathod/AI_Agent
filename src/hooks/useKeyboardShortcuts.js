@@ -156,31 +156,10 @@ const useKeyboardShortcuts = () => {
   }, [toast]);
 
   const showDetailedShortcuts = useCallback(() => {
-    // Create and show shortcuts modal
-    const shortcutsList = Object.entries(shortcuts).map(([key, { description }]) => 
-      `${key} - ${description}`
-    ).join('\n');
-
-    toast.info('Keyboard Shortcuts', {
-      title: 'Available Shortcuts',
-      description: `
-Navigation:
-• g h - Go to Home
-• g p - Go to Papers  
-• g n - Go to Notes
-• g s - Go to Syllabus
-• g f - Go to Forum
-• g u - Go to Profile
-
-Actions:
-• Ctrl+K - Open Search
-• Ctrl+D - Toggle Theme
-• ? - Show this help
-• Esc - Close modals
-      `,
-      duration: 10000
-    });
-  }, [shortcuts, toast]);
+    // Trigger keyboard shortcuts modal
+    const event = new CustomEvent('showKeyboardShortcuts');
+    window.dispatchEvent(event);
+  }, []);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
