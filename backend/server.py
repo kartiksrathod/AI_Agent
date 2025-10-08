@@ -86,6 +86,7 @@ class User(BaseModel):
     name: str
     email: str
     is_admin: bool = False
+    profile_photo: Optional[str] = None
 
 class Token(BaseModel):
     access_token: str
