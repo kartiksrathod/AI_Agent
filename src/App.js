@@ -45,10 +45,15 @@ function App() {
   const [showIntro, setShowIntro] = useState(true);
   const [introComplete, setIntroComplete] = useState(false);
 
+  // Initialize hooks
+  useKeyboardShortcuts();
+  const { trackActivity, saveScrollPosition, getScrollPosition } = useUserState();
+
   // Handle intro completion
   const handleIntroComplete = () => {
     setShowIntro(false);
     setTimeout(() => setIntroComplete(true), 500);
+    trackActivity({ type: 'intro_completed' });
   };
 
   // Check if user has seen intro before (optional - comment out if you want intro every time)
@@ -67,8 +72,26 @@ function App() {
     }
   }, [showIntro, introComplete]);
 
+  // Track page views
+  useEffect(() => {
+    const handleLocationChange = () => {
+      trackActivity({ 
+        type: 'page_viewed', 
+        data: window.location.pathname 
+      });
+    };
+
+    handleLocationChange(); // Track initial page
+    window.addEventListener('popstate', handleLocationChange);
+    return () => window.removeEventListener('popstate', handleLocationChange);
+  }, [trackActivity]);
+
   if (showIntro) {
-    return <AnimatedIntro onComplete={handleIntroComplete} />;
+    return (
+      <ToastProvider>
+        <AnimatedIntro onComplete={handleIntroComplete} />
+      </ToastProvider>
+    );
   }
 
   return (
@@ -76,7 +99,8 @@ function App() {
       <BrowserRouter>
         <ThemeProvider>
           <AuthProvider>
-            <div className="min-h-screen relative">
+            <ToastProvider>
+              <div className="min-h-screen relative">
               {/* Modern Abstract Background for entire app */}
               <div className="fixed inset-0 z-0">
                 {/* Light Mode Background */}
