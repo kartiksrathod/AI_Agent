@@ -132,14 +132,10 @@ const Home = () => {
                 <br />
                 <motion.span 
                   className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent"
-                  style={{ backgroundSize: '200% 100%' }}
-                  animate={{ 
-                    backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"]
-                  }}
-                  transition={{ duration: 3, repeat: Infinity }}
                   initial={{ opacity: 0, x: 50 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.5 }}
                 >
                   Success Hub
                 </motion.span>
