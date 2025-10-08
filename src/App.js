@@ -21,6 +21,7 @@ import Syllabus from "./components/syllabus/Syllabus";
 import Forum from "./components/forum/Forum";
 import AIAssistant from "./components/ai/AIAssistant";
 import ProfileDashboard from "./components/dashboard/ProfileDashboard";
+import KeyboardShortcutsModal from "./components/KeyboardShortcutsModal";
 // Hooks
 import useKeyboardShortcuts from "./hooks/useKeyboardShortcuts";
 import useUserState from "./hooks/useUserState";
