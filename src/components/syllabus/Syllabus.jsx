@@ -47,6 +47,12 @@ const Syllabus = () => {
     handleSearch();
   }, [searchQuery, selectedBranch, activeTab, syllabus]);
 
+  useEffect(() => {
+    if (currentUser && syllabus.length > 0) {
+      checkBookmarks();
+    }
+  }, [currentUser, syllabus]);
+
   const fetchSyllabus = async () => {
     try {
       const response = await syllabusAPI.getAll();
