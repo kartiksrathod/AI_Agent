@@ -14,7 +14,8 @@ import {
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { useAuth } from '../contexts/AuthContext';
 import ThemeToggle from './ThemeToggle';
-import SearchBar from './SearchBar';
+import SmartSearchBar from './SmartSearchBar';
+import ProfileAvatar from './ProfileAvatar';
 import { BookOpen, User, LogOut, Menu, X, Shield } from 'lucide-react';
 
 const Navbar = () => {
