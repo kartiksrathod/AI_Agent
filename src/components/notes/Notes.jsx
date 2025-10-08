@@ -22,6 +22,7 @@ const Notes = () => {
   const [loading, setLoading] = useState(true);
   const [selectedNotes, setSelectedNotes] = useState([]);
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
+  const [bookmarkedNotes, setBookmarkedNotes] = useState(new Set());
   const [uploadForm, setUploadForm] = useState({
     title: '',
     branch: '',
