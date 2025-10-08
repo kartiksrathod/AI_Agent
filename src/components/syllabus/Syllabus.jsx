@@ -225,6 +225,75 @@ const Syllabus = () => {
     );
   };
 
+  const checkBookmarks = async () => {
+    try {
+      const bookmarkChecks = await Promise.all(
+        syllabus.map(async (item) => {
+          const syllabusId = item.id || item._id;
+          try {
+            const response = await bookmarksAPI.check('syllabus', syllabusId);
+            return { id: syllabusId, bookmarked: response.data.bookmarked };
+          } catch (error) {
+            return { id: syllabusId, bookmarked: false };
+          }
+        })
+      );
+      
+      const bookmarked = new Set(
+        bookmarkChecks.filter(check => check.bookmarked).map(check => check.id)
+      );
+      setBookmarkedSyllabus(bookmarked);
+    } catch (error) {
+      console.error('Error checking bookmarks:', error);
+    }
+  };
+
+  const handleBookmarkToggle = async (item) => {
+    if (!currentUser) {
+      toast({
+        title: "Login Required",
+        description: "Please login to bookmark syllabus.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const syllabusId = item.id || item._id;
+    const isBookmarked = bookmarkedSyllabus.has(syllabusId);
+
+    try {
+      if (isBookmarked) {
+        await bookmarksAPI.remove('syllabus', syllabusId);
+        setBookmarkedSyllabus(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(syllabusId);
+          return newSet;
+        });
+        toast({
+          title: "Removed",
+          description: "Syllabus removed from bookmarks"
+        });
+      } else {
+        await bookmarksAPI.create({
+          resource_type: 'syllabus',
+          resource_id: syllabusId,
+          category: 'General'
+        });
+        setBookmarkedSyllabus(prev => new Set([...prev, syllabusId]));
+        toast({
+          title: "Bookmarked",
+          description: "Syllabus added to bookmarks"
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.response?.data?.detail || "Failed to update bookmark",
+        variant: "destructive"
+      });
+    }
+  };
+
   const getSyllabusByBranch = (branch) => {
     return filteredSyllabus.filter(item => item.branch === branch);
   };
