@@ -791,6 +791,406 @@ Keep responses helpful, educational, and encouraging. If asked about non-enginee
             detail="Failed to get AI response. Please try again."
         )
 
+# Profile Management Endpoints
+@app.get("/api/profile", response_model=User)
+async def get_profile(current_user: User = Depends(get_current_user)):
+    """Get current user profile"""
+    return current_user
+
+@app.put("/api/profile")
+async def update_profile(
+    profile_data: ProfileUpdate,
+    current_user: User = Depends(get_current_user)
+):
+    """Update user profile name"""
+    update_fields = {}
+    
+    if profile_data.name is not None:
+        update_fields["name"] = profile_data.name
+    
+    if update_fields:
+        users_collection.update_one(
+            {"_id": current_user.id},
+            {"$set": update_fields}
+        )
+    
+    return {"message": "Profile updated successfully"}
+
+@app.post("/api/profile/photo")
+async def upload_profile_photo(
+    file: UploadFile = File(...),
+    current_user: User = Depends(get_current_user)
+):
+    """Upload profile photo"""
+    # Validate file type
+    if not file.filename.lower().endswith(('.jpg', '.jpeg', '.png', '.webp')):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Only image files (JPG, PNG, WebP) are allowed"
+        )
+    
+    # Delete old profile photo if exists
+    user_doc = users_collection.find_one({"_id": current_user.id})
+    if user_doc and user_doc.get("profile_photo"):
+        try:
+            os.remove(user_doc["profile_photo"])
+        except OSError:
+            pass
+    
+    # Save new photo
+    file_path = await save_upload_file(file, f"{UPLOAD_DIR}/profile_photos")
+    
+    # Update user document
+    users_collection.update_one(
+        {"_id": current_user.id},
+        {"$set": {"profile_photo": file_path}}
+    )
+    
+    return {"message": "Profile photo updated successfully", "file_path": file_path}
+
+@app.put("/api/profile/password")
+async def update_password(
+    password_data: PasswordUpdate,
+    current_user: User = Depends(get_current_user)
+):
+    """Update user password"""
+    # Get current user from database
+    user = users_collection.find_one({"_id": current_user.id})
+    
+    # Verify current password
+    if not verify_password(password_data.current_password, user["password"]):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Current password is incorrect"
+        )
+    
+    # Update password
+    hashed_password = get_password_hash(password_data.new_password)
+    users_collection.update_one(
+        {"_id": current_user.id},
+        {"$set": {"password": hashed_password}}
+    )
+    
+    return {"message": "Password updated successfully"}
+
+@app.get("/api/profile/photo/{user_id}")
+async def get_profile_photo(user_id: str):
+    """Get user profile photo"""
+    user = users_collection.find_one({"_id": user_id})
+    
+    if not user or not user.get("profile_photo"):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Profile photo not found"
+        )
+    
+    if not os.path.exists(user["profile_photo"]):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Profile photo file not found"
+        )
+    
+    return FileResponse(
+        path=user["profile_photo"],
+        media_type="image/jpeg"
+    )
+
+# Bookmarks Endpoints
+@app.get("/api/bookmarks", response_model=List[BookmarkResponse])
+async def get_bookmarks(current_user: User = Depends(get_current_user)):
+    """Get user's bookmarks"""
+    bookmarks = []
+    
+    for bookmark in bookmarks_collection.find({"user_id": current_user.id}).sort("created_at", -1):
+        # Get resource details
+        resource = None
+        if bookmark["resource_type"] == "paper":
+            resource = papers_collection.find_one({"_id": bookmark["resource_id"]})
+        elif bookmark["resource_type"] == "note":
+            resource = notes_collection.find_one({"_id": bookmark["resource_id"]})
+        elif bookmark["resource_type"] == "syllabus":
+            resource = syllabus_collection.find_one({"_id": bookmark["resource_id"]})
+        
+        if resource:
+            bookmarks.append(BookmarkResponse(
+                id=bookmark["_id"],
+                resource_type=bookmark["resource_type"],
+                resource_id=bookmark["resource_id"],
+                category=bookmark["category"],
+                title=resource["title"],
+                branch=resource["branch"],
+                created_at=bookmark["created_at"]
+            ))
+    
+    return bookmarks
+
+@app.post("/api/bookmarks")
+async def create_bookmark(
+    bookmark_data: BookmarkCreate,
+    current_user: User = Depends(get_current_user)
+):
+    """Create a bookmark"""
+    # Check if bookmark already exists
+    existing = bookmarks_collection.find_one({
+        "user_id": current_user.id,
+        "resource_type": bookmark_data.resource_type,
+        "resource_id": bookmark_data.resource_id
+    })
+    
+    if existing:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Resource already bookmarked"
+        )
+    
+    # Verify resource exists
+    resource = None
+    if bookmark_data.resource_type == "paper":
+        resource = papers_collection.find_one({"_id": bookmark_data.resource_id})
+    elif bookmark_data.resource_type == "note":
+        resource = notes_collection.find_one({"_id": bookmark_data.resource_id})
+    elif bookmark_data.resource_type == "syllabus":
+        resource = syllabus_collection.find_one({"_id": bookmark_data.resource_id})
+    
+    if not resource:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Resource not found"
+        )
+    
+    # Create bookmark
+    bookmark_id = str(uuid.uuid4())
+    bookmark_doc = {
+        "_id": bookmark_id,
+        "user_id": current_user.id,
+        "resource_type": bookmark_data.resource_type,
+        "resource_id": bookmark_data.resource_id,
+        "category": bookmark_data.category,
+        "created_at": datetime.utcnow()
+    }
+    
+    bookmarks_collection.insert_one(bookmark_doc)
+    
+    # Award achievement for first bookmark
+    await check_and_award_achievement(current_user.id, "first_bookmark")
+    
+    return {"message": "Bookmark created successfully", "id": bookmark_id}
+
+@app.delete("/api/bookmarks/{resource_type}/{resource_id}")
+async def remove_bookmark(
+    resource_type: str,
+    resource_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Remove a bookmark"""
+    result = bookmarks_collection.delete_one({
+        "user_id": current_user.id,
+        "resource_type": resource_type,
+        "resource_id": resource_id
+    })
+    
+    if result.deleted_count == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Bookmark not found"
+        )
+    
+    return {"message": "Bookmark removed successfully"}
+
+@app.get("/api/bookmarks/check/{resource_type}/{resource_id}")
+async def check_bookmark(
+    resource_type: str,
+    resource_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Check if a resource is bookmarked"""
+    bookmark = bookmarks_collection.find_one({
+        "user_id": current_user.id,
+        "resource_type": resource_type,
+        "resource_id": resource_id
+    })
+    
+    return {"bookmarked": bookmark is not None}
+
+# Achievements Endpoints
+@app.get("/api/achievements", response_model=List[Achievement])
+async def get_achievements(current_user: User = Depends(get_current_user)):
+    """Get user's achievements"""
+    achievements = []
+    
+    for achievement in achievements_collection.find({"user_id": current_user.id}).sort("earned_at", -1):
+        achievements.append(Achievement(
+            id=achievement["_id"],
+            name=achievement["name"],
+            description=achievement["description"],
+            icon=achievement["icon"],
+            earned_at=achievement["earned_at"]
+        ))
+    
+    return achievements
+
+# Learning Goals Endpoints
+@app.get("/api/learning-goals", response_model=List[LearningGoal])
+async def get_learning_goals(current_user: User = Depends(get_current_user)):
+    """Get user's learning goals"""
+    goals = []
+    
+    for goal in learning_goals_collection.find({"user_id": current_user.id}).sort("created_at", -1):
+        goals.append(LearningGoal(
+            id=goal["_id"],
+            title=goal["title"],
+            description=goal["description"],
+            target_date=goal["target_date"],
+            progress=goal["progress"],
+            completed=goal["completed"],
+            created_at=goal["created_at"]
+        ))
+    
+    return goals
+
+@app.post("/api/learning-goals")
+async def create_learning_goal(
+    goal_data: LearningGoalCreate,
+    current_user: User = Depends(get_current_user)
+):
+    """Create a learning goal"""
+    goal_id = str(uuid.uuid4())
+    goal_doc = {
+        "_id": goal_id,
+        "user_id": current_user.id,
+        "title": goal_data.title,
+        "description": goal_data.description,
+        "target_date": goal_data.target_date,
+        "progress": 0,
+        "completed": False,
+        "created_at": datetime.utcnow()
+    }
+    
+    learning_goals_collection.insert_one(goal_doc)
+    
+    # Award achievement for first goal
+    await check_and_award_achievement(current_user.id, "goal_setter")
+    
+    return {"message": "Learning goal created successfully", "id": goal_id}
+
+@app.put("/api/learning-goals/{goal_id}")
+async def update_learning_goal(
+    goal_id: str,
+    goal_data: LearningGoalUpdate,
+    current_user: User = Depends(get_current_user)
+):
+    """Update a learning goal"""
+    goal = learning_goals_collection.find_one({"_id": goal_id, "user_id": current_user.id})
+    
+    if not goal:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Learning goal not found"
+        )
+    
+    update_fields = {}
+    
+    if goal_data.title is not None:
+        update_fields["title"] = goal_data.title
+    if goal_data.description is not None:
+        update_fields["description"] = goal_data.description
+    if goal_data.target_date is not None:
+        update_fields["target_date"] = goal_data.target_date
+    if goal_data.progress is not None:
+        update_fields["progress"] = min(100, max(0, goal_data.progress))
+        # Auto-complete if progress reaches 100
+        if update_fields["progress"] == 100:
+            update_fields["completed"] = True
+    if goal_data.completed is not None:
+        update_fields["completed"] = goal_data.completed
+        # Award achievement for first completed goal
+        if goal_data.completed and not goal["completed"]:
+            await check_and_award_achievement(current_user.id, "goal_achiever")
+    
+    if update_fields:
+        learning_goals_collection.update_one(
+            {"_id": goal_id},
+            {"$set": update_fields}
+        )
+    
+    return {"message": "Learning goal updated successfully"}
+
+@app.delete("/api/learning-goals/{goal_id}")
+async def delete_learning_goal(
+    goal_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Delete a learning goal"""
+    result = learning_goals_collection.delete_one({"_id": goal_id, "user_id": current_user.id})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Learning goal not found"
+        )
+    
+    return {"message": "Learning goal deleted successfully"}
+
+# Achievement Helper Function
+async def check_and_award_achievement(user_id: str, achievement_type: str):
+    """Check and award achievements to users"""
+    # Check if user already has this achievement
+    existing = achievements_collection.find_one({
+        "user_id": user_id,
+        "achievement_type": achievement_type
+    })
+    
+    if existing:
+        return
+    
+    # Define achievements
+    achievements_definitions = {
+        "first_bookmark": {
+            "name": "Bookworm",
+            "description": "Created your first bookmark",
+            "icon": "📚"
+        },
+        "goal_setter": {
+            "name": "Goal Setter", 
+            "description": "Set your first learning goal",
+            "icon": "🎯"
+        },
+        "goal_achiever": {
+            "name": "Goal Achiever",
+            "description": "Completed your first learning goal", 
+            "icon": "🏆"
+        },
+        "active_learner": {
+            "name": "Active Learner",
+            "description": "Downloaded 10+ resources",
+            "icon": "📖"
+        },
+        "contributor": {
+            "name": "Contributor",
+            "description": "Uploaded your first resource",
+            "icon": "📝"
+        }
+    }
+    
+    if achievement_type not in achievements_definitions:
+        return
+    
+    achievement_def = achievements_definitions[achievement_type]
+    
+    # Create achievement
+    achievement_id = str(uuid.uuid4())
+    achievement_doc = {
+        "_id": achievement_id,
+        "user_id": user_id,
+        "achievement_type": achievement_type,
+        "name": achievement_def["name"],
+        "description": achievement_def["description"],
+        "icon": achievement_def["icon"],
+        "earned_at": datetime.utcnow()
+    }
+    
+    achievements_collection.insert_one(achievement_doc)
+
 # Health Check
 @app.get("/")
 async def root():
