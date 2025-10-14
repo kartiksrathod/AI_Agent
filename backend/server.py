@@ -742,30 +742,10 @@ async def ai_chat(
 ):
     \"\"\"AI assistant for engineering students\"\"\"\n    try:\n        # Generate or use existing session ID\n        session_id = chat_request.sessionId or f\"user_{current_user.id}_{uuid.uuid4().hex[:8]}\"\n        \n        # System prompt for the AI\n        system_msg = \"\"\"You are an AI study assistant for engineering students. You specialize in helping with:\n\n1. Computer Science & IT topics (programming, algorithms, data structures, databases, etc.)\n2. Electronics & Communication (circuits, signals, digital electronics, etc.)  \n3. Mechanical Engineering (thermodynamics, mechanics, materials science, etc.)\n4. Civil Engineering (structures, materials, surveying, etc.)\n5. General engineering mathematics, physics, and problem-solving\n\nYour role is to:\n- Explain concepts clearly with examples\n- Help solve engineering problems step-by-step\n- Provide study guidance and tips\n- Answer doubts about course topics\n- Suggest resources for further learning\n\nKeep responses helpful, educational, and encouraging. If asked about non-engineering topics, politely redirect to engineering subjects.\"\"\"\n\n        # Setup chat with GPT-4o-mini (works well for education)\n        chat = LlmChat(\n            api_key=EMERGENT_LLM_KEY,\n            session_id=session_id,\n            system_message=system_msg\n        ).with_model(\"openai\", \"gpt-4o-mini\")\n        \n        user_msg = UserMessage(text=chat_request.message)\n        \n        # Get response from AI\n        ai_response = await chat.send_message(user_msg)\n        \n        # Save chat history to DB\n        msg_doc = {\n            \"_id\": str(uuid.uuid4()),\n            \"user_id\": current_user.id,\n            \"session_id\": session_id,\n            \"user_message\": chat_request.message,\n            \"ai_response\": ai_response,\n            \"timestamp\": datetime.utcnow()\n        }\n        \n        chat_messages_collection.insert_one(msg_doc)\n        \n        return ChatResponse(\n            response=ai_response,\n            timestamp=datetime.utcnow()\n        )\n        \n    except Exception as e:\n        print(f\"AI Chat Error: {e}\")\n        raise HTTPException(\n            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,\n            detail=\"Failed to get AI response. Please try again.\"\n        )
 
-# Profile Management Endpoints
+## Profile endpoints
 @app.get("/api/profile", response_model=User)
 async def get_profile(current_user: User = Depends(get_current_user)):
-    """Get current user profile"""
-    return current_user
-
-@app.put("/api/profile")
-async def update_profile(
-    profile_data: ProfileUpdate,
-    current_user: User = Depends(get_current_user)
-):
-    """Update user profile name"""
-    update_fields = {}
-    
-    if profile_data.name is not None:
-        update_fields["name"] = profile_data.name
-    
-    if update_fields:
-        users_collection.update_one(
-            {"_id": current_user.id},
-            {"$set": update_fields}
-        )
-    
-    return {"message": "Profile updated successfully"}
+    \"\"\"Returns current user's profile\"\"\"\n    return current_user\n\n@app.put(\"/api/profile\")\nasync def update_profile(\n    profile_data: ProfileUpdate,\n    current_user: User = Depends(get_current_user)\n):\n    \"\"\"Update profile info (currently just name)\"\"\"\n    updates = {}\n    \n    if profile_data.name is not None:\n        updates[\"name\"] = profile_data.name\n    \n    if updates:\n        users_collection.update_one(\n            {\"_id\": current_user.id},\n            {\"$set\": updates}\n        )\n    \n    return {\"message\": \"Profile updated successfully\"}
 
 @app.post("/api/profile/photo")
 async def upload_profile_photo(
