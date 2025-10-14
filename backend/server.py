@@ -387,20 +387,19 @@ async def delete_paper(
             detail="Paper not found"
         )
     
-    # Only admin or uploader can delete
+    # Only the uploader or admin can delete
     if not current_user.is_admin and paper["uploaded_by"] != current_user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not enough permissions"
         )
     
-    # Delete file
+    # Try to delete the file (might fail if file is missing, that's ok)
     try:
         os.remove(paper["file_path"])
     except OSError:
-        pass  # File might not exist
+        pass
     
-    # Delete document
     papers_collection.delete_one({"_id": paper_id})
     
     return {"message": "Paper deleted successfully"}
