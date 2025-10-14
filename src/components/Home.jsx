@@ -66,7 +66,7 @@ const Home = () => {
           }}
         ></div>
         
-        {/* Background Image with Dark Mode */}
+        {/* Dark mode gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-gray-900 to-purple-950 hidden dark:block"></div>
         <div 
           className="absolute inset-0 opacity-20 hidden dark:block"
