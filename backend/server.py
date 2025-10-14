@@ -245,35 +245,35 @@ async def save_upload_file(upload_file, destination):
     
     return file_path
 
-# Auth Endpoints
+## Auth routes
 @app.post("/api/auth/register", response_model=Token)
 async def register(user_data: UserCreate):
-    # Check if user exists
+    # Make sure email isn't already taken
     if users_collection.find_one({"email": user_data.email}):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Email already registered"
         )
     
-    # Create user
+    # Create new user doc
     user_id = str(uuid.uuid4())
-    hashed_password = get_password_hash(user_data.password)
+    hashed_pw = get_password_hash(user_data.password)
     
     user_doc = {
         "_id": user_id,
         "name": user_data.name,
         "email": user_data.email,
-        "password": hashed_password,
-        "is_admin": False,  # First user can be made admin manually in DB
+        "password": hashed_pw,
+        "is_admin": False,  # TODO: first user should be admin automatically?
         "created_at": datetime.utcnow()
     }
     
     users_collection.insert_one(user_doc)
     
-    # Create access token
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    # Generate token for immediate login
+    token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user_id}, expires_delta=access_token_expires
+        data={"sub": user_id}, expires_delta=token_expires
     )
     
     user = User(
