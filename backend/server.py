@@ -1239,7 +1239,31 @@ async def check_and_award_achievement(user_id, achievement_type):
     achievements_collection.insert_one(ach_doc)
 
 async def check_bookmark_achievements(user_id):
-    \"\"\"Check if user earned bookmark achievements\"\"\"\n    count = bookmarks_collection.count_documents({\"user_id\": user_id})\n    \n    if count == 1:\n        await check_and_award_achievement(user_id, \"first_bookmark\")\n    elif count == 10:\n        await check_and_award_achievement(user_id, \"bookmark_collector\")\n    elif count == 25:\n        await check_and_award_achievement(user_id, \"bookmark_master\")\n\nasync def check_goal_achievements(user_id):\n    \"\"\"Check if user earned goal achievements\"\"\"\n    completed = learning_goals_collection.count_documents({\"user_id\": user_id, \"completed\": True})\n    \n    # Award goal master for completing 5 goals\n    if completed == 5:\n        await check_and_award_achievement(user_id, \"goal_master\")\n\nasync def check_profile_achievements(user_id):\n    \"\"\"Check if profile is complete\"\"\"\n    user = users_collection.find_one({\"_id\": user_id})\n    \n    # Award if user has uploaded profile photo\n    if user and user.get(\"profile_photo\"):\n        await check_and_award_achievement(user_id, \"profile_complete\")
+    """Check if user earned bookmark achievements"""
+    count = bookmarks_collection.count_documents({"user_id": user_id})
+    
+    if count == 1:
+        await check_and_award_achievement(user_id, "first_bookmark")
+    elif count == 10:
+        await check_and_award_achievement(user_id, "bookmark_collector")
+    elif count == 25:
+        await check_and_award_achievement(user_id, "bookmark_master")
+
+async def check_goal_achievements(user_id):
+    """Check if user earned goal achievements"""
+    completed = learning_goals_collection.count_documents({"user_id": user_id, "completed": True})
+    
+    # Award goal master for completing 5 goals
+    if completed == 5:
+        await check_and_award_achievement(user_id, "goal_master")
+
+async def check_profile_achievements(user_id):
+    """Check if profile is complete"""
+    user = users_collection.find_one({"_id": user_id})
+    
+    # Award if user has uploaded profile photo
+    if user and user.get("profile_photo"):
+        await check_and_award_achievement(user_id, "profile_complete")
 
 ## Health check endpoints
 @app.get("/")
