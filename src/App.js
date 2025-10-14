@@ -41,17 +41,15 @@ const ProtectedRoute = ({ children }) => {
   return currentUser ? children : <Navigate to="/login" />;
 };
 
-// AppContent component that uses router hooks
+// Main app content with router
 const AppContent = () => {
   const [showShortcutsModal, setShowShortcutsModal] = useState(false);
   
-  // Initialize user state hook (now inside ToastProvider context)
+  // Setup user tracking and keyboard shortcuts
   const { trackActivity, saveScrollPosition, getScrollPosition } = useUserState();
-  
-  // Initialize keyboard shortcuts inside Router context
   useKeyboardShortcuts();
 
-  // Listen for keyboard shortcuts modal event
+  // Listen for the keyboard shortcuts modal trigger
   useEffect(() => {
     const handleShowShortcuts = () => {
       setShowShortcutsModal(true);
@@ -61,7 +59,7 @@ const AppContent = () => {
     return () => window.removeEventListener('showKeyboardShortcuts', handleShowShortcuts);
   }, []);
 
-  // Track page views with debouncing
+  // Track page views (debounced to avoid spam)
   useEffect(() => {
     let timeout = null;
     const handleLocationChange = () => {
@@ -74,7 +72,7 @@ const AppContent = () => {
       }, 100);
     };
 
-    handleLocationChange(); // Track initial page
+    handleLocationChange();
     window.addEventListener('popstate', handleLocationChange);
     return () => {
       window.removeEventListener('popstate', handleLocationChange);
