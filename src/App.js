@@ -204,7 +204,7 @@ const AppContent = () => {
                     </div>
                   </div>
                   
-                  {/* Copyright and additional info */}
+                  {/* Copyright */}
                   <div className="border-t border-gray-700 mt-6 pt-6 text-center">
                     <p className="text-sm text-gray-400">
                       © 2024 EduResources - Academic Resources Platform. Built with React, FastAPI & MongoDB.
