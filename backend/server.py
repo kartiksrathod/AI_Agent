@@ -314,9 +314,10 @@ async def login(login_data: UserLogin):
     
     return Token(access_token=access_token, token_type="bearer", user=user_obj)
 
-# Papers Endpoints
+## Papers API
 @app.get("/api/papers", response_model=List[PaperResponse])
 async def get_papers():
+    # Get all papers sorted by newest first
     papers = []
     for paper in papers_collection.find().sort("created_at", -1):
         papers.append(PaperResponse(
