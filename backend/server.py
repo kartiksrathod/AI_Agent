@@ -864,7 +864,24 @@ async def update_password(
     password_data: PasswordUpdate,
     current_user: User = Depends(get_current_user)
 ):
-    \"\"\"Change user password\"\"\"\n    user = users_collection.find_one({\"_id\": current_user.id})\n    \n    # Make sure current password is correct\n    if not verify_password(password_data.current_password, user[\"password\"]):\n        raise HTTPException(\n            status_code=status.HTTP_400_BAD_REQUEST,\n            detail=\"Current password is incorrect\"\n        )\n    \n    # Hash and save new password\n    new_hash = get_password_hash(password_data.new_password)\n    users_collection.update_one(\n        {\"_id\": current_user.id},\n        {\"$set\": {\"password\": new_hash}}\n    )\n    \n    return {\"message\": \"Password updated successfully\"}
+    """Change user password"""
+    user = users_collection.find_one({"_id": current_user.id})
+    
+    # Make sure current password is correct
+    if not verify_password(password_data.current_password, user["password"]):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Current password is incorrect"
+        )
+    
+    # Hash and save new password
+    new_hash = get_password_hash(password_data.new_password)
+    users_collection.update_one(
+        {"_id": current_user.id},
+        {"$set": {"password": new_hash}}
+    )
+    
+    return {"message": "Password updated successfully"}
 
 @app.get("/api/profile/photo/{user_id}")
 async def get_profile_photo(user_id: str):
