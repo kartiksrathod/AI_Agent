@@ -42,17 +42,17 @@ DATABASE_NAME = os.getenv("DATABASE_NAME")
 UPLOAD_DIR = os.getenv("UPLOAD_DIR", "uploads")
 EMERGENT_LLM_KEY = os.getenv("EMERGENT_LLM_KEY")
 
-# Create upload directory
+# Make sure upload folders exist
 Path(UPLOAD_DIR).mkdir(exist_ok=True)
 for folder in ["papers", "notes", "syllabus", "profile_photos"]:
     Path(f"{UPLOAD_DIR}/{folder}").mkdir(exist_ok=True)
 
-# MongoDB setup
+# MongoDB connection
 try:
     client = MongoClient(MONGO_URL)
     db = client[DATABASE_NAME]
     
-    # Collections
+    # All collections we need
     users_collection = db.users
     papers_collection = db.papers
     notes_collection = db.notes
@@ -62,11 +62,11 @@ try:
     achievements_collection = db.achievements
     learning_goals_collection = db.learning_goals
     
-    # Test connection
+    # Quick ping to check if DB is alive
     client.admin.command('ping')
-    print("MongoDB connection successful!")
+    print("✓ MongoDB connected successfully")
 except Exception as e:
-    print(f"MongoDB connection failed: {e}")
+    print(f"✗ MongoDB connection error: {e}")
 
 # Pydantic Models
 class UserCreate(BaseModel):
