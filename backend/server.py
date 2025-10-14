@@ -68,7 +68,7 @@ try:
 except Exception as e:
     print(f"✗ MongoDB connection error: {e}")
 
-# Pydantic Models
+# Request/Response models
 class UserCreate(BaseModel):
     name: str
     email: EmailStr
@@ -90,6 +90,7 @@ class Token(BaseModel):
     token_type: str
     user: User
 
+# Base model for resources (papers, notes, syllabus)
 class ResourceBase(BaseModel):
     title: str
     branch: str
