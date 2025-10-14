@@ -143,6 +143,7 @@ const AppContent = () => {
                 </PageTransition>
               </main>
               
+              {/* AI chat assistant and other global components */}
               <AIAssistant />
               <Toaster />
               <KeyboardShortcutsModal 
@@ -150,12 +151,12 @@ const AppContent = () => {
                 onClose={() => setShowShortcutsModal(false)} 
               />
               
-              {/* Professional Footer */}
+              {/* Footer */}
               <footer className="relative z-10 bg-gray-900 dark:bg-gray-950 text-white mt-auto">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
                   <div className="flex flex-col items-center text-center space-y-6">
                     
-                    {/* Made by section - Centered */}
+                    {/* Creator info */}
                     <div className="text-center">
                       <p className="text-lg font-semibold text-gray-100">
                         Made with ❤️ by <span className="text-blue-400 font-bold">Kartik S Rathod</span>
