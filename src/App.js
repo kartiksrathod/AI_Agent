@@ -85,9 +85,9 @@ const AppContent = () => {
       <ThemeProvider>
         <AuthProvider>
             <div className="min-h-screen relative">
-            {/* Modern Abstract Background for entire app */}
+            {/* Background images for light/dark mode */}
             <div className="fixed inset-0 z-0">
-              {/* Light Mode Background */}
+              {/* Light mode */}
               <div className="absolute inset-0 bg-background dark:hidden"></div>
               <div 
                 className="absolute inset-0 opacity-10 dark:hidden"
@@ -99,7 +99,7 @@ const AppContent = () => {
                 }}
               ></div>
               
-              {/* Dark Mode Background */}
+              {/* Dark mode */}
               <div className="absolute inset-0 bg-background hidden dark:block"></div>
               <div 
                 className="absolute inset-0 opacity-15 hidden dark:block"
