@@ -735,73 +735,13 @@ async def get_stats():
         total_users=total_users
     )
 
-# AI Chat Endpoint
+## AI Study Assistant
 @app.post("/api/ai/chat", response_model=ChatResponse)
 async def ai_chat(
     chat_request: ChatMessage,
     current_user: User = Depends(get_current_user)
 ):
-    """
-    AI Assistant for student queries about engineering topics
-    """
-    try:
-        # Create session ID for this chat
-        session_id = chat_request.sessionId or f"user_{current_user.id}_{uuid.uuid4().hex[:8]}"
-        
-        # System message for educational AI assistant
-        system_message = """You are an AI study assistant for engineering students. You specialize in helping with:
-
-1. Computer Science & IT topics (programming, algorithms, data structures, databases, etc.)
-2. Electronics & Communication (circuits, signals, digital electronics, etc.)  
-3. Mechanical Engineering (thermodynamics, mechanics, materials science, etc.)
-4. Civil Engineering (structures, materials, surveying, etc.)
-5. General engineering mathematics, physics, and problem-solving
-
-Your role is to:
-- Explain concepts clearly with examples
-- Help solve engineering problems step-by-step
-- Provide study guidance and tips
-- Answer doubts about course topics
-- Suggest resources for further learning
-
-Keep responses helpful, educational, and encouraging. If asked about non-engineering topics, politely redirect to engineering subjects."""
-
-        # Initialize LLM chat with GPT-4o-mini (good for educational queries)
-        chat = LlmChat(
-            api_key=EMERGENT_LLM_KEY,
-            session_id=session_id,
-            system_message=system_message
-        ).with_model("openai", "gpt-4o-mini")
-        
-        # Create user message
-        user_message = UserMessage(text=chat_request.message)
-        
-        # Get AI response
-        ai_response = await chat.send_message(user_message)
-        
-        # Store chat message in database for history
-        message_doc = {
-            "_id": str(uuid.uuid4()),
-            "user_id": current_user.id,
-            "session_id": session_id,
-            "user_message": chat_request.message,
-            "ai_response": ai_response,
-            "timestamp": datetime.utcnow()
-        }
-        
-        chat_messages_collection.insert_one(message_doc)
-        
-        return ChatResponse(
-            response=ai_response,
-            timestamp=datetime.utcnow()
-        )
-        
-    except Exception as e:
-        print(f"AI Chat Error: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to get AI response. Please try again."
-        )
+    \"\"\"AI assistant for engineering students\"\"\"\n    try:\n        # Generate or use existing session ID\n        session_id = chat_request.sessionId or f\"user_{current_user.id}_{uuid.uuid4().hex[:8]}\"\n        \n        # System prompt for the AI\n        system_msg = \"\"\"You are an AI study assistant for engineering students. You specialize in helping with:\n\n1. Computer Science & IT topics (programming, algorithms, data structures, databases, etc.)\n2. Electronics & Communication (circuits, signals, digital electronics, etc.)  \n3. Mechanical Engineering (thermodynamics, mechanics, materials science, etc.)\n4. Civil Engineering (structures, materials, surveying, etc.)\n5. General engineering mathematics, physics, and problem-solving\n\nYour role is to:\n- Explain concepts clearly with examples\n- Help solve engineering problems step-by-step\n- Provide study guidance and tips\n- Answer doubts about course topics\n- Suggest resources for further learning\n\nKeep responses helpful, educational, and encouraging. If asked about non-engineering topics, politely redirect to engineering subjects.\"\"\"\n\n        # Setup chat with GPT-4o-mini (works well for education)\n        chat = LlmChat(\n            api_key=EMERGENT_LLM_KEY,\n            session_id=session_id,\n            system_message=system_msg\n        ).with_model(\"openai\", \"gpt-4o-mini\")\n        \n        user_msg = UserMessage(text=chat_request.message)\n        \n        # Get response from AI\n        ai_response = await chat.send_message(user_msg)\n        \n        # Save chat history to DB\n        msg_doc = {\n            \"_id\": str(uuid.uuid4()),\n            \"user_id\": current_user.id,\n            \"session_id\": session_id,\n            \"user_message\": chat_request.message,\n            \"ai_response\": ai_response,\n            \"timestamp\": datetime.utcnow()\n        }\n        \n        chat_messages_collection.insert_one(msg_doc)\n        \n        return ChatResponse(\n            response=ai_response,\n            timestamp=datetime.utcnow()\n        )\n        \n    except Exception as e:\n        print(f\"AI Chat Error: {e}\")\n        raise HTTPException(\n            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,\n            detail=\"Failed to get AI response. Please try again.\"\n        )
 
 # Profile Management Endpoints
 @app.get("/api/profile", response_model=User)
