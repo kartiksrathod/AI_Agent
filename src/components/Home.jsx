@@ -78,13 +78,13 @@ const Home = () => {
           }}
         ></div>
         
-        {/* Overlay for better text readability */}
+        {/* Overlay for readability */}
         <div className="absolute inset-0 bg-white/20 dark:bg-black/30"></div>
       </div>
 
-      {/* Content Container */}
+      {/* Main content */}
       <div className="relative z-10">
-        {/* Optimized Background Particles */}
+        {/* Animated particles effect (just a few to keep it light) */}
         <div className="fixed inset-0 pointer-events-none z-5">
           {[...Array(3)].map((_, i) => (
             <motion.div
