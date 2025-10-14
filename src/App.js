@@ -5,7 +5,7 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { Toaster } from "./components/ui/toaster";
 
-// Components
+// Import all the components we need
 import AnimatedIntro from "./components/AnimatedIntro";
 import InteractiveBackground from "./components/InteractiveBackground";
 import PageTransition from "./components/PageTransition";
@@ -22,15 +22,14 @@ import Forum from "./components/forum/Forum";
 import AIAssistant from "./components/ai/AIAssistant";
 import ProfileDashboard from "./components/dashboard/ProfileDashboard";
 import KeyboardShortcutsModal from "./components/KeyboardShortcutsModal";
-// Hooks
 import useKeyboardShortcuts from "./hooks/useKeyboardShortcuts";
 import useUserState from "./hooks/useUserState";
-// GlobalSearch component removed as per requirements
 
-// Protected Route Component
+// Wrapper for protected routes - redirects to login if not authenticated
 const ProtectedRoute = ({ children }) => {
   const { currentUser, loading } = useAuth();
   
+  // Show loader while checking auth
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-blue-950 dark:via-gray-900 dark:to-purple-950 flex items-center justify-center">
