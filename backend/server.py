@@ -290,6 +290,7 @@ async def register(user_data: UserCreate):
 async def login(login_data: UserLogin):
     user = users_collection.find_one({"email": login_data.email})
     
+    # Check if user exists and password matches
     if not user or not verify_password(login_data.password, user["password"]):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -297,9 +298,10 @@ async def login(login_data: UserLogin):
             headers={"WWW-Authenticate": "Bearer"},
         )
     
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    # Create JWT token
+    token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user["_id"]}, expires_delta=access_token_expires
+        data={"sub": user["_id"]}, expires_delta=token_expires
     )
     
     user_obj = User(
