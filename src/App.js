@@ -192,7 +192,6 @@ const AppContent = () => {
                         <span className="hidden sm:block font-medium">LinkedIn</span>
                       </a>
                       
-                      {/* Email */}
                       <a 
                         href="mailto:kartiksrathod07@gmail.com" 
                         className="group flex items-center space-x-2 text-gray-300 hover:text-blue-400 transition-colors duration-300"
