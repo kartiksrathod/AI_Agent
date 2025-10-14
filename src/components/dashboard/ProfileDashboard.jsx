@@ -591,11 +591,11 @@ const ProfileDashboard = () => {
                         {currentUser?.name?.charAt(0)?.toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
-                    <div>
+                    <div className="flex flex-col gap-2">
                       <Label htmlFor="photo-upload" className="cursor-pointer">
                         <Button variant="outline" size="sm" className="gap-2" data-testid="upload-photo-btn">
                           <Camera className="h-4 w-4" />
-                          Change Photo
+                          {currentUser?.profile_photo ? 'Change Photo' : 'Upload Photo'}
                         </Button>
                       </Label>
                       <Input
@@ -605,6 +605,18 @@ const ProfileDashboard = () => {
                         onChange={handlePhotoUpload}
                         className="hidden"
                       />
+                      {currentUser?.profile_photo && (
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950" 
+                          onClick={handlePhotoRemove}
+                          data-testid="remove-photo-btn"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                          Remove Photo
+                        </Button>
+                      )}
                     </div>
                   </div>
 
