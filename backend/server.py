@@ -341,20 +341,20 @@ async def create_paper(
     file: UploadFile = File(...),
     current_user: User = Depends(get_current_user)
 ):
-    # Validate file type
+    # Only accept PDFs
     if not file.filename.endswith('.pdf'):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Only PDF files are allowed"
         )
     
-    # Save file
+    # Save the uploaded file
     file_path = await save_upload_file(file, f"{UPLOAD_DIR}/papers")
     
-    # Parse tags
+    # Convert comma-separated tags to list
     tags_list = [tag.strip() for tag in tags.split(",") if tag.strip()] if tags else []
     
-    # Create paper document
+    # Create paper doc
     paper_id = str(uuid.uuid4())
     paper_doc = {
         "_id": paper_id,
@@ -369,7 +369,7 @@ async def create_paper(
     
     papers_collection.insert_one(paper_doc)
     
-    # Award contributor achievement
+    # Give user contributor badge
     await check_and_award_achievement(current_user.id, "contributor")
     
     return {"message": "Paper uploaded successfully", "id": paper_id}
