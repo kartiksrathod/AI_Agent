@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    // Check for stored user - admin status comes only from backend
+    // Check if user was logged in before (from localStorage)
     const storedUser = localStorage.getItem('currentUser');
     const storedToken = localStorage.getItem('token');
     
@@ -25,9 +25,10 @@ export const AuthProvider = ({ children }) => {
       try {
         const user = JSON.parse(storedUser);
         setCurrentUser(user);
-        setIsAdmin(user.is_admin === true); // Only use backend admin status
+        setIsAdmin(user.is_admin === true); // Admin status comes from backend only
       } catch (error) {
         console.error('Error parsing stored user:', error);
+        // Clear invalid data
         localStorage.removeItem('currentUser');
         localStorage.removeItem('token');
       }
@@ -37,12 +38,13 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await authAPI.login({ email, password });
-      const { access_token, user } = response.data;
+      const res = await authAPI.login({ email, password });
+      const { access_token, user } = res.data;
       
       setCurrentUser(user);
       setIsAdmin(user.is_admin === true);
       
+      // Save to localStorage for persistence
       localStorage.setItem('currentUser', JSON.stringify(user));
       localStorage.setItem('token', access_token);
       
@@ -54,12 +56,13 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const response = await authAPI.register(userData);
-      const { access_token, user } = response.data;
+      const res = await authAPI.register(userData);
+      const { access_token, user } = res.data;
       
       setCurrentUser(user);
       setIsAdmin(user.is_admin === true);
       
+      // Save to localStorage
       localStorage.setItem('currentUser', JSON.stringify(user));
       localStorage.setItem('token', access_token);
       
@@ -72,6 +75,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setCurrentUser(null);
     setIsAdmin(false);
+    // Clear everything from storage
     localStorage.removeItem('currentUser');
     localStorage.removeItem('token');
   };

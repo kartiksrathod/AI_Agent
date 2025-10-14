@@ -1,12 +1,13 @@
 import axios from 'axios';
 
+// Get backend URL from env or fallback to localhost
 const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
 });
 
-// Add token to requests if available
+// Interceptor to add auth token to requests
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -15,18 +16,16 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
-// Auth API
+// Authentication endpoints
 export const authAPI = {
   login: (credentials) => api.post('/api/auth/login', credentials),
   register: (userData) => api.post('/api/auth/register', userData),
 };
 
-// Papers API
+// Question Papers
 export const papersAPI = {
   getAll: () => api.get('/api/papers'),
   create: (formData) => api.post('/api/papers', formData, {
@@ -41,7 +40,7 @@ export const papersAPI = {
   }
 };
 
-// Notes API
+// Study Notes
 export const notesAPI = {
   getAll: () => api.get('/api/notes'),
   create: (formData) => api.post('/api/notes', formData, {
@@ -56,7 +55,7 @@ export const notesAPI = {
   }
 };
 
-// Syllabus API
+// Syllabus
 export const syllabusAPI = {
   getAll: () => api.get('/api/syllabus'),
   create: (formData) => api.post('/api/syllabus', formData, {
@@ -71,12 +70,12 @@ export const syllabusAPI = {
   }
 };
 
-// Stats API
+// Platform stats
 export const statsAPI = {
   get: () => api.get('/api/stats')
 };
 
-// Profile API
+// User profile stuff
 export const profileAPI = {
   get: () => api.get('/api/profile'),
   update: (profileData) => api.put('/api/profile', profileData),
@@ -91,7 +90,7 @@ export const profileAPI = {
   getPhoto: (userId) => `${API_BASE_URL}/api/profile/photo/${userId}`
 };
 
-// Bookmarks API
+// Bookmarks
 export const bookmarksAPI = {
   getAll: () => api.get('/api/bookmarks'),
   create: (bookmarkData) => api.post('/api/bookmarks', bookmarkData),
@@ -99,12 +98,12 @@ export const bookmarksAPI = {
   check: (resourceType, resourceId) => api.get(`/api/bookmarks/check/${resourceType}/${resourceId}`)
 };
 
-// Achievements API
+// Achievements system
 export const achievementsAPI = {
   getAll: () => api.get('/api/achievements')
 };
 
-// Learning Goals API
+// Learning Goals
 export const learningGoalsAPI = {
   getAll: () => api.get('/api/learning-goals'),
   create: (goalData) => api.post('/api/learning-goals', goalData),
