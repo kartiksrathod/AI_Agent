@@ -2,25 +2,22 @@ from fastapi import FastAPI, Depends, HTTPException, status, File, UploadFile, F
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
-from fastapi.staticfiles import StaticFiles
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
-from typing import Optional, List, Union
+from typing import Optional, List
 from pydantic import BaseModel, EmailStr
 from pymongo import MongoClient
 import os
 import uuid
-import shutil
 from pathlib import Path
 import aiofiles
 from dotenv import load_dotenv
 from emergentintegrations.llm.chat import LlmChat, UserMessage
-import asyncio
 
-# Load environment variables
 load_dotenv()
 
+# Main app instance
 app = FastAPI(title="Academic Resources API", version="1.0.0")
 
 # CORS configuration
