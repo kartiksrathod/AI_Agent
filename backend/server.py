@@ -197,7 +197,8 @@ def create_access_token(data, expires_delta=None):
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
-    credentials_exception = HTTPException(
+    # Standard auth exception
+    auth_error = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
@@ -206,15 +207,16 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
     try:
         token = credentials.credentials
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        user_id: str = payload.get("sub")
-        if user_id is None:
-            raise credentials_exception
+        user_id = payload.get("sub")
+        if not user_id:
+            raise auth_error
     except JWTError:
-        raise credentials_exception
+        raise auth_error
     
+    # Fetch user from DB
     user = users_collection.find_one({"_id": user_id})
-    if user is None:
-        raise credentials_exception
+    if not user:
+        raise auth_error
     
     return User(
         id=user["_id"],
@@ -225,6 +227,7 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
     )
 
 def get_current_admin_user(current_user: User = Depends(get_current_user)):
+    # Only admins can pass this check
     if not current_user.is_admin:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -232,8 +235,8 @@ def get_current_admin_user(current_user: User = Depends(get_current_user)):
         )
     return current_user
 
-async def save_upload_file(upload_file: UploadFile, destination: str) -> str:
-    """Save uploaded file to destination and return the path"""
+async def save_upload_file(upload_file, destination):
+    """Saves uploaded file and returns path"""
     file_path = f"{destination}/{uuid.uuid4()}-{upload_file.filename}"
     
     async with aiofiles.open(file_path, 'wb') as f:
