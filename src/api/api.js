@@ -86,6 +86,7 @@ export const profileAPI = {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
   },
+  removePhoto: () => api.delete('/api/profile/photo'),
   updatePassword: (passwordData) => api.put('/api/profile/password', passwordData),
   getPhoto: (userId) => `${API_BASE_URL}/api/profile/photo/${userId}`
 };
