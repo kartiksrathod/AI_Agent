@@ -52,9 +52,9 @@ const Home = () => {
 
   return (
     <div className="relative">
-      {/* Modern Abstract Background */}
+      {/* Background setup */}
       <div className="fixed inset-0 z-0">
-        {/* Background Image with Light Mode */}
+        {/* Light mode gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:hidden"></div>
         <div 
           className="absolute inset-0 opacity-30 dark:hidden"
