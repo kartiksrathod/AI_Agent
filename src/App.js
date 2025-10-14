@@ -223,18 +223,18 @@ const AppContent = () => {
   );
 };
 
-// Main App wrapper that provides ToastProvider at the top level
+// App wrapper with intro animation
 const AppWithProviders = () => {
   const [showIntro, setShowIntro] = useState(true);
   const [introComplete, setIntroComplete] = useState(false);
 
-  // Handle intro completion
   const handleIntroComplete = () => {
     setShowIntro(false);
     setTimeout(() => setIntroComplete(true), 500);
   };
 
-  // Show intro every time - it's beautiful!
+  // TODO: Maybe add localStorage check to show intro only once?
+  // Currently showing every time because it looks cool
   // useEffect(() => {
   //   const hasSeenIntro = localStorage.getItem('hasSeenIntro');
   //   if (hasSeenIntro) {
@@ -243,14 +243,14 @@ const AppWithProviders = () => {
   //   }
   // }, []);
 
-  // Mark intro as seen after delay so it shows each time for now
   useEffect(() => {
     if (!showIntro && introComplete) {
-      // Commented out to show intro every time
+      // Not saving to localStorage so intro shows every time
       // localStorage.setItem('hasSeenIntro', 'true');
     }
   }, [showIntro, introComplete]);
 
+  // Show intro animation first
   if (showIntro) {
     return <AnimatedIntro onComplete={handleIntroComplete} />;
   }
