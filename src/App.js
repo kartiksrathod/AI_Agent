@@ -112,14 +112,14 @@ const AppContent = () => {
               ></div>
             </div>
             
-            {/* Interactive Background */}
+            {/* Cool interactive background effect */}
             <InteractiveBackground />
             
-            {/* Main Content Container */}
+            {/* Main content wrapper */}
             <div className="relative z-10 flex flex-col min-h-screen text-foreground transition-colors duration-300">
               <Navbar />
               
-              {/* Main Content Area */}
+              {/* All routes */}
               <main className="flex-1">
                 <PageTransition>
                   <Routes>
@@ -131,7 +131,6 @@ const AppContent = () => {
                     <Route path="/notes" element={<Notes />} />
                     <Route path="/syllabus" element={<Syllabus />} />
                     <Route path="/forum" element={<Forum />} />
-                    {/* GlobalSearch route removed as per requirements */}
                     <Route 
                       path="/profile" 
                       element={
