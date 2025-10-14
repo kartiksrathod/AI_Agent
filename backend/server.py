@@ -130,7 +130,7 @@ class ChatResponse(BaseModel):
     response: str
     timestamp: datetime
 
-# New Models for Profile Enhancement
+# Profile related models
 class ProfileUpdate(BaseModel):
     name: Optional[str] = None
     
@@ -139,7 +139,7 @@ class PasswordUpdate(BaseModel):
     new_password: str
 
 class BookmarkCreate(BaseModel):
-    resource_type: str  # 'paper', 'note', 'syllabus'
+    resource_type: str  # can be 'paper', 'note', or 'syllabus'
     resource_id: str
     category: Optional[str] = "General"
 
