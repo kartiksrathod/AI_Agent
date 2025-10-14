@@ -802,7 +802,27 @@ Keep responses helpful, educational, and encouraging. If asked about non-enginee
 ## Profile endpoints
 @app.get("/api/profile", response_model=User)
 async def get_profile(current_user: User = Depends(get_current_user)):
-    \"\"\"Returns current user's profile\"\"\"\n    return current_user\n\n@app.put(\"/api/profile\")\nasync def update_profile(\n    profile_data: ProfileUpdate,\n    current_user: User = Depends(get_current_user)\n):\n    \"\"\"Update profile info (currently just name)\"\"\"\n    updates = {}\n    \n    if profile_data.name is not None:\n        updates[\"name\"] = profile_data.name\n    \n    if updates:\n        users_collection.update_one(\n            {\"_id\": current_user.id},\n            {\"$set\": updates}\n        )\n    \n    return {\"message\": \"Profile updated successfully\"}
+    """Returns current user's profile"""
+    return current_user
+
+@app.put("/api/profile")
+async def update_profile(
+    profile_data: ProfileUpdate,
+    current_user: User = Depends(get_current_user)
+):
+    """Update profile info (currently just name)"""
+    updates = {}
+    
+    if profile_data.name is not None:
+        updates["name"] = profile_data.name
+    
+    if updates:
+        users_collection.update_one(
+            {"_id": current_user.id},
+            {"$set": updates}
+        )
+    
+    return {"message": "Profile updated successfully"}
 
 @app.post("/api/profile/photo")
 async def upload_profile_photo(
