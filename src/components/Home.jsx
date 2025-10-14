@@ -14,6 +14,7 @@ import TestimonialsSection from './TestimonialsSection';
 import FeaturesSection from './FeaturesSection';
 
 const Home = () => {
+  // Quick access cards for main resources
   const quickAccessCards = [
     {
       title: 'Question Papers',
