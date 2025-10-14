@@ -6,7 +6,7 @@ from datetime import datetime
 from io import BytesIO
 
 class EducationalPlatformTester:
-    def __init__(self, base_url="https://button-repair-3.preview.emergentagent.com"):
+    def __init__(self, base_url="https://coder-dna.preview.emergentagent.com"):
         self.base_url = base_url
         self.token = None
         self.admin_token = None
@@ -297,7 +297,7 @@ class EducationalPlatformTester:
 
 def main():
     # Use the public endpoint from environment
-    backend_url = "https://button-repair-3.preview.emergentagent.com"
+    backend_url = "https://coder-dna.preview.emergentagent.com"
     
     tester = EducationalPlatformTester(backend_url)
     success = tester.run_all_tests()
