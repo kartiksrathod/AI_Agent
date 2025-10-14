@@ -883,6 +883,27 @@ async def update_password(
     
     return {"message": "Password updated successfully"}
 
+@app.delete("/api/profile/photo")
+async def remove_profile_photo(
+    current_user: User = Depends(get_current_user)
+):
+    """Remove profile picture"""
+    user_doc = users_collection.find_one({"_id": current_user.id})
+    
+    if user_doc and user_doc.get("profile_photo"):
+        try:
+            os.remove(user_doc["profile_photo"])
+        except OSError:
+            pass  # File might be missing, that's fine
+    
+    # Update DB - remove photo reference
+    users_collection.update_one(
+        {"_id": current_user.id},
+        {"$unset": {"profile_photo": ""}}
+    )
+    
+    return {"message": "Profile photo removed successfully"}
+
 @app.get("/api/profile/photo/{user_id}")
 async def get_profile_photo(user_id: str):
     """Get user profile photo"""
