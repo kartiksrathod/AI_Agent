@@ -752,35 +752,7 @@ async def upload_profile_photo(
     file: UploadFile = File(...),
     current_user: User = Depends(get_current_user)
 ):
-    """Upload profile photo"""
-    # Validate file type
-    if not file.filename.lower().endswith(('.jpg', '.jpeg', '.png', '.webp')):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Only image files (JPG, PNG, WebP) are allowed"
-        )
-    
-    # Delete old profile photo if exists
-    user_doc = users_collection.find_one({"_id": current_user.id})
-    if user_doc and user_doc.get("profile_photo"):
-        try:
-            os.remove(user_doc["profile_photo"])
-        except OSError:
-            pass
-    
-    # Save new photo
-    file_path = await save_upload_file(file, f"{UPLOAD_DIR}/profile_photos")
-    
-    # Update user document
-    users_collection.update_one(
-        {"_id": current_user.id},
-        {"$set": {"profile_photo": file_path}}
-    )
-    
-    # Check for profile completion achievement
-    await check_profile_achievements(current_user.id)
-    
-    return {"message": "Profile photo updated successfully", "file_path": file_path}
+    \"\"\"Upload/update profile picture\"\"\"\n    # Only accept image files\n    if not file.filename.lower().endswith(('.jpg', '.jpeg', '.png', '.webp')):\n        raise HTTPException(\n            status_code=status.HTTP_400_BAD_REQUEST,\n            detail=\"Only image files (JPG, PNG, WebP) are allowed\"\n        )\n    \n    # Remove old photo if it exists\n    user_doc = users_collection.find_one({\"_id\": current_user.id})\n    if user_doc and user_doc.get(\"profile_photo\"):\n        try:\n            os.remove(user_doc[\"profile_photo\"])\n        except OSError:\n            pass  # Old file might be missing, that's fine\n    \n    # Save new photo\n    file_path = await save_upload_file(file, f\"{UPLOAD_DIR}/profile_photos\")\n    \n    # Update DB\n    users_collection.update_one(\n        {\"_id\": current_user.id},\n        {\"$set\": {\"profile_photo\": file_path}}\n    )\n    \n    # Award profile completion achievement\n    await check_profile_achievements(current_user.id)\n    \n    return {\"message\": \"Profile photo updated successfully\", \"file_path\": file_path}
 
 @app.put("/api/profile/password")
 async def update_password(
