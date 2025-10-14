@@ -228,6 +228,26 @@ const ProfileDashboard = () => {
     }
   };
 
+  const handlePhotoRemove = async () => {
+    if (!window.confirm('Are you sure you want to remove your profile photo?')) return;
+
+    try {
+      await profileAPI.removePhoto();
+      toast({
+        title: "Success",
+        description: "Profile photo removed successfully!"
+      });
+      // Force re-render by updating user context
+      window.location.reload();
+    } catch (error) {
+      toast({
+        title: "Error", 
+        description: "Failed to remove photo",
+        variant: "destructive"
+      });
+    }
+  };
+
   const handlePasswordUpdate = async (e) => {
     e.preventDefault();
     
