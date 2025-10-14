@@ -180,7 +180,6 @@ const AppContent = () => {
                         <span className="hidden sm:block font-medium">GitHub</span>
                       </a>
                       
-                      {/* LinkedIn */}
                       <a 
                         href="https://www.linkedin.com/in/kartik-s-rathod-a98364389" 
                         target="_blank" 
