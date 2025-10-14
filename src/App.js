@@ -166,9 +166,8 @@ const AppContent = () => {
                       </p>
                     </div>
                     
-                    {/* Social Links - Below the made by text */}
+                    {/* Social links */}
                     <div className="flex items-center justify-center space-x-8">
-                      {/* GitHub */}
                       <a 
                         href="https://github.com/kartiksrathod" 
                         target="_blank" 
