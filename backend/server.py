@@ -1092,37 +1092,8 @@ async def delete_learning_goal(
 async def check_and_award_achievement(user_id, achievement_type):
     \"\"\"Awards achievement if user doesn't have it yet\"\"\"\n    # Don't award if already earned\n    existing = achievements_collection.find_one({\n        \"user_id\": user_id,\n        \"achievement_type\": achievement_type\n    })\n    \n    if existing:\n        return\n    \n    # All available achievements\n    achievements = {\n        \"first_bookmark\": {\n            \"name\": \"Bookworm\",\n            \"description\": \"Created your first bookmark\",\n            \"icon\": \"📚\"\n        },\n        \"bookmark_collector\": {\n            \"name\": \"Bookmark Collector\",\n            \"description\": \"Saved 10+ resources to bookmarks\",\n            \"icon\": \"⭐\"\n        },\n        \"bookmark_master\": {\n            \"name\": \"Bookmark Master\",\n            \"description\": \"Saved 25+ resources across different categories\",\n            \"icon\": \"💫\"\n        },\n        \"goal_setter\": {\n            \"name\": \"Goal Setter\", \n            \"description\": \"Set your first learning goal\",\n            \"icon\": \"🎯\"\n        },\n        \"goal_achiever\": {\n            \"name\": \"Goal Achiever\",\n            \"description\": \"Completed your first learning goal\", \n            \"icon\": \"🏆\"\n        },\n        \"goal_master\": {\n            \"name\": \"Goal Master\",\n            \"description\": \"Completed 5+ learning goals\",\n            \"icon\": \"👑\"\n        },\n        \"active_learner\": {\n            \"name\": \"Active Learner\",\n            \"description\": \"Downloaded 10+ resources\",\n            \"icon\": \"📖\"\n        },\n        \"power_user\": {\n            \"name\": \"Power User\",\n            \"description\": \"Downloaded 50+ resources\",\n            \"icon\": \"⚡\"\n        },\n        \"contributor\": {\n            \"name\": \"Contributor\",\n            \"description\": \"Uploaded your first resource\",\n            \"icon\": \"📝\"\n        },\n        \"super_contributor\": {\n            \"name\": \"Super Contributor\",\n            \"description\": \"Uploaded 5+ resources\",\n            \"icon\": \"🌟\"\n        },\n        \"profile_complete\": {\n            \"name\": \"Profile Complete\",\n            \"description\": \"Added profile photo and updated information\",\n            \"icon\": \"✨\"\n        },\n        \"early_adopter\": {\n            \"name\": \"Early Adopter\",\n            \"description\": \"One of the first users on the platform\",\n            \"icon\": \"🚀\"\n        }\n    }\n    \n    if achievement_type not in achievements:\n        return\n    \n    ach = achievements[achievement_type]\n    \n    # Award the achievement\n    ach_id = str(uuid.uuid4())\n    ach_doc = {\n        \"_id\": ach_id,\n        \"user_id\": user_id,\n        \"achievement_type\": achievement_type,\n        \"name\": ach[\"name\"],\n        \"description\": ach[\"description\"],\n        \"icon\": ach[\"icon\"],\n        \"earned_at\": datetime.utcnow()\n    }\n    \n    achievements_collection.insert_one(ach_doc)
 
-async def check_bookmark_achievements(user_id: str):
-    """Check and award bookmark-related achievements"""
-    bookmark_count = bookmarks_collection.count_documents({"user_id": user_id})
-    
-    # First bookmark
-    if bookmark_count == 1:
-        await check_and_award_achievement(user_id, "first_bookmark")
-    
-    # Bookmark collector (10+ bookmarks)
-    elif bookmark_count == 10:
-        await check_and_award_achievement(user_id, "bookmark_collector")
-    
-    # Bookmark master (25+ bookmarks)
-    elif bookmark_count == 25:
-        await check_and_award_achievement(user_id, "bookmark_master")
-
-async def check_goal_achievements(user_id: str):
-    """Check and award goal-related achievements"""
-    completed_goals = learning_goals_collection.count_documents({"user_id": user_id, "completed": True})
-    
-    # Goal master (5+ completed goals)
-    if completed_goals == 5:
-        await check_and_award_achievement(user_id, "goal_master")
-
-async def check_profile_achievements(user_id: str):
-    """Check profile completion achievements"""
-    user = users_collection.find_one({"_id": user_id})
-    
-    # Profile complete (has photo and updated info)
-    if user and user.get("profile_photo"):
-        await check_and_award_achievement(user_id, "profile_complete")
+async def check_bookmark_achievements(user_id):
+    \"\"\"Check if user earned bookmark achievements\"\"\"\n    count = bookmarks_collection.count_documents({\"user_id\": user_id})\n    \n    if count == 1:\n        await check_and_award_achievement(user_id, \"first_bookmark\")\n    elif count == 10:\n        await check_and_award_achievement(user_id, \"bookmark_collector\")\n    elif count == 25:\n        await check_and_award_achievement(user_id, \"bookmark_master\")\n\nasync def check_goal_achievements(user_id):\n    \"\"\"Check if user earned goal achievements\"\"\"\n    completed = learning_goals_collection.count_documents({\"user_id\": user_id, \"completed\": True})\n    \n    # Award goal master for completing 5 goals\n    if completed == 5:\n        await check_and_award_achievement(user_id, \"goal_master\")\n\nasync def check_profile_achievements(user_id):\n    \"\"\"Check if profile is complete\"\"\"\n    user = users_collection.find_one({\"_id\": user_id})\n    \n    # Award if user has uploaded profile photo\n    if user and user.get(\"profile_photo\"):\n        await check_and_award_achievement(user_id, \"profile_complete\")
 
 # Health Check
 @app.get("/")
