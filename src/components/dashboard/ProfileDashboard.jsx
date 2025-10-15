@@ -700,6 +700,13 @@ const ProfileDashboard = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
+                  {isAdmin && (
+                    <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md">
+                      <p className="text-sm text-blue-800 dark:text-blue-300">
+                        <strong>Admin Account:</strong> If you're using the default admin credentials, your current password is: <code className="bg-blue-100 dark:bg-blue-800 px-1 py-0.5 rounded">admin123</code>
+                      </p>
+                    </div>
+                  )}
                   <form onSubmit={handlePasswordUpdate} className="space-y-4">
                     <div>
                       <Label htmlFor="current-password" className="dark:text-white">Current Password</Label>
@@ -709,7 +716,9 @@ const ProfileDashboard = () => {
                         value={passwordForm.current_password}
                         onChange={(e) => setPasswordForm({...passwordForm, current_password: e.target.value})}
                         className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                        placeholder="Enter your current password"
                         data-testid="current-password-input"
+                        required
                       />
                     </div>
                     <div>
@@ -720,7 +729,10 @@ const ProfileDashboard = () => {
                         value={passwordForm.new_password}
                         onChange={(e) => setPasswordForm({...passwordForm, new_password: e.target.value})}
                         className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                        placeholder="Enter new password (min 6 characters)"
                         data-testid="new-password-input"
+                        required
+                        minLength={6}
                       />
                     </div>
                     <div>
@@ -731,10 +743,14 @@ const ProfileDashboard = () => {
                         value={passwordForm.confirm_password}
                         onChange={(e) => setPasswordForm({...passwordForm, confirm_password: e.target.value})}
                         className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                        placeholder="Re-enter new password"
                         data-testid="confirm-password-input"
+                        required
                       />
                     </div>
-                    <Button type="submit" data-testid="update-password-btn">Update Password</Button>
+                    <Button type="submit" className="w-full" data-testid="update-password-btn">
+                      Update Password
+                    </Button>
                   </form>
                 </CardContent>
               </Card>
