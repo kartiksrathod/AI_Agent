@@ -244,12 +244,23 @@ const ProfileDashboard = () => {
 
     try {
       await profileAPI.removePhoto();
+      
+      // Update user context to remove photo
+      const updatedUser = {
+        ...currentUser,
+        profile_photo: null
+      };
+      updateUser(updatedUser);
+      
       toast({
         title: "Success",
         description: "Profile photo removed successfully!"
       });
-      // Force re-render by updating user context
-      window.location.reload();
+      
+      // Reload page to refresh all components
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
       toast({
         title: "Error", 
