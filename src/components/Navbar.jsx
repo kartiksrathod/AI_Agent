@@ -13,6 +13,7 @@ import {
 } from './ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { useAuth } from '../contexts/AuthContext';
+import { profileAPI } from '../api/api';
 import ThemeToggle from './ThemeToggle';
 import SmartSearchBar from './SmartSearchBar';
 import ProfileAvatar from './ProfileAvatar';
