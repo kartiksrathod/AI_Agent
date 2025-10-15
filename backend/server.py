@@ -921,9 +921,20 @@ async def get_profile_photo(user_id: str):
             detail="Profile photo file not found"
         )
     
+    # Detect media type from file extension
+    file_path = user["profile_photo"]
+    if file_path.lower().endswith('.png'):
+        media_type = "image/png"
+    elif file_path.lower().endswith('.webp'):
+        media_type = "image/webp"
+    elif file_path.lower().endswith(('.jpg', '.jpeg')):
+        media_type = "image/jpeg"
+    else:
+        media_type = "image/jpeg"  # default
+    
     return FileResponse(
         path=user["profile_photo"],
-        media_type="image/jpeg"
+        media_type=media_type
     )
 
 # Bookmarks Endpoints
