@@ -592,12 +592,6 @@ const ProfileDashboard = () => {
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col gap-2">
-                      <Label htmlFor="photo-upload" className="cursor-pointer">
-                        <Button variant="outline" size="sm" className="gap-2" data-testid="upload-photo-btn">
-                          <Camera className="h-4 w-4" />
-                          {currentUser?.profile_photo ? 'Change Photo' : 'Upload Photo'}
-                        </Button>
-                      </Label>
                       <Input
                         id="photo-upload"
                         type="file"
@@ -605,6 +599,16 @@ const ProfileDashboard = () => {
                         onChange={handlePhotoUpload}
                         className="hidden"
                       />
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="gap-2" 
+                        onClick={() => document.getElementById('photo-upload').click()}
+                        data-testid="upload-photo-btn"
+                      >
+                        <Camera className="h-4 w-4" />
+                        {currentUser?.profile_photo ? 'Change Photo' : 'Upload Photo'}
+                      </Button>
                       {currentUser?.profile_photo && (
                         <Button 
                           variant="outline" 
