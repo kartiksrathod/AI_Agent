@@ -251,10 +251,47 @@ const ProfileDashboard = () => {
   const handlePasswordUpdate = async (e) => {
     e.preventDefault();
     
+    // Validation checks
+    if (!passwordForm.current_password) {
+      toast({
+        title: "Error",
+        description: "Please enter your current password",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (!passwordForm.new_password) {
+      toast({
+        title: "Error",
+        description: "Please enter a new password",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (passwordForm.new_password.length < 6) {
+      toast({
+        title: "Error",
+        description: "New password must be at least 6 characters long",
+        variant: "destructive"
+      });
+      return;
+    }
+
     if (passwordForm.new_password !== passwordForm.confirm_password) {
       toast({
         title: "Error",
         description: "New passwords don't match",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (passwordForm.current_password === passwordForm.new_password) {
+      toast({
+        title: "Error",
+        description: "New password must be different from current password",
         variant: "destructive"
       });
       return;
@@ -268,12 +305,15 @@ const ProfileDashboard = () => {
       setPasswordForm({ current_password: '', new_password: '', confirm_password: '' });
       toast({
         title: "Success", 
-        description: "Password updated successfully!"
+        description: "Password updated successfully! You can now use your new password to login."
       });
     } catch (error) {
+      const errorMessage = error.response?.data?.detail || "Failed to update password";
       toast({
-        title: "Error",
-        description: error.response?.data?.detail || "Failed to update password",
+        title: "Password Update Failed",
+        description: errorMessage === "Current password is incorrect" 
+          ? "The current password you entered is incorrect. Please try again."
+          : errorMessage,
         variant: "destructive"
       });
     }
