@@ -87,6 +87,12 @@ const Navbar = () => {
                 <DropdownMenuTrigger asChild>
                   <Button data-testid="user-menu-btn" variant="ghost" className="relative h-8 w-8 rounded-full">
                     <Avatar className="h-8 w-8">
+                      {currentUser.profile_photo && (
+                        <AvatarImage 
+                          src={profileAPI.getPhoto(currentUser.id)} 
+                          alt={currentUser.name}
+                        />
+                      )}
                       <AvatarFallback className="bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300">
                         {currentUser.name?.charAt(0) || 'U'}
                       </AvatarFallback>
