@@ -212,13 +212,24 @@ const ProfileDashboard = () => {
     if (!file) return;
 
     try {
-      await profileAPI.uploadPhoto(file);
+      const response = await profileAPI.uploadPhoto(file);
+      
+      // Update user context with new photo path
+      const updatedUser = {
+        ...currentUser,
+        profile_photo: response.data.file_path
+      };
+      updateUser(updatedUser);
+      
       toast({
         title: "Success",
-        description: "Profile photo updated successfully!"
+        description: "Profile photo updated successfully! Check the navbar to see your new photo."
       });
-      // Force re-render by updating user context
-      window.location.reload();
+      
+      // Reload page to refresh all components
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
       toast({
         title: "Error", 
