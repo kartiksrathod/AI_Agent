@@ -618,6 +618,15 @@ const Papers = () => {
           </div>
         )}
       </div>
+
+      {/* PDF Preview Modal */}
+      <PDFPreviewModal
+        isOpen={isPreviewOpen}
+        onClose={() => setIsPreviewOpen(false)}
+        pdfUrl={previewPaper?.url}
+        title={previewPaper?.title}
+        onDownload={() => previewPaper && handleDownload(previewPaper.paper)}
+      />
     </div>
   );
 };
