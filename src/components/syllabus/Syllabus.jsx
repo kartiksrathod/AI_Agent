@@ -120,12 +120,17 @@ const Syllabus = () => {
       return;
     }
 
+    // Open PDF preview modal
     const syllabusId = item.id || item._id;
-    syllabusAPI.view(syllabusId);
-    toast({
-      title: "Opening Preview",
-      description: `Opening preview: ${item.title}`,
+    const pdfUrl = process.env.REACT_APP_BACKEND_URL + `/api/syllabus/${syllabusId}/view`;
+    
+    setPreviewSyllabus({
+      id: syllabusId,
+      title: item.title,
+      url: pdfUrl,
+      syllabus: item
     });
+    setIsPreviewOpen(true);
   };
 
   const handleUpload = async (e) => {
