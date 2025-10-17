@@ -112,12 +112,17 @@ const Notes = () => {
       return;
     }
 
+    // Open PDF preview modal
     const noteId = note.id || note._id;
-    notesAPI.view(noteId);
-    toast({
-      title: "Opening Preview",
-      description: `Opening preview: ${note.title}`,
+    const pdfUrl = process.env.REACT_APP_BACKEND_URL + `/api/notes/${noteId}/view`;
+    
+    setPreviewNote({
+      id: noteId,
+      title: note.title,
+      url: pdfUrl,
+      note: note
     });
+    setIsPreviewOpen(true);
   };
 
   const handleUpload = async (e) => {
