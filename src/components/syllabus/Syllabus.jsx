@@ -741,6 +741,15 @@ const Syllabus = () => {
           </div>
         )}
       </div>
+
+      {/* PDF Preview Modal */}
+      <PDFPreviewModal
+        isOpen={isPreviewOpen}
+        onClose={() => setIsPreviewOpen(false)}
+        pdfUrl={previewSyllabus?.url}
+        title={previewSyllabus?.title}
+        onDownload={() => previewSyllabus && handleDownload(previewSyllabus.syllabus)}
+      />
     </div>
   );
 };
