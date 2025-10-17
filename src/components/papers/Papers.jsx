@@ -25,6 +25,8 @@ const Papers = () => {
   const [selectedPapers, setSelectedPapers] = useState([]);
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
   const [bookmarkedPapers, setBookmarkedPapers] = useState(new Set());
+  const [previewPaper, setPreviewPaper] = useState(null);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [uploadForm, setUploadForm] = useState({
     title: '',
     branch: '',
