@@ -27,6 +27,8 @@ const Syllabus = () => {
   const [selectedSyllabus, setSelectedSyllabus] = useState([]);
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
   const [bookmarkedSyllabus, setBookmarkedSyllabus] = useState(new Set());
+  const [previewSyllabus, setPreviewSyllabus] = useState(null);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [uploadForm, setUploadForm] = useState({
     title: '',
     branch: '',
