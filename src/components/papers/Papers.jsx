@@ -118,13 +118,17 @@ const Papers = () => {
       return;
     }
 
-    // Use id or _id based on what's available
+    // Open PDF preview modal
     const paperId = paper.id || paper._id;
-    papersAPI.view(paperId);
-    toast({
-      title: "Opening Preview",
-      description: `Opening preview: ${paper.title}`,
+    const pdfUrl = process.env.REACT_APP_BACKEND_URL + `/api/papers/${paperId}/view`;
+    
+    setPreviewPaper({
+      id: paperId,
+      title: paper.title,
+      url: pdfUrl,
+      paper: paper
     });
+    setIsPreviewOpen(true);
   };
 
   const handleUpload = async (e) => {
