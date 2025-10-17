@@ -595,6 +595,15 @@ const Notes = () => {
           </div>
         )}
       </div>
+
+      {/* PDF Preview Modal */}
+      <PDFPreviewModal
+        isOpen={isPreviewOpen}
+        onClose={() => setIsPreviewOpen(false)}
+        pdfUrl={previewNote?.url}
+        title={previewNote?.title}
+        onDownload={() => previewNote && handleDownload(previewNote.note)}
+      />
     </div>
   );
 };
