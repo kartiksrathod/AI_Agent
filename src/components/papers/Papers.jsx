@@ -13,6 +13,8 @@ import { papersAPI, bookmarksAPI } from '../../api/api';
 import { engineeringCourses } from '../../data/mock';
 import { Search, Download, Plus, Trash2, FileText, Upload, Eye, Heart } from 'lucide-react';
 import { useToast } from '../../hooks/use-toast';
+import CardSkeleton from '../loading/CardSkeleton';
+import PDFPreviewModal from '../modals/PDFPreviewModal';
 
 const Papers = () => {
   const [papers, setPapers] = useState([]);
