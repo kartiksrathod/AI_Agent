@@ -61,6 +61,7 @@ try:
     bookmarks_collection = db.bookmarks
     achievements_collection = db.achievements
     learning_goals_collection = db.learning_goals
+    downloads_collection = db.downloads  # Track actual downloads
     
     # Quick ping to check if DB is alive
     client.admin.command('ping')
