@@ -339,6 +339,9 @@ class EducationalPlatformTester:
         # AI assistant tests
         self.test_ai_assistant()
         
+        # Forum functionality tests
+        self.test_forum_functionality()
+        
         # Security tests
         self.test_unauthorized_access()
         
