@@ -1406,6 +1406,275 @@ async def track_download(user_id, resource_type, resource_id):
     elif total_downloads == 50:
         await check_and_award_achievement(user_id, "power_user")
 
+
+## Forum Endpoints
+@app.get("/api/forum/posts", response_model=List[ForumPost])
+async def get_forum_posts(category: Optional[str] = None):
+    """Get all forum posts, optionally filtered by category"""
+    query = {}
+    if category:
+        query["category"] = category
+    
+    posts = []
+    for post in forum_posts_collection.find(query).sort("last_activity", -1):
+        # Get author details
+        author = users_collection.find_one({"_id": post["author_id"]})
+        author_name = author["name"] if author else "Unknown User"
+        author_photo = author.get("profile_photo") if author else None
+        
+        # Count replies
+        replies_count = forum_replies_collection.count_documents({"post_id": post["_id"]})
+        
+        posts.append(ForumPost(
+            id=post["_id"],
+            title=post["title"],
+            content=post["content"],
+            category=post["category"],
+            tags=post.get("tags", []),
+            author_id=post["author_id"],
+            author_name=author_name,
+            replies_count=replies_count,
+            views=post.get("views", 0),
+            created_at=post["created_at"],
+            updated_at=post.get("updated_at", post["created_at"]),
+            last_activity=post.get("last_activity", post["created_at"]),
+            author_profile_photo=author_photo
+        ))
+    
+    return posts
+
+@app.get("/api/forum/posts/{post_id}", response_model=ForumPost)
+async def get_forum_post(post_id: str):
+    """Get a single forum post and increment views"""
+    post = forum_posts_collection.find_one({"_id": post_id})
+    
+    if not post:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Post not found"
+        )
+    
+    # Increment views
+    forum_posts_collection.update_one(
+        {"_id": post_id},
+        {"$inc": {"views": 1}}
+    )
+    
+    # Get author details
+    author = users_collection.find_one({"_id": post["author_id"]})
+    author_name = author["name"] if author else "Unknown User"
+    author_photo = author.get("profile_photo") if author else None
+    
+    # Count replies
+    replies_count = forum_replies_collection.count_documents({"post_id": post_id})
+    
+    return ForumPost(
+        id=post["_id"],
+        title=post["title"],
+        content=post["content"],
+        category=post["category"],
+        tags=post.get("tags", []),
+        author_id=post["author_id"],
+        author_name=author_name,
+        replies_count=replies_count,
+        views=post.get("views", 0) + 1,
+        created_at=post["created_at"],
+        updated_at=post.get("updated_at", post["created_at"]),
+        last_activity=post.get("last_activity", post["created_at"]),
+        author_profile_photo=author_photo
+    )
+
+@app.post("/api/forum/posts")
+async def create_forum_post(
+    post_data: ForumPostCreate,
+    current_user: User = Depends(get_current_user)
+):
+    """Create a new forum post"""
+    post_id = str(uuid.uuid4())
+    now = datetime.utcnow()
+    
+    post_doc = {
+        "_id": post_id,
+        "title": post_data.title,
+        "content": post_data.content,
+        "category": post_data.category,
+        "tags": post_data.tags,
+        "author_id": current_user.id,
+        "views": 0,
+        "created_at": now,
+        "updated_at": now,
+        "last_activity": now
+    }
+    
+    forum_posts_collection.insert_one(post_doc)
+    
+    # Award achievement for first post
+    user_post_count = forum_posts_collection.count_documents({"author_id": current_user.id})
+    if user_post_count == 1:
+        await check_and_award_achievement(current_user.id, "forum_contributor")
+    
+    return {"message": "Post created successfully", "id": post_id}
+
+@app.put("/api/forum/posts/{post_id}")
+async def update_forum_post(
+    post_id: str,
+    post_data: ForumPostUpdate,
+    current_user: User = Depends(get_current_user)
+):
+    """Update a forum post (author or admin only)"""
+    post = forum_posts_collection.find_one({"_id": post_id})
+    
+    if not post:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Post not found"
+        )
+    
+    # Only author or admin can update
+    if post["author_id"] != current_user.id and not current_user.is_admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not enough permissions"
+        )
+    
+    update_fields = {"updated_at": datetime.utcnow()}
+    
+    if post_data.title is not None:
+        update_fields["title"] = post_data.title
+    if post_data.content is not None:
+        update_fields["content"] = post_data.content
+    if post_data.category is not None:
+        update_fields["category"] = post_data.category
+    if post_data.tags is not None:
+        update_fields["tags"] = post_data.tags
+    
+    forum_posts_collection.update_one(
+        {"_id": post_id},
+        {"$set": update_fields}
+    )
+    
+    return {"message": "Post updated successfully"}
+
+@app.delete("/api/forum/posts/{post_id}")
+async def delete_forum_post(
+    post_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Delete a forum post (author or admin only)"""
+    post = forum_posts_collection.find_one({"_id": post_id})
+    
+    if not post:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Post not found"
+        )
+    
+    # Only author or admin can delete
+    if post["author_id"] != current_user.id and not current_user.is_admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not enough permissions"
+        )
+    
+    # Delete all replies first
+    forum_replies_collection.delete_many({"post_id": post_id})
+    
+    # Delete the post
+    forum_posts_collection.delete_one({"_id": post_id})
+    
+    return {"message": "Post deleted successfully"}
+
+@app.get("/api/forum/posts/{post_id}/replies", response_model=List[ForumReply])
+async def get_post_replies(post_id: str):
+    """Get all replies for a post"""
+    # Check if post exists
+    post = forum_posts_collection.find_one({"_id": post_id})
+    if not post:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Post not found"
+        )
+    
+    replies = []
+    for reply in forum_replies_collection.find({"post_id": post_id}).sort("created_at", 1):
+        # Get author details
+        author = users_collection.find_one({"_id": reply["author_id"]})
+        author_name = author["name"] if author else "Unknown User"
+        author_photo = author.get("profile_photo") if author else None
+        
+        replies.append(ForumReply(
+            id=reply["_id"],
+            post_id=reply["post_id"],
+            author_id=reply["author_id"],
+            author_name=author_name,
+            content=reply["content"],
+            created_at=reply["created_at"],
+            author_profile_photo=author_photo
+        ))
+    
+    return replies
+
+@app.post("/api/forum/posts/{post_id}/replies")
+async def create_reply(
+    post_id: str,
+    reply_data: ForumReplyCreate,
+    current_user: User = Depends(get_current_user)
+):
+    """Create a reply to a forum post"""
+    # Check if post exists
+    post = forum_posts_collection.find_one({"_id": post_id})
+    if not post:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Post not found"
+        )
+    
+    reply_id = str(uuid.uuid4())
+    now = datetime.utcnow()
+    
+    reply_doc = {
+        "_id": reply_id,
+        "post_id": post_id,
+        "author_id": current_user.id,
+        "content": reply_data.content,
+        "created_at": now
+    }
+    
+    forum_replies_collection.insert_one(reply_doc)
+    
+    # Update post's last activity
+    forum_posts_collection.update_one(
+        {"_id": post_id},
+        {"$set": {"last_activity": now}}
+    )
+    
+    return {"message": "Reply created successfully", "id": reply_id}
+
+@app.delete("/api/forum/replies/{reply_id}")
+async def delete_reply(
+    reply_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Delete a forum reply (author or admin only)"""
+    reply = forum_replies_collection.find_one({"_id": reply_id})
+    
+    if not reply:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Reply not found"
+        )
+    
+    # Only author or admin can delete
+    if reply["author_id"] != current_user.id and not current_user.is_admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not enough permissions"
+        )
+    
+    forum_replies_collection.delete_one({"_id": reply_id})
+    
+    return {"message": "Reply deleted successfully"}
+
 ## Health check endpoints
 @app.get("/")
 async def root():
