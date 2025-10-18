@@ -406,7 +406,7 @@ async def delete_paper(
     return {"message": "Paper deleted successfully"}
 
 @app.get("/api/papers/{paper_id}/download")
-async def download_paper(paper_id: str):
+async def download_paper(paper_id: str, current_user: User = Depends(get_current_user)):
     paper = papers_collection.find_one({"_id": paper_id})
     
     if not paper:
@@ -420,6 +420,9 @@ async def download_paper(paper_id: str):
             status_code=status.HTTP_404_NOT_FOUND,
             detail="File not found"
         )
+    
+    # Track the download
+    await track_download(current_user.id, "paper", paper_id)
     
     return FileResponse(
         path=paper["file_path"],
