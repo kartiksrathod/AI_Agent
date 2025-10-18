@@ -92,7 +92,7 @@ const Syllabus = () => {
     setFilteredSyllabus(filtered);
   };
 
-  const handleDownload = (item) => {
+  const handleDownload = async (item) => {
     if (!currentUser) {
       toast({
         title: "Login Required",
@@ -102,12 +102,20 @@ const Syllabus = () => {
       return;
     }
 
-    const syllabusId = item.id || item._id;
-    syllabusAPI.download(syllabusId);
-    toast({
-      title: "Download Started",
-      description: `Downloading: ${item.title}`,
-    });
+    try {
+      const syllabusId = item.id || item._id;
+      await syllabusAPI.download(syllabusId);
+      toast({
+        title: "Download Complete",
+        description: `Downloaded: ${item.title}`,
+      });
+    } catch (error) {
+      toast({
+        title: "Download Failed",
+        description: "Unable to download the syllabus. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleView = (item) => {
