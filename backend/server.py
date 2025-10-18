@@ -804,6 +804,48 @@ Keep responses helpful, educational, and encouraging. If asked about non-enginee
         
     except Exception as e:
         print(f"AI Chat Error: {e}")
+
+@app.get("/api/profile/stats")
+async def get_profile_stats(current_user: User = Depends(get_current_user)):
+    """Get user's profile statistics"""
+    total_downloads = downloads_collection.count_documents({"user_id": current_user.id})
+    total_bookmarks = bookmarks_collection.count_documents({"user_id": current_user.id})
+    total_goals = learning_goals_collection.count_documents({"user_id": current_user.id})
+    completed_goals = learning_goals_collection.count_documents({"user_id": current_user.id, "completed": True})
+    total_achievements = achievements_collection.count_documents({"user_id": current_user.id})
+    
+    # Get recent downloads
+    recent_downloads = []
+    for download in downloads_collection.find({"user_id": current_user.id}).sort("downloaded_at", -1).limit(10):
+        resource_type = download["resource_type"]
+        resource_id = download["resource_id"]
+        
+        # Get resource details
+        resource = None
+        if resource_type == "paper":
+            resource = papers_collection.find_one({"_id": resource_id})
+        elif resource_type == "note":
+            resource = notes_collection.find_one({"_id": resource_id})
+        elif resource_type == "syllabus":
+            resource = syllabus_collection.find_one({"_id": resource_id})
+        
+        if resource:
+            recent_downloads.append({
+                "type": resource_type,
+                "title": resource["title"],
+                "branch": resource["branch"],
+                "downloaded_at": download["downloaded_at"]
+            })
+    
+    return {
+        "total_downloads": total_downloads,
+        "total_bookmarks": total_bookmarks,
+        "total_goals": total_goals,
+        "completed_goals": completed_goals,
+        "total_achievements": total_achievements,
+        "recent_downloads": recent_downloads
+    }
+
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to get AI response. Please try again."
