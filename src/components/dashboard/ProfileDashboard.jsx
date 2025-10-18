@@ -126,9 +126,9 @@ const ProfileDashboard = () => {
       const statsResponse = await statsAPI.get();
       setStats(statsResponse.data);
       
-      // Mock user stats
-      const mockUserStats = { totalDownloads: Math.floor(Math.random() * 50) + 10 };
-      setUserStats(mockUserStats);
+      // Get real user stats from backend
+      const userStatsResponse = await profileAPI.getStats();
+      setUserStats(userStatsResponse.data);
       
     } catch (error) {
       console.error('Failed to fetch dashboard data:', error);
