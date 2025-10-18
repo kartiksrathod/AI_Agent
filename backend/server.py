@@ -1338,6 +1338,11 @@ async def check_and_award_achievement(user_id, achievement_type):
             "name": "Early Adopter",
             "description": "One of the first users on the platform",
             "icon": "🚀"
+        },
+        "forum_contributor": {
+            "name": "Forum Contributor",
+            "description": "Created your first forum post",
+            "icon": "💬"
         }
     }
     
