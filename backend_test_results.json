@@ -1,123 +1,159 @@
 {
-  "timestamp": "2025-10-08T17:40:39.524913",
+  "timestamp": "2025-10-18T17:41:48.662506",
   "backend_url": "https://admin-dashboard-320.preview.emergentagent.com",
-  "total_tests": 19,
-  "passed_tests": 15,
-  "success_rate": 78.94736842105263,
+  "total_tests": 25,
+  "passed_tests": 21,
+  "success_rate": 84.0,
   "test_details": [
     {
       "test": "Root endpoint",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-10-08T17:40:20.714970"
+      "timestamp": "2025-10-18T17:41:35.453556"
     },
     {
       "test": "Root endpoint",
       "success": false,
       "details": "Exception: Expecting value: line 1 column 1 (char 0)",
-      "timestamp": "2025-10-08T17:40:20.715015"
+      "timestamp": "2025-10-18T17:41:35.453604"
     },
     {
       "test": "Health check",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-10-08T17:40:20.757132"
+      "timestamp": "2025-10-18T17:41:35.492488"
     },
     {
       "test": "Health check",
       "success": false,
       "details": "Exception: Expecting value: line 1 column 1 (char 0)",
-      "timestamp": "2025-10-08T17:40:20.757172"
+      "timestamp": "2025-10-18T17:41:35.492548"
     },
     {
       "test": "Normal user registration",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-10-08T17:40:21.033184"
+      "timestamp": "2025-10-18T17:41:35.770975"
     },
     {
       "test": "User registered without admin privileges",
       "success": true,
       "details": "",
-      "timestamp": "2025-10-08T17:40:21.033824"
+      "timestamp": "2025-10-18T17:41:35.771682"
     },
     {
       "test": "Admin login",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-10-08T17:40:21.307756"
+      "timestamp": "2025-10-18T17:41:36.050585"
     },
     {
       "test": "Admin user has admin privileges",
       "success": true,
       "details": "",
-      "timestamp": "2025-10-08T17:40:21.308390"
+      "timestamp": "2025-10-18T17:41:36.051230"
     },
     {
       "test": "Upload paper (admin)",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-10-08T17:40:21.351081"
+      "timestamp": "2025-10-18T17:41:36.102359"
     },
     {
       "test": "Upload notes (admin)",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-10-08T17:40:21.389740"
+      "timestamp": "2025-10-18T17:41:36.139524"
     },
     {
       "test": "Upload syllabus (admin)",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-10-08T17:40:21.443380"
+      "timestamp": "2025-10-18T17:41:36.176520"
     },
     {
       "test": "Get papers",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-10-08T17:40:21.484174"
+      "timestamp": "2025-10-18T17:41:36.215875"
     },
     {
       "test": "Get notes",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-10-08T17:40:21.519763"
+      "timestamp": "2025-10-18T17:41:36.251490"
     },
     {
       "test": "Get syllabus",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-10-08T17:40:21.555103"
+      "timestamp": "2025-10-18T17:41:36.285692"
     },
     {
       "test": "Get stats",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-10-08T17:40:21.590794"
+      "timestamp": "2025-10-18T17:41:36.320080"
     },
     {
       "test": "AI Assistant chat",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-10-08T17:40:39.421060"
+      "timestamp": "2025-10-18T17:41:48.340483"
     },
     {
       "test": "AI Assistant provides meaningful response",
       "success": true,
       "details": "",
-      "timestamp": "2025-10-08T17:40:39.421774"
+      "timestamp": "2025-10-18T17:41:48.341144"
+    },
+    {
+      "test": "Get forum posts",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-10-18T17:41:48.400525"
+    },
+    {
+      "test": "Forum has sample posts",
+      "success": true,
+      "details": "Found 3 posts",
+      "timestamp": "2025-10-18T17:41:48.401132"
+    },
+    {
+      "test": "Get specific forum post",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-10-18T17:41:48.439229"
+    },
+    {
+      "test": "Get post replies",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-10-18T17:41:48.473262"
+    },
+    {
+      "test": "Create forum post",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-10-18T17:41:48.514649"
+    },
+    {
+      "test": "Create forum reply",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-10-18T17:41:48.551413"
     },
     {
       "test": "Unauthorized paper upload",
       "success": false,
       "details": "Status: 403, Error: Not authenticated",
-      "timestamp": "2025-10-08T17:40:39.485771"
+      "timestamp": "2025-10-18T17:41:48.627646"
     },
     {
       "test": "Unauthorized AI chat",
       "success": false,
       "details": "Status: 403, Error: Not authenticated",
-      "timestamp": "2025-10-08T17:40:39.524431"
+      "timestamp": "2025-10-18T17:41:48.661904"
     }
   ]
 }
