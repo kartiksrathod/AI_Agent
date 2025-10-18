@@ -88,7 +88,8 @@ export const profileAPI = {
   },
   removePhoto: () => api.delete('/api/profile/photo'),
   updatePassword: (passwordData) => api.put('/api/profile/password', passwordData),
-  getPhoto: (userId) => `${API_BASE_URL}/api/profile/photo/${userId}`
+  getPhoto: (userId) => `${API_BASE_URL}/api/profile/photo/${userId}`,
+  getStats: () => api.get('/api/profile/stats')  // Get user statistics
 };
 
 // Bookmarks
