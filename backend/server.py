@@ -1298,6 +1298,25 @@ async def check_profile_achievements(user_id):
     if user and user.get("profile_photo"):
         await check_and_award_achievement(user_id, "profile_complete")
 
+
+async def track_download(user_id, resource_type, resource_id):
+    """Track when a user downloads a resource"""
+    download_doc = {
+        "_id": str(uuid.uuid4()),
+        "user_id": user_id,
+        "resource_type": resource_type,  # 'paper', 'note', or 'syllabus'
+        "resource_id": resource_id,
+        "downloaded_at": datetime.utcnow()
+    }
+    downloads_collection.insert_one(download_doc)
+    
+    # Check download achievements
+    total_downloads = downloads_collection.count_documents({"user_id": user_id})
+    if total_downloads == 10:
+        await check_and_award_achievement(user_id, "active_learner")
+    elif total_downloads == 50:
+        await check_and_award_achievement(user_id, "power_user")
+
 ## Health check endpoints
 @app.get("/")
 async def root():
