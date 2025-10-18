@@ -84,7 +84,7 @@ const Notes = () => {
     setFilteredNotes(filtered);
   };
 
-  const handleDownload = (note) => {
+  const handleDownload = async (note) => {
     if (!currentUser) {
       toast({
         title: "Login Required",
@@ -94,12 +94,20 @@ const Notes = () => {
       return;
     }
 
-    const noteId = note.id || note._id;
-    notesAPI.download(noteId);
-    toast({
-      title: "Download Started",
-      description: `Downloading: ${note.title}`,
-    });
+    try {
+      const noteId = note.id || note._id;
+      await notesAPI.download(noteId);
+      toast({
+        title: "Download Complete",
+        description: `Downloaded: ${note.title}`,
+      });
+    } catch (error) {
+      toast({
+        title: "Download Failed",
+        description: "Unable to download the note. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleView = (note) => {
