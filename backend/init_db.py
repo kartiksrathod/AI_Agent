@@ -17,10 +17,10 @@ load_dotenv()
 MONGO_URL = os.getenv("MONGO_URL", "mongodb://localhost:27017")
 DATABASE_NAME = os.getenv("DATABASE_NAME", "academic_resources")
 
-# Admin credentials
-ADMIN_EMAIL = "admin@academic.com"
-ADMIN_PASSWORD = "admin123"
-ADMIN_NAME = "Admin User"
+# Admin credentials - YOUR CREDENTIALS
+ADMIN_EMAIL = "kartiksrathod07@gmail.com"
+ADMIN_PASSWORD = "Sheshi@1234"
+ADMIN_NAME = "Kartik S Rathod"
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
