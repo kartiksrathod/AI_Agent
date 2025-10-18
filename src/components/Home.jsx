@@ -177,9 +177,9 @@ const Home = () => {
                   <Button 
                     data-testid="explore-resources-btn"
                     size="lg" 
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 dark:from-blue-700 dark:to-purple-700 px-8 relative overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 dark:from-blue-700 dark:to-purple-700 px-8 relative overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 text-white"
                   >
-                    <span className="relative z-10">Explore Resources</span>
+                    <span className="relative z-10 font-semibold text-white">Explore Resources</span>
                   </Button>
                 </motion.div>
               </Link>
