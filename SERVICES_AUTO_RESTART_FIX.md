@@ -172,7 +172,7 @@ Current enhanced configuration at:
 
 ### ✅ Login Test
 ```bash
-curl -X POST https://login-issues-3.preview.emergentagent.com/api/auth/login \
+curl -X POST https://admin-dashboard-320.preview.emergentagent.com/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email": "student@example.com", "password": "password123"}'
 ```
@@ -197,7 +197,7 @@ echo "=== Service Status ==="
 sudo supervisorctl status
 
 echo -e "\n=== Login API Test ==="
-curl -s -X POST https://login-issues-3.preview.emergentagent.com/api/auth/login \
+curl -s -X POST https://admin-dashboard-320.preview.emergentagent.com/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email": "student@example.com", "password": "password123"}' \
   | python3 -c "import json,sys; d=json.load(sys.stdin); print('✅ Login Working' if 'access_token' in d else '❌ Login Failed')"
