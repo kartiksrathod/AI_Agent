@@ -62,6 +62,8 @@ try:
     achievements_collection = db.achievements
     learning_goals_collection = db.learning_goals
     downloads_collection = db.downloads  # Track actual downloads
+    forum_posts_collection = db.forum_posts  # Forum posts
+    forum_replies_collection = db.forum_replies  # Forum replies
     
     # Quick ping to check if DB is alive
     client.admin.command('ping')
