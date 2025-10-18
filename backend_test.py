@@ -249,6 +249,61 @@ class EducationalPlatformTester:
         
         return success
 
+    def test_forum_functionality(self):
+        """Test forum endpoints"""
+        print("\n🔍 Testing Forum Functionality...")
+        
+        # Test getting forum posts (should work without auth)
+        success, response = self.run_test("Get forum posts", "GET", "api/forum/posts", 200)
+        
+        if success:
+            posts = response if isinstance(response, list) else []
+            if len(posts) > 0:
+                self.log_test("Forum has sample posts", True, f"Found {len(posts)} posts")
+                
+                # Test getting a specific post
+                first_post_id = posts[0].get('id')
+                if first_post_id:
+                    self.run_test("Get specific forum post", "GET", f"api/forum/posts/{first_post_id}", 200)
+                    self.run_test("Get post replies", "GET", f"api/forum/posts/{first_post_id}/replies", 200)
+            else:
+                self.log_test("Forum has sample posts", False, "No posts found")
+        
+        # Test creating a forum post (requires auth)
+        if self.token:
+            post_data = {
+                "title": "Test Forum Post",
+                "content": "This is a test post created during testing",
+                "category": "Computer Science Engineering",
+                "tags": ["test", "automation"]
+            }
+            
+            headers = {'Authorization': f'Bearer {self.token}'}
+            success, response = self.run_test(
+                "Create forum post",
+                "POST",
+                "api/forum/posts",
+                200,
+                data=post_data,
+                headers=headers
+            )
+            
+            if success:
+                post_id = response.get('id')
+                if post_id:
+                    # Test creating a reply
+                    reply_data = {"content": "This is a test reply"}
+                    self.run_test(
+                        "Create forum reply",
+                        "POST",
+                        f"api/forum/posts/{post_id}/replies",
+                        200,
+                        data=reply_data,
+                        headers=headers
+                    )
+        
+        return success
+
     def test_unauthorized_access(self):
         """Test that unauthorized users cannot access protected endpoints"""
         print("\n🔍 Testing Unauthorized Access...")
