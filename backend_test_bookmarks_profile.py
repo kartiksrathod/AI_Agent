@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from io import BytesIO
 
 class BookmarksProfileTester:
-    def __init__(self, base_url="https://content-origin-5.preview.emergentagent.com"):
+    def __init__(self, base_url="https://login-issues-3.preview.emergentagent.com"):
         self.base_url = base_url
         self.student_token = None
         self.admin_token = None
@@ -483,7 +483,7 @@ class BookmarksProfileTester:
         return self.tests_passed == self.tests_run
 
 def main():
-    backend_url = "https://content-origin-5.preview.emergentagent.com"
+    backend_url = "https://login-issues-3.preview.emergentagent.com"
     
     tester = BookmarksProfileTester(backend_url)
     success = tester.run_all_tests()
