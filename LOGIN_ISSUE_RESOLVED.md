@@ -54,7 +54,7 @@ python3 /app/create_demo_users.py
 
 ### Backend API Test
 ```bash
-curl -X POST https://admin-dashboard-320.preview.emergentagent.com/api/auth/login \
+curl -X POST https://real-data-setup-2.preview.emergentagent.com/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email": "student@example.com", "password": "password123"}'
 ```
@@ -66,7 +66,7 @@ curl -X POST https://admin-dashboard-320.preview.emergentagent.com/api/auth/logi
 
 ### Admin Login Test
 ```bash
-curl -X POST https://admin-dashboard-320.preview.emergentagent.com/api/auth/login \
+curl -X POST https://real-data-setup-2.preview.emergentagent.com/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email": "admin@example.com", "password": "admin123"}'
 ```
