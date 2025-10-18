@@ -67,8 +67,28 @@ export const notesAPI = {
     headers: { 'Content-Type': 'multipart/form-data' }
   }),
   delete: (id) => api.delete(`/api/notes/${id}`),
-  download: (id) => {
-    window.open(`${API_BASE_URL}/api/notes/${id}/download`, '_blank');
+  download: async (id) => {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_BASE_URL}/api/notes/${id}/download`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error('Download failed');
+    }
+    
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = response.headers.get('content-disposition')?.split('filename=')[1]?.replace(/"/g, '') || 'note.pdf';
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
   },
   view: (id) => {
     window.open(`${API_BASE_URL}/api/notes/${id}/view`, '_blank');
