@@ -683,7 +683,7 @@ async def delete_syllabus(
     return {"message": "Syllabus deleted successfully"}
 
 @app.get("/api/syllabus/{syllabus_id}/download")
-async def download_syllabus(syllabus_id: str):
+async def download_syllabus(syllabus_id: str, current_user: User = Depends(get_current_user)):
     syllabus = syllabus_collection.find_one({"_id": syllabus_id})
     
     if not syllabus:
@@ -697,6 +697,9 @@ async def download_syllabus(syllabus_id: str):
             status_code=status.HTTP_404_NOT_FOUND,
             detail="File not found"
         )
+    
+    # Track the download
+    await track_download(current_user.id, "syllabus", syllabus_id)
     
     return FileResponse(
         path=syllabus["file_path"],
