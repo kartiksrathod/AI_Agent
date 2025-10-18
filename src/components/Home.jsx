@@ -194,9 +194,9 @@ const Home = () => {
                     data-testid="join-community-btn"
                     size="lg" 
                     variant="outline" 
-                    className="px-8 border-2 border-gray-300 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 relative group overflow-hidden hover:shadow-lg transition-shadow duration-300"
+                    className="px-8 border-2 border-gray-800 dark:border-gray-600 text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 relative group overflow-hidden hover:shadow-lg transition-shadow duration-300"
                   >
-                    <span className="relative z-10">Join Community</span>
+                    <span className="relative z-10 font-semibold">Join Community</span>
                   </Button>
                 </motion.div>
               </Link>
