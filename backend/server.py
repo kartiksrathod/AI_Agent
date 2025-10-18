@@ -846,11 +846,6 @@ async def get_profile_stats(current_user: User = Depends(get_current_user)):
         "recent_downloads": recent_downloads
     }
 
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to get AI response. Please try again."
-        )
-
 ## Profile endpoints
 @app.get("/api/profile", response_model=User)
 async def get_profile(current_user: User = Depends(get_current_user)):
