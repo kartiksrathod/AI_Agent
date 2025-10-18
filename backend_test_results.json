@@ -1,6 +1,6 @@
 {
   "timestamp": "2025-10-18T17:41:48.662506",
-  "backend_url": "https://real-data-setup-2.preview.emergentagent.com",
+  "backend_url": "https://auth-problems.preview.emergentagent.com",
   "total_tests": 25,
   "passed_tests": 21,
   "success_rate": 84.0,
