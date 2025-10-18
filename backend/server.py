@@ -543,7 +543,7 @@ async def delete_note(
     return {"message": "Note deleted successfully"}
 
 @app.get("/api/notes/{note_id}/download")
-async def download_note(note_id: str):
+async def download_note(note_id: str, current_user: User = Depends(get_current_user)):
     note = notes_collection.find_one({"_id": note_id})
     
     if not note:
@@ -557,6 +557,9 @@ async def download_note(note_id: str):
             status_code=status.HTTP_404_NOT_FOUND,
             detail="File not found"
         )
+    
+    # Track the download
+    await track_download(current_user.id, "note", note_id)
     
     return FileResponse(
         path=note["file_path"],
