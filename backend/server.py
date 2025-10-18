@@ -183,6 +183,47 @@ class LearningGoalUpdate(BaseModel):
     progress: Optional[int] = None
     completed: Optional[bool] = None
 
+# Forum Models
+class ForumPostCreate(BaseModel):
+    title: str
+    content: str
+    category: str
+    tags: List[str] = []
+
+class ForumPostUpdate(BaseModel):
+    title: Optional[str] = None
+    content: Optional[str] = None
+    category: Optional[str] = None
+    tags: Optional[List[str]] = None
+
+class ForumReplyCreate(BaseModel):
+    content: str
+
+class ForumReply(BaseModel):
+    id: str
+    post_id: str
+    author_id: str
+    author_name: str
+    content: str
+    created_at: datetime
+    author_profile_photo: Optional[str] = None
+
+class ForumPost(BaseModel):
+    id: str
+    title: str
+    content: str
+    category: str
+    tags: List[str]
+    author_id: str
+    author_name: str
+    replies_count: int
+    views: int
+    created_at: datetime
+    updated_at: datetime
+    last_activity: datetime
+    author_profile_photo: Optional[str] = None
+
+
 # Helper functions for auth
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
