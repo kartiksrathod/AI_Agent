@@ -89,7 +89,7 @@ const Papers = () => {
     setFilteredPapers(filtered);
   };
 
-  const handleDownload = (paper) => {
+  const handleDownload = async (paper) => {
     if (!currentUser) {
       toast({
         title: "Login Required",
@@ -99,13 +99,21 @@ const Papers = () => {
       return;
     }
 
-    // Use id or _id based on what's available
-    const paperId = paper.id || paper._id;
-    papersAPI.download(paperId);
-    toast({
-      title: "Download Started",
-      description: `Downloading: ${paper.title}`,
-    });
+    try {
+      // Use id or _id based on what's available
+      const paperId = paper.id || paper._id;
+      await papersAPI.download(paperId);
+      toast({
+        title: "Download Complete",
+        description: `Downloaded: ${paper.title}`,
+      });
+    } catch (error) {
+      toast({
+        title: "Download Failed",
+        description: "Unable to download the paper. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleView = (paper) => {
