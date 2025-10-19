@@ -69,8 +69,11 @@ try:
     client.admin.command('ping')
     print("✓ MongoDB connected successfully")
     
-    # BULLETPROOF DATA PROTECTION: Auto-restore if database is empty
+    # BULLETPROOF DATA PROTECTION: Auto-restore ONLY if completely empty
     import subprocess
+    import os
+    
+    # Check if database has ANY data
     total_records = (
         users_collection.count_documents({}) +
         papers_collection.count_documents({}) +
@@ -78,24 +81,31 @@ try:
         syllabus_collection.count_documents({})
     )
     
+    # Only restore if database is completely empty AND backups exist
     if total_records == 0:
-        print("⚠️  DATABASE IS EMPTY! Auto-restoring from backup...")
-        try:
-            result = subprocess.run(
-                ["bash", "/app/scripts/emergency_protection.sh"],
-                capture_output=True,
-                text=True,
-                timeout=30
-            )
-            print(result.stdout)
-            if result.returncode == 0:
-                print("✅ DATA RESTORED SUCCESSFULLY!")
-            else:
-                print(f"⚠️  Restore warning: {result.stderr}")
-        except Exception as restore_error:
-            print(f"⚠️  Auto-restore failed: {restore_error}")
+        backup_dir = "/app/backups"
+        has_backups = os.path.exists(backup_dir) and len([d for d in os.listdir(backup_dir) if d.startswith("backup_")]) > 0
+        
+        if has_backups:
+            print("⚠️  DATABASE IS EMPTY! Auto-restoring from backup...")
+            try:
+                result = subprocess.run(
+                    ["bash", "/app/scripts/emergency_protection.sh"],
+                    capture_output=True,
+                    text=True,
+                    timeout=30
+                )
+                print(result.stdout)
+                if result.returncode == 0:
+                    print("✅ DATA RESTORED SUCCESSFULLY!")
+                else:
+                    print(f"⚠️  Restore warning: {result.stderr}")
+            except Exception as restore_error:
+                print(f"⚠️  Auto-restore failed: {restore_error}")
+        else:
+            print("✓ Fresh database - no backups to restore from")
     else:
-        print(f"✓ Database has {total_records} records")
+        print(f"✓ Database OK - {total_records} records")
         
 except Exception as e:
     print(f"✗ MongoDB connection error: {e}")
