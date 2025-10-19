@@ -190,7 +190,7 @@ mongodump --db academic_resources --out /app/backups/manual_backup_$(date +%Y%m%
 6. ✅ Complete independence from Emergent agent
 
 ### Your Next Steps:
-1. **Login** to your website: https://data-storage-app.preview.emergentagent.com
+1. **Login** to your website: https://urgent-help-1.preview.emergentagent.com
 2. **Add your data** - it will be stored permanently
 3. **Delete old test data** - it will be actually removed
 4. **Use the website** - it runs independently 24/7

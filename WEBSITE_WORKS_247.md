@@ -124,7 +124,7 @@ Website: ✅ FULLY FUNCTIONAL
 
 ## 🌐 Your Website
 
-**URL**: https://data-storage-app.preview.emergentagent.com
+**URL**: https://urgent-help-1.preview.emergentagent.com
 
 **Status**: ✅ **ONLINE 24/7**
 
@@ -154,7 +154,7 @@ Check website status anytime:
 bash /app/scripts/verify_independence.sh
 
 # Quick health check
-curl https://data-storage-app.preview.emergentagent.com/api/health
+curl https://urgent-help-1.preview.emergentagent.com/api/health
 
 # Check database
 mongosh academic_resources --eval "db.users.countDocuments()"

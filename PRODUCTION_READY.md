@@ -97,11 +97,11 @@ cd /app/backend && /root/.venv/bin/python recover_data.py
 
 ## 🌐 Access Your Application
 
-**Frontend URL:** https://data-storage-app.preview.emergentagent.com
+**Frontend URL:** https://urgent-help-1.preview.emergentagent.com
 
-**Backend API:** https://data-storage-app.preview.emergentagent.com/api
+**Backend API:** https://urgent-help-1.preview.emergentagent.com/api
 
-**Health Check:** https://data-storage-app.preview.emergentagent.com/api/health
+**Health Check:** https://urgent-help-1.preview.emergentagent.com/api/health
 
 ---
 

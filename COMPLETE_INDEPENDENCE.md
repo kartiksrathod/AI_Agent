@@ -109,7 +109,7 @@ Run `/app/independence_test.sh` anytime to verify:
 
 ## 🔐 YOUR CREDENTIALS (PERMANENT)
 
-**Website:** https://data-storage-app.preview.emergentagent.com
+**Website:** https://urgent-help-1.preview.emergentagent.com
 
 **Admin Login:**
 - Email: kartiksrathod07@gmail.com
@@ -238,7 +238,7 @@ tail -n 50 /var/log/supervisor/backend.err.log
 
 ## 🌐 GO USE YOUR WEBSITE!
 
-**https://data-storage-app.preview.emergentagent.com**
+**https://urgent-help-1.preview.emergentagent.com**
 
 **Login now and start adding data!**  
 **Everything you add will be saved FOREVER!**  

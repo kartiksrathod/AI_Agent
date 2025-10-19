@@ -90,7 +90,7 @@ If you want real content for the existing database entries, you'll need to:
 ## 🚀 Testing the Fix
 
 ### Test Download Button:
-1. Login to website: https://data-storage-app.preview.emergentagent.com
+1. Login to website: https://urgent-help-1.preview.emergentagent.com
 2. Go to Papers/Notes/Syllabus section
 3. Click the "Download" button on any item
 4. File should download to your computer

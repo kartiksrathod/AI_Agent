@@ -9,7 +9,7 @@
 
 🌐 YOUR WEBSITE URL:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   https://data-storage-app.preview.emergentagent.com
+   https://urgent-help-1.preview.emergentagent.com
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 
@@ -121,7 +121,7 @@ View Frontend Logs:
 🚀 WHAT TO DO NOW:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-1. Go to: https://data-storage-app.preview.emergentagent.com
+1. Go to: https://urgent-help-1.preview.emergentagent.com
 
 2. Login with:
    Email: kartiksrathod07@gmail.com

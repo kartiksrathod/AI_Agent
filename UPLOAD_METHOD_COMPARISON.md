@@ -8,7 +8,7 @@
 
 ### **Method: Use the Live Website Directly**
 
-**URL:** https://data-storage-app.preview.emergentagent.com
+**URL:** https://urgent-help-1.preview.emergentagent.com
 
 | Feature | Details |
 |---------|---------|
@@ -96,7 +96,7 @@
 ✅ Frontend: Running on cloud
 ✅ Database: Running on cloud
 ✅ All connected and working
-✅ Already accessible at: https://data-storage-app.preview.emergentagent.com
+✅ Already accessible at: https://urgent-help-1.preview.emergentagent.com
 ```
 
 ### **What Happens When You Upload:**
@@ -140,7 +140,7 @@ Any browser works: Chrome, Firefox, Safari, Edge
 
 ### **Step 2: Go to Your Website**
 ```
-https://data-storage-app.preview.emergentagent.com
+https://urgent-help-1.preview.emergentagent.com
 ```
 
 ### **Step 3: Click Login**
@@ -182,7 +182,7 @@ Difficulty: Hard
 **✅ RIGHT WAY (Easy):**
 ```
 1. Open browser
-2. Go to https://data-storage-app.preview.emergentagent.com
+2. Go to https://urgent-help-1.preview.emergentagent.com
 3. Login
 4. Click Papers → Upload
 5. Choose file → Submit
@@ -222,7 +222,7 @@ Think of it like this:
 ## 🚀 **Quick Start:**
 
 1. **Right now,** open your browser
-2. **Go to:** https://data-storage-app.preview.emergentagent.com  
+2. **Go to:** https://urgent-help-1.preview.emergentagent.com  
 3. **Login** and upload your first file
 4. **Done!** It's that simple!
 
