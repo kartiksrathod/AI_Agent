@@ -1723,6 +1723,31 @@ async def health_check():
     except Exception as e:
         return {"status": "unhealthy", "database": "disconnected", "error": str(e)}
 
+# Startup event to initialize backup system
+@app.on_event("startup")
+async def startup_event():
+    """Initialize continuous backup system on startup"""
+    import subprocess
+    import threading
+    
+    def run_continuous_backup():
+        """Run backup system in background thread"""
+        try:
+            subprocess.Popen(
+                ["bash", "/app/scripts/continuous_backup.sh"],
+                stdout=open("/var/log/backup.log", "w"),
+                stderr=subprocess.STDOUT
+            )
+            print("✓ Continuous backup system started")
+        except Exception as e:
+            print(f"⚠️  Failed to start backup system: {e}")
+    
+    # Start backup in background thread
+    backup_thread = threading.Thread(target=run_continuous_backup, daemon=True)
+    backup_thread.start()
+    
+    print("✓ Startup complete - data protection active")
+
 # Run the server (supervisor handles this in production)
 if __name__ == "__main__":
     import uvicorn
