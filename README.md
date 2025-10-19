@@ -95,7 +95,7 @@ A comprehensive full-stack web application for engineering students to share and
    yarn install
    ```
 
-4. **Start the Application**
+5. **Start the Application**
    ```bash
    # Backend (in /backend directory)
    python server.py
