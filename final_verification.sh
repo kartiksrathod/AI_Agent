@@ -113,7 +113,7 @@ if [ $TESTS_FAILED -eq 0 ]; then
     echo "   - Work independently (no Emergent dependency)"
     echo "   - Auto-recover from any failures"
     echo ""
-    echo "🌐 Your website: https://app-data-keeper.preview.emergentagent.com"
+    echo "🌐 Your website: https://persistent-data.preview.emergentagent.com"
     echo "📧 Login: kartiksrathod07@gmail.com"
     echo ""
     exit 0

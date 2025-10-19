@@ -95,7 +95,7 @@ Content-Type: application/json
 You can test if login is working using curl:
 
 ```bash
-curl -X POST https://app-data-keeper.preview.emergentagent.com/api/auth/login \
+curl -X POST https://persistent-data.preview.emergentagent.com/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email": "student@example.com", "password": "password123"}'
 ```

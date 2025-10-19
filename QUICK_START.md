@@ -2,7 +2,7 @@
 
 ## 🚀 Your App is LIVE and RUNNING!
 
-**URL:** https://app-data-keeper.preview.emergentagent.com
+**URL:** https://persistent-data.preview.emergentagent.com
 
 ---
 

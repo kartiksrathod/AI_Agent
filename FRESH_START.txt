@@ -6,7 +6,7 @@
 │  🌐 YOUR WEBSITE URL                                      │
 ├───────────────────────────────────────────────────────────┤
 │                                                             │
-│  https://app-data-keeper.preview.emergentagent.com           │
+│  https://persistent-data.preview.emergentagent.com           │
 │                                                             │
 │  ✅ READY FOR YOUR REAL DATA                               │
 │                                                             │
@@ -55,7 +55,7 @@
 │  🚀 START ADDING YOUR REAL DATA                           │
 ├───────────────────────────────────────────────────────────┤
 │                                                             │
-│  1. Go to: https://app-data-keeper.preview.emergentagent.com │
+│  1. Go to: https://persistent-data.preview.emergentagent.com │
 │  2. Login with your credentials                            │
 │  3. Upload Papers, Notes, Syllabus                         │
 │  4. Create additional users if needed                      │
