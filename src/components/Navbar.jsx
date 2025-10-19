@@ -32,7 +32,8 @@ const Navbar = () => {
     { path: '/papers', label: 'Papers' },
     { path: '/notes', label: 'Notes' },
     { path: '/syllabus', label: 'Syllabus' },
-    { path: '/forum', label: 'Forum' }
+    { path: '/forum', label: 'Forum' },
+    { path: '/announcements', label: '📢 Announcements' }
   ];
 
   // Search handler removed as requested
