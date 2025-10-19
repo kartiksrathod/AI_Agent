@@ -18,7 +18,7 @@ Your website now works **24/7** - even when the agent is sleeping!
 
 ## 🌐 Your Website
 
-**URL**: https://52e8464a-aff0-462d-9180-8a7d074d21e0.preview.emergentagent.com
+**URL**: https://data-storage-app.preview.emergentagent.com
 
 **Admin Login**:
 - Email: kartiksrathod07@gmail.com

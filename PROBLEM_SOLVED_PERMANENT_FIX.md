@@ -162,7 +162,7 @@ if total_records == 0:
 ## ✅ Final Verification
 
 Your website is NOW working perfectly:
-- 🌐 URL: https://52e8464a-aff0-462d-9180-8a7d074d21e0.preview.emergentagent.com
+- 🌐 URL: https://data-storage-app.preview.emergentagent.com
 - 🔐 Email: kartiksrathod07@gmail.com
 - 🔑 Password: Sheshi@1234
 

@@ -1,14 +1,14 @@
 # 📸 Visual Guide: How to Upload Data
 
 ## 🌐 Your Live Website
-**URL:** https://persistent-data.preview.emergentagent.com
+**URL:** https://data-storage-app.preview.emergentagent.com
 
 ---
 
 ## Step 1: Open the Website
 
 1. Open your browser
-2. Type or paste: `https://persistent-data.preview.emergentagent.com`
+2. Type or paste: `https://data-storage-app.preview.emergentagent.com`
 3. Press Enter
 
 ---
@@ -155,7 +155,7 @@ After following this guide, you should have:
 
 ## 🎯 Quick Reference
 
-**Website URL:** https://persistent-data.preview.emergentagent.com
+**Website URL:** https://data-storage-app.preview.emergentagent.com
 
 **Admin Login:**
 - Email: kartiksrathod07@gmail.com

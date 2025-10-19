@@ -2,7 +2,7 @@
 
 ## 🚀 Your App is LIVE and RUNNING!
 
-**URL:** https://persistent-data.preview.emergentagent.com
+**URL:** https://data-storage-app.preview.emergentagent.com
 
 ---
 

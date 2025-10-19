@@ -15,7 +15,7 @@ echo ""
 # Check if backend is responding
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "🔐 TESTING LOGIN API:"
-response=$(curl -s -X POST https://persistent-data.preview.emergentagent.com/api/auth/login \
+response=$(curl -s -X POST https://data-storage-app.preview.emergentagent.com/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email": "student@example.com", "password": "password123"}')
 
