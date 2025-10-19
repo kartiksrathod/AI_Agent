@@ -104,7 +104,7 @@ A comprehensive full-stack web application for engineering students to share and
    yarn start
    ```
 
-5. **Access the App**
+6. **Access the App**
    - Frontend: `http://localhost:3000`
    - Backend API: `http://localhost:8001`
    - API Docs: `http://localhost:8001/docs`
