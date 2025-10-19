@@ -17,10 +17,18 @@ for i in {1..30}; do
     sleep 1
 done
 
-# Initialize database with admin user
-echo "📊 Initializing database..."
+# CRITICAL: Ensure data persistence - RESTORE DATA IF NEEDED
+echo "🔐 Ensuring data persistence..."
+/app/scripts/ensure_data_persistence.sh
+
+# Initialize database with admin user (only if needed)
+echo "📊 Checking database initialization..."
 cd /app/backend
 /root/.venv/bin/python init_db.py
+
+# Start auto-backup cron job in background (every 5 minutes)
+echo "🔄 Starting automatic backup system..."
+(while true; do /app/scripts/auto_backup.sh; sleep 300; done) &
 
 # Start the FastAPI server
 echo "🌐 Starting FastAPI server..."
