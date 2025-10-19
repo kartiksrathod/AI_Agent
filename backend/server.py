@@ -406,6 +406,9 @@ async def login(login_data: UserLogin):
         id=user["_id"],
         name=user["name"],
         email=user["email"],
+        usn=user.get("usn"),
+        course=user.get("course"),
+        semester=user.get("semester"),
         is_admin=user.get("is_admin", False),
         profile_photo=user.get("profile_photo")
     )
