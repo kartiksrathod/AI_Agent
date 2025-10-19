@@ -305,9 +305,6 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Testimonials Section */}
-      <TestimonialsSection />
-
       {/* CTA Section */}
       <motion.div 
         className="py-16 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-700 dark:to-purple-700 relative overflow-hidden"
