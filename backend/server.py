@@ -115,6 +115,9 @@ class UserCreate(BaseModel):
     name: str
     email: EmailStr
     password: str
+    usn: str
+    course: Optional[str] = None
+    semester: Optional[str] = None
 
 class UserLogin(BaseModel):
     email: EmailStr
