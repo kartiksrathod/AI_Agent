@@ -270,6 +270,40 @@ class ForumPost(BaseModel):
     author_profile_photo: Optional[str] = None
 
 
+# CMS Models
+class CMSContentCreate(BaseModel):
+    title: str
+    description: Optional[str] = None
+    content: str
+    content_type: str = "announcement"  # announcement, news, update, info
+    featured: bool = False
+    category: Optional[str] = None
+    tags: Optional[List[str]] = []
+
+class CMSContentUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    content: Optional[str] = None
+    content_type: Optional[str] = None
+    featured: Optional[bool] = None
+    category: Optional[str] = None
+    tags: Optional[List[str]] = None
+
+class CMSContent(BaseModel):
+    id: str
+    title: str
+    description: Optional[str] = None
+    content: str
+    content_type: str
+    featured: bool
+    category: Optional[str] = None
+    tags: List[str]
+    author_id: str
+    author_name: str
+    created_at: datetime
+    updated_at: datetime
+
+
 # Helper functions for auth
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
