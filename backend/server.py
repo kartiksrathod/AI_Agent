@@ -1811,6 +1811,183 @@ async def startup_event():
     
     print("✓ Startup complete - data protection active")
 
+
+# =============================================================================
+# CMS CONTENT MANAGEMENT ENDPOINTS
+# =============================================================================
+
+@app.get("/api/cms/content", response_model=List[CMSContent])
+async def get_cms_content(
+    content_type: Optional[str] = None,
+    featured: Optional[bool] = None,
+    category: Optional[str] = None,
+    limit: Optional[int] = None
+):
+    """Get all CMS content (public endpoint)"""
+    try:
+        # Build query
+        query = {}
+        if content_type:
+            query["content_type"] = content_type
+        if featured is not None:
+            query["featured"] = featured
+        if category:
+            query["category"] = category
+        
+        # Get content sorted by created_at (newest first)
+        cursor = cms_content_collection.find(query).sort("created_at", -1)
+        
+        if limit:
+            cursor = cursor.limit(limit)
+        
+        content_list = []
+        for doc in cursor:
+            doc["id"] = doc.pop("_id")
+            content_list.append(CMSContent(**doc))
+        
+        return content_list
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/cms/content/{content_id}", response_model=CMSContent)
+async def get_cms_content_by_id(content_id: str):
+    """Get specific CMS content by ID (public endpoint)"""
+    try:
+        content = cms_content_collection.find_one({"_id": content_id})
+        
+        if not content:
+            raise HTTPException(status_code=404, detail="Content not found")
+        
+        content["id"] = content.pop("_id")
+        return CMSContent(**content)
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/cms/content", response_model=CMSContent)
+async def create_cms_content(
+    content_data: CMSContentCreate,
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
+    """Create new CMS content (admin only)"""
+    try:
+        # Verify admin
+        user = await get_current_user(credentials)
+        if not user.get("is_admin"):
+            raise HTTPException(status_code=403, detail="Admin access required")
+        
+        # Create content document
+        content_id = str(uuid.uuid4())
+        now = datetime.utcnow()
+        
+        content_doc = {
+            "_id": content_id,
+            "title": content_data.title,
+            "description": content_data.description,
+            "content": content_data.content,
+            "content_type": content_data.content_type,
+            "featured": content_data.featured,
+            "category": content_data.category,
+            "tags": content_data.tags or [],
+            "author_id": user["_id"],
+            "author_name": user["name"],
+            "created_at": now,
+            "updated_at": now
+        }
+        
+        cms_content_collection.insert_one(content_doc)
+        
+        content_doc["id"] = content_doc.pop("_id")
+        return CMSContent(**content_doc)
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.put("/api/cms/content/{content_id}", response_model=CMSContent)
+async def update_cms_content(
+    content_id: str,
+    content_data: CMSContentUpdate,
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
+    """Update CMS content (admin only)"""
+    try:
+        # Verify admin
+        user = await get_current_user(credentials)
+        if not user.get("is_admin"):
+            raise HTTPException(status_code=403, detail="Admin access required")
+        
+        # Check if content exists
+        existing_content = cms_content_collection.find_one({"_id": content_id})
+        if not existing_content:
+            raise HTTPException(status_code=404, detail="Content not found")
+        
+        # Build update document
+        update_doc = {"updated_at": datetime.utcnow()}
+        
+        if content_data.title is not None:
+            update_doc["title"] = content_data.title
+        if content_data.description is not None:
+            update_doc["description"] = content_data.description
+        if content_data.content is not None:
+            update_doc["content"] = content_data.content
+        if content_data.content_type is not None:
+            update_doc["content_type"] = content_data.content_type
+        if content_data.featured is not None:
+            update_doc["featured"] = content_data.featured
+        if content_data.category is not None:
+            update_doc["category"] = content_data.category
+        if content_data.tags is not None:
+            update_doc["tags"] = content_data.tags
+        
+        # Update content
+        cms_content_collection.update_one(
+            {"_id": content_id},
+            {"$set": update_doc}
+        )
+        
+        # Get updated content
+        updated_content = cms_content_collection.find_one({"_id": content_id})
+        updated_content["id"] = updated_content.pop("_id")
+        
+        return CMSContent(**updated_content)
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.delete("/api/cms/content/{content_id}")
+async def delete_cms_content(
+    content_id: str,
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
+    """Delete CMS content (admin only)"""
+    try:
+        # Verify admin
+        user = await get_current_user(credentials)
+        if not user.get("is_admin"):
+            raise HTTPException(status_code=403, detail="Admin access required")
+        
+        # Check if content exists
+        existing_content = cms_content_collection.find_one({"_id": content_id})
+        if not existing_content:
+            raise HTTPException(status_code=404, detail="Content not found")
+        
+        # Delete content
+        cms_content_collection.delete_one({"_id": content_id})
+        
+        return {"message": "Content deleted successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # Run the server (supervisor handles this in production)
 if __name__ == "__main__":
     import uvicorn
