@@ -353,6 +353,9 @@ async def register(user_data: UserCreate):
         "name": user_data.name,
         "email": user_data.email,
         "password": hashed_pw,
+        "usn": user_data.usn,
+        "course": user_data.course,
+        "semester": user_data.semester,
         "is_admin": False,  # TODO: first user should be admin automatically?
         "created_at": datetime.utcnow()
     }
@@ -369,6 +372,9 @@ async def register(user_data: UserCreate):
         id=user_id,
         name=user_data.name,
         email=user_data.email,
+        usn=user_data.usn,
+        course=user_data.course,
+        semester=user_data.semester,
         is_admin=False,
         profile_photo=None
     )
