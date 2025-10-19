@@ -125,22 +125,46 @@ EduResources/
 
 ---
 
-## 🔐 Environment Variables
+## 🔐 Security & Environment Setup
+
+**⚠️ IMPORTANT: Never commit `.env` files to version control!**
+
+### Quick Setup
+
+1. **Copy example files:**
+   ```bash
+   cp .env.example .env
+   cp backend/.env.example backend/.env
+   cp frontend/.env.example frontend/.env
+   ```
+
+2. **Generate a secure SECRET_KEY:**
+   ```bash
+   python -c "import secrets; print(secrets.token_urlsafe(32))"
+   ```
+
+3. **Fill in your credentials in the `.env` files**
+
+4. **Read the Security Guide:**
+   - See [SECURITY.md](SECURITY.md) for comprehensive security best practices
+   - Pre-commit hooks are installed to prevent credential leaks
 
 ### Backend (.env)
 ```env
 MONGO_URL=mongodb://localhost:27017
 DATABASE_NAME=academic_resources
-SECRET_KEY=your-secret-key
+SECRET_KEY=<generate-secure-key-here>
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
-EMERGENT_LLM_KEY=your-llm-key
+EMERGENT_LLM_KEY=<your-emergent-key>
 ```
 
 ### Frontend (.env)
 ```env
 REACT_APP_BACKEND_URL=http://localhost:8001
 ```
+
+📖 **See `.env.example` files for detailed configuration options**
 
 ---
 
