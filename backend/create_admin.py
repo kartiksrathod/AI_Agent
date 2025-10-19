@@ -22,10 +22,10 @@ users_collection = db.users
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def create_admin_user():
-    # Admin credentials
-    admin_email = "kartiksrathod07@gmail.com"
-    admin_name = "Kartik Rathod"
-    admin_password = "admin123"
+    # Admin credentials - Read from environment or use defaults
+    admin_email = os.getenv("ADMIN_EMAIL", "admin@example.com")
+    admin_name = os.getenv("ADMIN_NAME", "Admin User")
+    admin_password = os.getenv("ADMIN_PASSWORD", "changeme123")
     
     # Check if admin already exists
     existing_admin = users_collection.find_one({"email": admin_email})
