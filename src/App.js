@@ -22,6 +22,8 @@ import Forum from "./components/forum/Forum";
 import AIAssistant from "./components/ai/AIAssistant";
 import ProfileDashboard from "./components/dashboard/ProfileDashboard";
 import KeyboardShortcutsModal from "./components/KeyboardShortcutsModal";
+import CMSAdmin from "./components/cms/CMSAdmin";
+import CMSContent from "./components/cms/CMSContent";
 import useKeyboardShortcuts from "./hooks/useKeyboardShortcuts";
 import useUserState from "./hooks/useUserState";
 
