@@ -68,6 +68,35 @@ try:
     # Quick ping to check if DB is alive
     client.admin.command('ping')
     print("✓ MongoDB connected successfully")
+    
+    # BULLETPROOF DATA PROTECTION: Auto-restore if database is empty
+    import subprocess
+    total_records = (
+        users_collection.count_documents({}) +
+        papers_collection.count_documents({}) +
+        notes_collection.count_documents({}) +
+        syllabus_collection.count_documents({})
+    )
+    
+    if total_records == 0:
+        print("⚠️  DATABASE IS EMPTY! Auto-restoring from backup...")
+        try:
+            result = subprocess.run(
+                ["bash", "/app/scripts/emergency_protection.sh"],
+                capture_output=True,
+                text=True,
+                timeout=30
+            )
+            print(result.stdout)
+            if result.returncode == 0:
+                print("✅ DATA RESTORED SUCCESSFULLY!")
+            else:
+                print(f"⚠️  Restore warning: {result.stderr}")
+        except Exception as restore_error:
+            print(f"⚠️  Auto-restore failed: {restore_error}")
+    else:
+        print(f"✓ Database has {total_records} records")
+        
 except Exception as e:
     print(f"✗ MongoDB connection error: {e}")
 
