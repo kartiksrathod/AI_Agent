@@ -127,6 +127,9 @@ class User(BaseModel):
     id: str
     name: str
     email: str
+    usn: Optional[str] = None
+    course: Optional[str] = None
+    semester: Optional[str] = None
     is_admin: bool = False
     profile_photo: Optional[str] = None
 
