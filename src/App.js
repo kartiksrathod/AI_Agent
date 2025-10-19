@@ -207,7 +207,7 @@ const AppContent = () => {
                   {/* Copyright */}
                   <div className="border-t border-gray-700 mt-6 pt-6 text-center">
                     <p className="text-sm text-gray-400">
-                      © 2024 EduResources - Academic Resources Platform. Built with React, FastAPI & MongoDB.
+                      © 2025 EduResources - Academic Resources Platform. Built with React, FastAPI & MongoDB.
                     </p>
                     <p className="text-xs text-gray-500 mt-1">
                       Helping engineering students excel in their academic journey.
