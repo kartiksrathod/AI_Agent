@@ -168,7 +168,7 @@ mongosh academic_resources --quiet --eval "
 
 ## 🎯 YOUR NEXT STEPS
 
-1. **Login:** https://data-rescue-5.preview.emergentagent.com
+1. **Login:** https://app-data-keeper.preview.emergentagent.com
    - Email: kartiksrathod07@gmail.com
    - Password: Sheshi@1234
 
