@@ -200,43 +200,6 @@ const Home = () => {
                 </motion.div>
               </Link>
             </motion.div>
-
-            {/* Stats Section */}
-            <motion.div
-              className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8"
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-            >
-              {[
-                { label: "Resources", value: "10K+", color: "text-blue-600" },
-                { label: "Students", value: "5K+", color: "text-green-600" },
-                { label: "Universities", value: "100+", color: "text-purple-600" },
-                { label: "Success Rate", value: "95%", color: "text-orange-600" }
-              ].map((stat, index) => (
-                <motion.div
-                  key={index}
-                  className="text-center"
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.6, delay: 0.9 + index * 0.1 }}
-                  whileHover={{ scale: 1.1 }}
-                >
-                  <motion.div 
-                    className={`text-3xl font-bold ${stat.color} dark:opacity-90`}
-                    whileHover={{ 
-                      scale: 1.05,
-                    }}
-                    transition={{ 
-                      duration: 0.2 
-                    }}
-                  >
-                    {stat.value}
-                  </motion.div>
-                  <div className="text-gray-600 dark:text-gray-400 font-medium">{stat.label}</div>
-                </motion.div>
-              ))}
-            </motion.div>
           </div>
         </div>
       </div>
