@@ -17,6 +17,7 @@ const Register = () => {
     email: '',
     password: '',
     confirmPassword: '',
+    usn: '',
     course: '',
     semester: ''
   });
@@ -47,6 +48,17 @@ const Register = () => {
       return;
     }
 
+    // Validate USN (alphanumeric)
+    const usnRegex = /^[a-zA-Z0-9]+$/;
+    if (!usnRegex.test(formData.usn)) {
+      toast({
+        title: "Invalid USN",
+        description: "USN must be alphanumeric (letters and numbers only).",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -54,6 +66,7 @@ const Register = () => {
         name: formData.name,
         email: formData.email,
         password: formData.password,
+        usn: formData.usn,
         course: formData.course,
         semester: formData.semester
       });
@@ -116,10 +129,24 @@ const Register = () => {
             </div>
 
             <div>
-              <Label htmlFor="course" className="dark:text-white">Engineering Course</Label>
+              <Label htmlFor="usn" className="dark:text-white">USN (University Serial Number)</Label>
+              <Input
+                id="usn"
+                name="usn"
+                type="text"
+                required
+                placeholder="e.g., 1AB21CS001"
+                value={formData.usn}
+                onChange={handleChange}
+                className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="course" className="dark:text-white">Engineering Branch</Label>
               <Select value={formData.course} onValueChange={(value) => setFormData({...formData, course: value})}>
                 <SelectTrigger className="dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                  <SelectValue placeholder="Select your course" />
+                  <SelectValue placeholder="Select your branch" />
                 </SelectTrigger>
                 <SelectContent className="dark:bg-gray-700 dark:border-gray-600">
                   {engineeringCourses.map(course => (
