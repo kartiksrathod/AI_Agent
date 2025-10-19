@@ -21,10 +21,10 @@ client = MongoClient(MONGO_URL)
 db = client[DATABASE_NAME]
 users_collection = db.users
 
-# Admin credentials
-admin_email = "kartiksrathod07@gmail.com"
-admin_password = "Sheshi@1234"
-admin_name = "Kartik S Rathod"
+# Admin credentials from environment variables
+admin_email = os.getenv("ADMIN_EMAIL", "admin@example.com")
+admin_password = os.getenv("ADMIN_PASSWORD", "changeme123")
+admin_name = os.getenv("ADMIN_NAME", "Admin User")
 
 # Check if admin already exists
 existing_admin = users_collection.find_one({"email": admin_email})
