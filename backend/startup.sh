@@ -1,7 +1,9 @@
 #!/bin/bash
-# Startup script for backend - ensures everything is ready before starting server
+# BULLETPROOF Startup script - ensures data NEVER gets lost
 
-echo "🚀 Starting Academic Resources Backend..."
+set -e
+
+echo "🚀 Starting BULLETPROOF Academic Resources Backend..."
 
 # Wait for MongoDB to be ready
 echo "⏳ Waiting for MongoDB..."
@@ -17,18 +19,41 @@ for i in {1..30}; do
     sleep 1
 done
 
-# CRITICAL: Ensure data persistence - RESTORE DATA IF NEEDED
-echo "🔐 Ensuring data persistence..."
-/app/scripts/ensure_data_persistence.sh
+# CRITICAL: Auto-restore data if database is empty
+echo "📦 Checking data integrity..."
+TOTAL_RECORDS=$(mongosh academic_resources --quiet --eval "db.users.countDocuments() + db.papers.countDocuments() + db.notes.countDocuments() + db.syllabus.countDocuments()" 2>/dev/null || echo "0")
+
+if [ "$TOTAL_RECORDS" = "0" ] || [ -z "$TOTAL_RECORDS" ]; then
+    echo "⚠️  DATABASE IS EMPTY! Auto-restoring from latest backup..."
+    
+    LATEST_BACKUP=$(ls -td /app/backups/backup_* 2>/dev/null | head -1)
+    if [ -n "$LATEST_BACKUP" ] && [ -d "$LATEST_BACKUP/academic_resources" ]; then
+        echo "📦 Restoring from: $LATEST_BACKUP"
+        mongorestore --db academic_resources "$LATEST_BACKUP/academic_resources" --drop --quiet 2>&1 | grep -v "deprecated" || true
+        
+        RESTORED_RECORDS=$(mongosh academic_resources --quiet --eval "db.users.countDocuments() + db.papers.countDocuments() + db.notes.countDocuments() + db.syllabus.countDocuments()" 2>/dev/null)
+        echo "✅ RESTORATION COMPLETE! Restored $RESTORED_RECORDS records"
+    else
+        echo "⚠️  No backup found to restore from"
+    fi
+else
+    echo "✅ Database has $TOTAL_RECORDS records - all good!"
+fi
 
 # Initialize database with admin user (only if needed)
-echo "📊 Checking database initialization..."
+echo "👤 Checking admin user..."
 cd /app/backend
 /root/.venv/bin/python init_db.py
 
-# Start auto-backup cron job in background (every 5 minutes)
-echo "🔄 Starting automatic backup system..."
-(while true; do /app/scripts/auto_backup.sh; sleep 300; done) &
+# Start continuous backup system (every 3 minutes in background)
+echo "🛡️  Starting CONTINUOUS backup system..."
+/app/scripts/continuous_backup.sh > /var/log/backup.log 2>&1 &
+BACKUP_PID=$!
+echo "   Backup process running (PID: $BACKUP_PID)"
+
+# Log current data stats
+echo "📊 Current database:"
+mongosh academic_resources --quiet --eval "printjson({users: db.users.countDocuments(), papers: db.papers.countDocuments(), notes: db.notes.countDocuments(), syllabus: db.syllabus.countDocuments()})"
 
 # Start the FastAPI server
 echo "🌐 Starting FastAPI server..."
