@@ -69,20 +69,30 @@ A comprehensive full-stack web application for engineering students to share and
    cd EduResources
    ```
 
-2. **Backend Setup**
+2. **Environment Setup** 🔐
+   ```bash
+   # Copy example files
+   cp .env.example .env
+   cp backend/.env.example backend/.env
+   cp frontend/.env.example frontend/.env
+   
+   # Generate secure SECRET_KEY
+   python -c "import secrets; print(secrets.token_urlsafe(32))"
+   
+   # Edit the .env files with your actual credentials
+   # See SECURITY.md for best practices
+   ```
+
+3. **Backend Setup**
    ```bash
    cd backend
    pip install -r requirements.txt
-   cp .env.example .env
-   # Edit .env with your configuration
    ```
 
-3. **Frontend Setup**
+4. **Frontend Setup**
    ```bash
    # From root directory
    yarn install
-   cp .env.example .env
-   # Edit .env with your backend URL
    ```
 
 4. **Start the Application**
