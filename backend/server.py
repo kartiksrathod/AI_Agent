@@ -14,6 +14,10 @@ from pathlib import Path
 import aiofiles
 from dotenv import load_dotenv
 from emergentintegrations.llm.chat import LlmChat, UserMessage
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+import secrets
 
 load_dotenv()
 
