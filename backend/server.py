@@ -695,6 +695,13 @@ async def login(login_data: UserLogin):
             headers={"WWW-Authenticate": "Bearer"},
         )
     
+    # Check if email is verified
+    if not user.get("email_verified", False):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Please verify your email address before logging in. Check your inbox for the verification link."
+        )
+    
     # Create JWT token
     token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
@@ -709,7 +716,8 @@ async def login(login_data: UserLogin):
         course=user.get("course"),
         semester=user.get("semester"),
         is_admin=user.get("is_admin", False),
-        profile_photo=user.get("profile_photo")
+        profile_photo=user.get("profile_photo"),
+        email_verified=user.get("email_verified", False)
     )
     
     return Token(access_token=access_token, token_type="bearer", user=user_obj)
