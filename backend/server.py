@@ -46,6 +46,15 @@ DATABASE_NAME = os.getenv("DATABASE_NAME")
 UPLOAD_DIR = os.getenv("UPLOAD_DIR", "uploads")
 EMERGENT_LLM_KEY = os.getenv("EMERGENT_LLM_KEY")
 
+# Email Configuration
+SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
+SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
+SMTP_USERNAME = os.getenv("SMTP_USERNAME")
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
+SMTP_FROM_EMAIL = os.getenv("SMTP_FROM_EMAIL")
+SMTP_FROM_NAME = os.getenv("SMTP_FROM_NAME", "Academic Resources")
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
+
 # Make sure upload folders exist
 Path(UPLOAD_DIR).mkdir(exist_ok=True)
 for folder in ["papers", "notes", "syllabus", "profile_photos"]:
