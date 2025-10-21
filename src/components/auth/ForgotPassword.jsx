@@ -82,7 +82,7 @@ const ForgotPassword = () => {
                 Email Sent!
               </h3>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
-                We've sent a password reset link to {email}
+                We&apos;ve sent a password reset link to {email}
               </p>
               <Button 
                 onClick={() => {setSent(false); setEmail('');}}
