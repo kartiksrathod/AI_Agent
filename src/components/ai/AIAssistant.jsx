@@ -20,7 +20,9 @@ import {
   HelpCircle
 } from 'lucide-react';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL !== undefined 
+  ? process.env.REACT_APP_BACKEND_URL 
+  : 'http://localhost:8001';
 
 const AIAssistant = () => {
   const [isOpen, setIsOpen] = useState(false);
