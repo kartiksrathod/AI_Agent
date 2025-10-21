@@ -38,11 +38,30 @@ const Login = () => {
       });
       navigate('/');
     } catch (error) {
-      toast({
-        title: "Login Failed",
-        description: error.response?.data?.detail || "Invalid credentials. Please try again.",
-        variant: "destructive"
-      });
+      const errorMessage = error.response?.data?.detail || "Invalid credentials. Please try again.";
+      
+      // Check if it's an email verification error
+      if (error.response?.status === 403) {
+        toast({
+          title: "Email Not Verified",
+          description: (
+            <div>
+              <p>{errorMessage}</p>
+              <Link to="/resend-verification" className="text-blue-300 hover:underline block mt-2">
+                Resend verification email →
+              </Link>
+            </div>
+          ),
+          variant: "destructive",
+          duration: 6000
+        });
+      } else {
+        toast({
+          title: "Login Failed",
+          description: errorMessage,
+          variant: "destructive"
+        });
+      }
     } finally {
       setLoading(false);
     }
