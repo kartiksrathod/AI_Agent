@@ -119,9 +119,9 @@ const KeyboardShortcutsModal = ({ isOpen, onClose }) => {
                 Pro Tips
               </h4>
               <ul className="text-xs text-blue-800 dark:text-blue-200 space-y-1">
-                <li>• Multi-key shortcuts like "G H" require pressing keys in sequence</li>
-                <li>• Shortcuts don't work when typing in input fields (except Escape)</li>
-                <li>• Press "?" anytime to toggle this help dialog</li>
+                <li>• Multi-key shortcuts like &quot;G H&quot; require pressing keys in sequence</li>
+                <li>• Shortcuts don&apos;t work when typing in input fields (except Escape)</li>
+                <li>• Press &quot;?&quot; anytime to toggle this help dialog</li>
                 <li>• All shortcuts are case-insensitive</li>
               </ul>
             </div>
