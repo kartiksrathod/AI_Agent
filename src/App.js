@@ -130,6 +130,7 @@ const AppContent = () => {
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/forgot-password" element={<ForgotPassword />} />
+                    <Route path="/reset-password/:token" element={<ResetPassword />} />
                     <Route path="/papers" element={<Papers />} />
                     <Route path="/notes" element={<Notes />} />
                     <Route path="/syllabus" element={<Syllabus />} />
