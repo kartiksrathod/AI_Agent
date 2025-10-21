@@ -67,7 +67,7 @@ EMERGENT_LLM_KEY=sk-emergent-38c10A41e0d3a3d19F
 
 ### Frontend (.env location: `/app/frontend/.env`)
 ```env
-REACT_APP_BACKEND_URL=https://mail-credentials.preview.emergentagent.com
+REACT_APP_BACKEND_URL=https://auth-revival-5.preview.emergentagent.com
 ```
 
 ---
