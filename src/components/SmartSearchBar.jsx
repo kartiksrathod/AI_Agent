@@ -262,7 +262,7 @@ const SmartSearchBar = () => {
               {query.length > 0 && suggestions.length === 0 && (
                 <div className="p-6 text-center text-gray-500 dark:text-gray-400">
                   <Search className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                  <p className="text-sm">No results found for "{query}"</p>
+                  <p className="text-sm">No results found for &quot;{query}&quot;</p>
                   <button
                     onClick={() => handleSearch(query)}
                     className="text-blue-500 hover:text-blue-600 text-sm mt-2"
