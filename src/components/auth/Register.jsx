@@ -104,13 +104,13 @@ const Register = () => {
             </div>
             <CardTitle className="text-2xl font-bold dark:text-white">Check Your Email! 📧</CardTitle>
             <CardDescription className="dark:text-gray-400">
-              We've sent you a verification link
+              We&apos;ve sent you a verification link
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
               <p className="text-sm text-blue-900 dark:text-blue-100">
-                <strong>Almost there!</strong> We've sent a verification email to:
+                <strong>Almost there!</strong> We&apos;ve sent a verification email to:
               </p>
               <p className="text-sm font-semibold text-blue-700 dark:text-blue-300 mt-2">
                 {userEmail}
@@ -122,7 +122,7 @@ const Register = () => {
 
             <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
               <p className="text-xs text-yellow-800 dark:text-yellow-200">
-                💡 <strong>Tip:</strong> Check your spam folder if you don't see the email within a few minutes.
+                💡 <strong>Tip:</strong> Check your spam folder if you don&apos;t see the email within a few minutes.
               </p>
             </div>
 
@@ -133,7 +133,7 @@ const Register = () => {
                 className="w-full dark:border-gray-600 dark:text-white dark:hover:bg-gray-700"
               >
                 <Mail className="mr-2 h-4 w-4" />
-                Didn't receive email?
+                Didn&apos;t receive email?
               </Button>
               
               <Button 
