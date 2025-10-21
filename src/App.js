@@ -133,6 +133,8 @@ const AppContent = () => {
                     <Route path="/register" element={<Register />} />
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/reset-password/:token" element={<ResetPassword />} />
+                    <Route path="/verify-email/:token" element={<VerifyEmail />} />
+                    <Route path="/resend-verification" element={<ResendVerification />} />
                     <Route path="/papers" element={<Papers />} />
                     <Route path="/notes" element={<Notes />} />
                     <Route path="/syllabus" element={<Syllabus />} />
