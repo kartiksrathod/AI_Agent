@@ -66,7 +66,7 @@ const Register = () => {
     setLoading(true);
 
     try {
-      await register({
+      const response = await axios.post(`${API_BASE_URL}/api/auth/register`, {
         name: formData.name,
         email: formData.email,
         password: formData.password,
@@ -75,12 +75,13 @@ const Register = () => {
         semester: formData.semester
       });
       
-      toast({
-        title: "Registration Successful",
-        description: "Welcome to EduResources!",
-      });
+      setUserEmail(formData.email);
+      setRegistrationSuccess(true);
       
-      navigate('/');
+      toast({
+        title: "Registration Successful! 🎉",
+        description: "Please check your email to verify your account.",
+      });
     } catch (error) {
       toast({
         title: "Registration Failed",
