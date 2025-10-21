@@ -25,8 +25,9 @@ const Register = () => {
     semester: ''
   });
   const [loading, setLoading] = useState(false);
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
   
-  const { register } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
