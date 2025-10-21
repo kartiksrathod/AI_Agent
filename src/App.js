@@ -15,6 +15,7 @@ import Home from "./components/Home";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import ForgotPassword from "./components/auth/ForgotPassword";
+import ResetPassword from "./components/auth/ResetPassword";
 import Papers from "./components/papers/Papers";
 import Notes from "./components/notes/Notes";
 import Syllabus from "./components/syllabus/Syllabus";
