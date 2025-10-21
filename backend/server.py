@@ -934,41 +934,158 @@ async def forgot_password(request: ForgotPasswordRequest):
         # Create reset link
         reset_link = f"{FRONTEND_URL}/reset-password/{reset_token}"
         
-        # Email content
+        # Email content - Modern academic theme
         html_content = f"""
         <!DOCTYPE html>
         <html>
         <head>
             <style>
-                body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
-                .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
-                .header {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }}
-                .content {{ background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }}
-                .button {{ display: inline-block; padding: 12px 30px; background: #667eea; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }}
-                .footer {{ text-align: center; margin-top: 20px; font-size: 12px; color: #666; }}
+                body {{ 
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+                    line-height: 1.6; 
+                    color: #333; 
+                    background-color: #f5f7fa;
+                    margin: 0;
+                    padding: 0;
+                }}
+                .container {{ 
+                    max-width: 600px; 
+                    margin: 40px auto; 
+                    background: white;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                }}
+                .header {{ 
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                    color: white; 
+                    padding: 40px 30px;
+                    text-align: center;
+                }}
+                .header h1 {{
+                    margin: 0;
+                    font-size: 28px;
+                    font-weight: 600;
+                }}
+                .header .icon {{
+                    font-size: 48px;
+                    margin-bottom: 10px;
+                }}
+                .content {{ 
+                    padding: 40px 30px;
+                    background: white;
+                }}
+                .greeting {{
+                    font-size: 20px;
+                    color: #2d3748;
+                    margin-bottom: 20px;
+                    font-weight: 500;
+                }}
+                .message {{
+                    color: #4a5568;
+                    font-size: 16px;
+                    line-height: 1.8;
+                    margin-bottom: 20px;
+                }}
+                .button {{ 
+                    display: inline-block; 
+                    padding: 14px 32px; 
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    color: white; 
+                    text-decoration: none; 
+                    border-radius: 8px; 
+                    margin: 20px 0;
+                    font-weight: 600;
+                    font-size: 16px;
+                    box-shadow: 0 4px 6px rgba(102, 126, 234, 0.3);
+                }}
+                .link-box {{
+                    background: #f7fafc;
+                    border: 1px solid #e2e8f0;
+                    padding: 15px;
+                    border-radius: 8px;
+                    margin: 20px 0;
+                    word-break: break-all;
+                    font-size: 14px;
+                    color: #4a5568;
+                }}
+                .expiry-notice {{
+                    background: #fff5e1;
+                    border-left: 4px solid #f59e0b;
+                    padding: 15px;
+                    margin: 20px 0;
+                    border-radius: 4px;
+                    font-size: 14px;
+                    color: #92400e;
+                }}
+                .security-note {{
+                    background: #e6f7ff;
+                    border-left: 4px solid #1890ff;
+                    padding: 15px;
+                    margin: 20px 0;
+                    border-radius: 4px;
+                    font-size: 14px;
+                    color: #003a8c;
+                }}
+                .footer {{ 
+                    background: #2d3748;
+                    color: #cbd5e0;
+                    text-align: center;
+                    padding: 30px;
+                    font-size: 14px;
+                }}
+                .footer .logo {{
+                    font-size: 24px;
+                    margin-bottom: 10px;
+                }}
             </style>
         </head>
         <body>
             <div class="container">
                 <div class="header">
+                    <div class="icon">🔐</div>
                     <h1>Password Reset Request</h1>
                 </div>
+                
                 <div class="content">
-                    <p>Hello {user['name']},</p>
-                    <p>We received a request to reset your password for your Academic Resources account.</p>
-                    <p>Click the button below to reset your password:</p>
-                    <p style="text-align: center;">
+                    <div class="greeting">Hello {user['name']},</div>
+                    
+                    <div class="message">
+                        We received a request to reset your password for your <strong>EduResources</strong> account.
+                    </div>
+                    
+                    <div class="message">
+                        Click the button below to create a new password:
+                    </div>
+                    
+                    <div style="text-align: center;">
                         <a href="{reset_link}" class="button">Reset Password</a>
-                    </p>
-                    <p>Or copy and paste this link into your browser:</p>
-                    <p style="word-break: break-all; background: #fff; padding: 10px; border-radius: 5px;">
+                    </div>
+                    
+                    <div class="expiry-notice">
+                        ⏰ <strong>Important:</strong> This reset link will expire in 1 hour for security reasons.
+                    </div>
+                    
+                    <div class="message">
+                        If the button doesn't work, copy and paste this link into your browser:
+                    </div>
+                    
+                    <div class="link-box">
                         {reset_link}
-                    </p>
-                    <p><strong>This link will expire in 1 hour.</strong></p>
-                    <p>If you didn't request a password reset, you can safely ignore this email.</p>
+                    </div>
+                    
+                    <div class="security-note">
+                        🛡️ <strong>Security Tip:</strong> If you didn't request this password reset, please ignore this email. 
+                        Your account remains secure and no changes will be made.
+                    </div>
                 </div>
+                
                 <div class="footer">
-                    <p>© 2025 Academic Resources Platform. All rights reserved.</p>
+                    <div class="logo">📚 EduResources</div>
+                    <p style="margin: 10px 0;">Academic Resources Platform for Engineering Students</p>
+                    <p style="margin: 10px 0; font-size: 12px;">
+                        © 2025 EduResources. All rights reserved.
+                    </p>
                 </div>
             </div>
         </body>
