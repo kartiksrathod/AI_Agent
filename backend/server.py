@@ -155,6 +155,7 @@ class User(BaseModel):
     semester: Optional[str] = None
     is_admin: bool = False
     profile_photo: Optional[str] = None
+    email_verified: bool = False
 
 class Token(BaseModel):
     access_token: str
