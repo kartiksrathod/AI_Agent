@@ -747,6 +747,160 @@ def send_email(to_email: str, subject: str, html_content: str):
         print(f"Error sending email: {e}")
         return False
 
+## Email Verification Endpoints
+@app.get("/api/auth/verify-email/{token}")
+async def verify_email(token: str):
+    """Verify user email with token"""
+    try:
+        # Find token
+        token_doc = email_verification_tokens_collection.find_one({
+            "token": token,
+            "used": False
+        })
+        
+        if not token_doc:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid or expired verification link"
+            )
+        
+        # Check if token is expired
+        if datetime.utcnow() > token_doc["expires_at"]:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Verification link has expired. Please request a new one."
+            )
+        
+        # Mark user as verified
+        users_collection.update_one(
+            {"_id": token_doc["user_id"]},
+            {"$set": {"email_verified": True}}
+        )
+        
+        # Mark token as used
+        email_verification_tokens_collection.update_one(
+            {"_id": token_doc["_id"]},
+            {"$set": {"used": True}}
+        )
+        
+        return {"message": "Email verified successfully! You can now login."}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Email verification error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An error occurred during verification. Please try again later."
+        )
+
+class ResendVerificationRequest(BaseModel):
+    email: EmailStr
+
+@app.post("/api/auth/resend-verification")
+async def resend_verification(request: ResendVerificationRequest):
+    """Resend verification email"""
+    try:
+        # Check if user exists
+        user = users_collection.find_one({"email": request.email})
+        
+        if not user:
+            # Don't reveal if email exists
+            return {"message": "If an unverified account exists with this email, a new verification link has been sent."}
+        
+        # Check if already verified
+        if user.get("email_verified", False):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="This email is already verified. You can login now."
+            )
+        
+        # Invalidate old tokens
+        email_verification_tokens_collection.update_many(
+            {"user_id": user["_id"], "used": False},
+            {"$set": {"used": True}}
+        )
+        
+        # Generate new verification token
+        verification_token = secrets.token_urlsafe(32)
+        
+        # Store new token
+        token_doc = {
+            "_id": str(uuid.uuid4()),
+            "user_id": user["_id"],
+            "email": request.email,
+            "token": verification_token,
+            "created_at": datetime.utcnow(),
+            "expires_at": datetime.utcnow() + timedelta(hours=24),
+            "used": False
+        }
+        
+        email_verification_tokens_collection.insert_one(token_doc)
+        
+        # Send verification email
+        verification_link = f"{FRONTEND_URL}/verify-email/{verification_token}"
+        
+        html_content = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                body {{ font-family: 'Segoe UI', sans-serif; line-height: 1.6; color: #333; }}
+                .container {{ max-width: 600px; margin: 40px auto; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }}
+                .header {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 30px; text-align: center; }}
+                .header h1 {{ margin: 0; font-size: 28px; }}
+                .content {{ padding: 40px 30px; }}
+                .button {{ display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; margin: 20px 0; font-weight: 600; }}
+                .footer {{ background: #2d3748; color: #cbd5e0; text-align: center; padding: 30px; font-size: 14px; }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <div style="font-size: 48px; margin-bottom: 10px;">📚</div>
+                    <h1>Email Verification</h1>
+                </div>
+                <div class="content">
+                    <p style="font-size: 20px; color: #2d3748; margin-bottom: 20px;">Hello {user['name']},</p>
+                    <p>We received a request to resend your verification email. Click the button below to verify your email address:</p>
+                    <div style="text-align: center;">
+                        <a href="{verification_link}" class="button">Verify Email Address</a>
+                    </div>
+                    <p style="background: #fff5e1; border-left: 4px solid #f59e0b; padding: 15px; margin: 20px 0; border-radius: 4px;">
+                        <strong>Note:</strong> This link will expire in 24 hours.
+                    </p>
+                </div>
+                <div class="footer">
+                    <p>© 2025 EduResources - Academic Platform</p>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+        
+        email_sent = send_email(
+            to_email=request.email,
+            subject="Email Verification - EduResources 📚",
+            html_content=html_content
+        )
+        
+        if not email_sent:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Failed to send verification email. Please try again later."
+            )
+        
+        return {"message": "If an unverified account exists with this email, a new verification link has been sent."}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Resend verification error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An error occurred. Please try again later."
+        )
+
 ## Password Reset Endpoints
 @app.post("/api/auth/forgot-password")
 async def forgot_password(request: ForgotPasswordRequest):
