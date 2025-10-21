@@ -725,7 +725,7 @@ const ProfileDashboard = () => {
                   {isAdmin && (
                     <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md">
                       <p className="text-sm text-blue-800 dark:text-blue-300">
-                        <strong>Admin Account:</strong> If you're using the default admin credentials, your current password is: <code className="bg-blue-100 dark:bg-blue-800 px-1 py-0.5 rounded">admin123</code>
+                        <strong>Admin Account:</strong> If you&apos;re using the default admin credentials, your current password is: <code className="bg-blue-100 dark:bg-blue-800 px-1 py-0.5 rounded">admin123</code>
                       </p>
                     </div>
                   )}
