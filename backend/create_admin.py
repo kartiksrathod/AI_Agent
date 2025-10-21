@@ -9,7 +9,7 @@ Usage:
     python create_admin.py
     
     Or with environment variables:
-    ADMIN_EMAIL=admin@example.com ADMIN_PASSWORD=securepass python create_admin.py
+    ADMIN_EMAIL=kartiksrathod07@gmail.com ADMIN_PASSWORD=Sheshi@1234 python create_admin.py
 """
 
 import os
