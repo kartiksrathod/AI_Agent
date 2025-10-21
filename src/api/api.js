@@ -1,7 +1,11 @@
 import axios from 'axios';
 
 // Get backend URL from env or fallback to localhost
-const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+// For production/preview, use empty string to make requests to same domain
+// Kubernetes ingress will route /api/* to backend service
+const API_BASE_URL = process.env.REACT_APP_BACKEND_URL !== undefined 
+  ? process.env.REACT_APP_BACKEND_URL 
+  : 'http://localhost:8001';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
