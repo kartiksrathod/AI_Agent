@@ -115,7 +115,7 @@ const ResendVerification = () => {
               Back to Login
             </Link>
             <Link to="/register" className="text-sm text-gray-600 dark:text-gray-400 hover:underline block">
-              Don't have an account? Sign up
+              Don&apos;t have an account? Sign up
             </Link>
           </div>
         </CardContent>
