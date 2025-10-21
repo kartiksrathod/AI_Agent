@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, User, Tag, Star } from 'lucide-react';
 import axios from 'axios';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || (typeof import.meta !== 'undefined' && import.meta.env?.REACT_APP_BACKEND_URL) || 'http://localhost:8001';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL !== undefined 
+  ? process.env.REACT_APP_BACKEND_URL 
+  : 'http://localhost:8001';
 
 const CMSContent = () => {
   const [contents, setContents] = useState([]);
