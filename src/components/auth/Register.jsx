@@ -93,6 +93,62 @@ const Register = () => {
     }
   };
 
+  // Success view after registration
+  if (registrationSuccess) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-blue-950 dark:via-gray-900 dark:to-purple-950 flex items-center justify-center p-4">
+        <Card className="w-full max-w-md dark:bg-gray-800 dark:border-gray-700">
+          <CardHeader className="text-center">
+            <div className="flex justify-center mb-4">
+              <CheckCircle className="h-16 w-16 text-green-600 dark:text-green-400" />
+            </div>
+            <CardTitle className="text-2xl font-bold dark:text-white">Check Your Email! 📧</CardTitle>
+            <CardDescription className="dark:text-gray-400">
+              We've sent you a verification link
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+              <p className="text-sm text-blue-900 dark:text-blue-100">
+                <strong>Almost there!</strong> We've sent a verification email to:
+              </p>
+              <p className="text-sm font-semibold text-blue-700 dark:text-blue-300 mt-2">
+                {userEmail}
+              </p>
+              <p className="text-xs text-blue-700 dark:text-blue-400 mt-2">
+                Click the link in the email to verify your account and start learning!
+              </p>
+            </div>
+
+            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
+              <p className="text-xs text-yellow-800 dark:text-yellow-200">
+                💡 <strong>Tip:</strong> Check your spam folder if you don't see the email within a few minutes.
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <Button 
+                onClick={() => navigate('/resend-verification')}
+                variant="outline"
+                className="w-full dark:border-gray-600 dark:text-white dark:hover:bg-gray-700"
+              >
+                <Mail className="mr-2 h-4 w-4" />
+                Didn't receive email?
+              </Button>
+              
+              <Button 
+                onClick={() => navigate('/login')}
+                className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
+              >
+                Back to Login
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-blue-950 dark:via-gray-900 dark:to-purple-950 flex items-center justify-center p-4">
       <Card className="w-full max-w-md dark:bg-gray-800 dark:border-gray-700">
