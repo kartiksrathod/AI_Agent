@@ -471,6 +471,180 @@ async def login(login_data: UserLogin):
     
     return Token(access_token=access_token, token_type="bearer", user=user_obj)
 
+## Email utility function
+def send_email(to_email: str, subject: str, html_content: str):
+    """Send email using SMTP"""
+    try:
+        # Create message
+        msg = MIMEMultipart('alternative')
+        msg['Subject'] = subject
+        msg['From'] = f"{SMTP_FROM_NAME} <{SMTP_FROM_EMAIL}>"
+        msg['To'] = to_email
+        
+        # Attach HTML content
+        html_part = MIMEText(html_content, 'html')
+        msg.attach(html_part)
+        
+        # Send email
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+            server.starttls()
+            server.login(SMTP_USERNAME, SMTP_PASSWORD)
+            server.send_message(msg)
+        
+        return True
+    except Exception as e:
+        print(f"Error sending email: {e}")
+        return False
+
+## Password Reset Endpoints
+@app.post("/api/auth/forgot-password")
+async def forgot_password(request: ForgotPasswordRequest):
+    """Send password reset email"""
+    try:
+        # Check if user exists
+        user = users_collection.find_one({"email": request.email})
+        
+        # Always return success to prevent email enumeration
+        if not user:
+            return {
+                "message": "If an account exists with this email, a password reset link has been sent."
+            }
+        
+        # Generate reset token
+        reset_token = secrets.token_urlsafe(32)
+        
+        # Store token in database with 1 hour expiry
+        token_doc = {
+            "_id": str(uuid.uuid4()),
+            "user_id": user["_id"],
+            "email": request.email,
+            "token": reset_token,
+            "created_at": datetime.utcnow(),
+            "expires_at": datetime.utcnow() + timedelta(hours=1),
+            "used": False
+        }
+        
+        password_reset_tokens_collection.insert_one(token_doc)
+        
+        # Create reset link
+        reset_link = f"{FRONTEND_URL}/reset-password/{reset_token}"
+        
+        # Email content
+        html_content = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
+                .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+                .header {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }}
+                .content {{ background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }}
+                .button {{ display: inline-block; padding: 12px 30px; background: #667eea; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }}
+                .footer {{ text-align: center; margin-top: 20px; font-size: 12px; color: #666; }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <h1>Password Reset Request</h1>
+                </div>
+                <div class="content">
+                    <p>Hello {user['name']},</p>
+                    <p>We received a request to reset your password for your Academic Resources account.</p>
+                    <p>Click the button below to reset your password:</p>
+                    <p style="text-align: center;">
+                        <a href="{reset_link}" class="button">Reset Password</a>
+                    </p>
+                    <p>Or copy and paste this link into your browser:</p>
+                    <p style="word-break: break-all; background: #fff; padding: 10px; border-radius: 5px;">
+                        {reset_link}
+                    </p>
+                    <p><strong>This link will expire in 1 hour.</strong></p>
+                    <p>If you didn't request a password reset, you can safely ignore this email.</p>
+                </div>
+                <div class="footer">
+                    <p>© 2025 Academic Resources Platform. All rights reserved.</p>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+        
+        # Send email
+        email_sent = send_email(
+            to_email=request.email,
+            subject="Password Reset Request - Academic Resources",
+            html_content=html_content
+        )
+        
+        if not email_sent:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Failed to send reset email. Please try again later."
+            )
+        
+        return {
+            "message": "If an account exists with this email, a password reset link has been sent."
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Forgot password error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An error occurred. Please try again later."
+        )
+
+@app.post("/api/auth/reset-password")
+async def reset_password(request: ResetPasswordRequest):
+    """Reset password using token"""
+    try:
+        # Find token
+        token_doc = password_reset_tokens_collection.find_one({
+            "token": request.token,
+            "used": False
+        })
+        
+        if not token_doc:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid or expired reset token"
+            )
+        
+        # Check if token is expired
+        if datetime.utcnow() > token_doc["expires_at"]:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Reset token has expired"
+            )
+        
+        # Hash new password
+        new_hash = get_password_hash(request.new_password)
+        
+        # Update user password
+        users_collection.update_one(
+            {"_id": token_doc["user_id"]},
+            {"$set": {"password": new_hash}}
+        )
+        
+        # Mark token as used
+        password_reset_tokens_collection.update_one(
+            {"_id": token_doc["_id"]},
+            {"$set": {"used": True}}
+        )
+        
+        return {"message": "Password has been reset successfully"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Reset password error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An error occurred. Please try again later."
+        )
+
 ## Papers API
 @app.get("/api/papers", response_model=List[PaperResponse])
 async def get_papers():
