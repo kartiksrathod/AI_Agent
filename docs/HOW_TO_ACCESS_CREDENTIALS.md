@@ -67,7 +67,7 @@ EMERGENT_LLM_KEY=sk-emergent-38c10A41e0d3a3d19F
 
 ### Frontend (.env location: `/app/frontend/.env`)
 ```env
-REACT_APP_BACKEND_URL=https://react-entities-fix.preview.emergentagent.com
+REACT_APP_BACKEND_URL=https://login-repair-59.preview.emergentagent.com
 ```
 
 ---
