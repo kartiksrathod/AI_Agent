@@ -37,21 +37,17 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
-    try {
-      const res = await authAPI.login({ email, password });
-      const { access_token, user } = res.data;
-      
-      setCurrentUser(user);
-      setIsAdmin(user.is_admin === true);
-      
-      // Save to localStorage for persistence
-      localStorage.setItem('currentUser', JSON.stringify(user));
-      localStorage.setItem('token', access_token);
-      
-      return user;
-    } catch (error) {
-      throw error;
-    }
+    const res = await authAPI.login({ email, password });
+    const { access_token, user } = res.data;
+    
+    setCurrentUser(user);
+    setIsAdmin(user.is_admin === true);
+    
+    // Save to localStorage for persistence
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    localStorage.setItem('token', access_token);
+    
+    return user;
   };
 
   const register = async (userData) => {
