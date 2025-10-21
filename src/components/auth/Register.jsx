@@ -5,11 +5,14 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { Switch } from '../ui/switch';
-import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../../hooks/use-toast';
 import { engineeringCourses } from '../../data/mock';
-import { BookOpen, Shield } from 'lucide-react';
+import { BookOpen, Mail, CheckCircle } from 'lucide-react';
+import axios from 'axios';
+
+const API_BASE_URL = process.env.REACT_APP_BACKEND_URL !== undefined 
+  ? process.env.REACT_APP_BACKEND_URL 
+  : 'http://localhost:8001';
 
 const Register = () => {
   const [formData, setFormData] = useState({
