@@ -396,7 +396,7 @@ async def save_upload_file(upload_file, destination):
     return file_path
 
 ## Auth routes
-@app.post("/api/auth/register", response_model=Token)
+@app.post("/api/auth/register")
 async def register(user_data: UserCreate):
     # Make sure email isn't already taken
     if users_collection.find_one({"email": user_data.email}):
@@ -417,30 +417,271 @@ async def register(user_data: UserCreate):
         "usn": user_data.usn,
         "course": user_data.course,
         "semester": user_data.semester,
-        "is_admin": False,  # TODO: first user should be admin automatically?
+        "is_admin": False,
+        "email_verified": False,  # Email verification required
         "created_at": datetime.utcnow()
     }
     
     users_collection.insert_one(user_doc)
     
-    # Generate token for immediate login
-    token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"sub": user_id}, expires_delta=token_expires
-    )
+    # Generate email verification token
+    verification_token = secrets.token_urlsafe(32)
     
-    user = User(
-        id=user_id,
-        name=user_data.name,
-        email=user_data.email,
-        usn=user_data.usn,
-        course=user_data.course,
-        semester=user_data.semester,
-        is_admin=False,
-        profile_photo=None
-    )
+    # Store verification token with 24 hour expiry
+    token_doc = {
+        "_id": str(uuid.uuid4()),
+        "user_id": user_id,
+        "email": user_data.email,
+        "token": verification_token,
+        "created_at": datetime.utcnow(),
+        "expires_at": datetime.utcnow() + timedelta(hours=24),
+        "used": False
+    }
     
-    return Token(access_token=access_token, token_type="bearer", user=user)
+    email_verification_tokens_collection.insert_one(token_doc)
+    
+    # Send verification email
+    verification_link = f"{FRONTEND_URL}/verify-email/{verification_token}"
+    
+    # Modern academic-themed email template
+    html_content = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <style>
+            body {{ 
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+                line-height: 1.6; 
+                color: #333; 
+                background-color: #f5f7fa;
+                margin: 0;
+                padding: 0;
+            }}
+            .container {{ 
+                max-width: 600px; 
+                margin: 40px auto; 
+                background: white;
+                border-radius: 12px;
+                overflow: hidden;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }}
+            .header {{ 
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                color: white; 
+                padding: 40px 30px;
+                text-align: center;
+            }}
+            .header h1 {{
+                margin: 0;
+                font-size: 28px;
+                font-weight: 600;
+            }}
+            .header .icon {{
+                font-size: 48px;
+                margin-bottom: 10px;
+            }}
+            .content {{ 
+                padding: 40px 30px;
+                background: white;
+            }}
+            .greeting {{
+                font-size: 20px;
+                color: #2d3748;
+                margin-bottom: 20px;
+                font-weight: 500;
+            }}
+            .message {{
+                color: #4a5568;
+                font-size: 16px;
+                line-height: 1.8;
+                margin-bottom: 30px;
+            }}
+            .button {{ 
+                display: inline-block; 
+                padding: 14px 32px; 
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white; 
+                text-decoration: none; 
+                border-radius: 8px; 
+                margin: 20px 0;
+                font-weight: 600;
+                font-size: 16px;
+                box-shadow: 0 4px 6px rgba(102, 126, 234, 0.3);
+                transition: transform 0.2s;
+            }}
+            .button:hover {{
+                transform: translateY(-2px);
+                box-shadow: 0 6px 8px rgba(102, 126, 234, 0.4);
+            }}
+            .link-box {{
+                background: #f7fafc;
+                border: 1px solid #e2e8f0;
+                padding: 15px;
+                border-radius: 8px;
+                margin: 20px 0;
+                word-break: break-all;
+                font-size: 14px;
+                color: #4a5568;
+            }}
+            .features {{
+                background: #f7fafc;
+                padding: 25px;
+                border-radius: 8px;
+                margin: 25px 0;
+            }}
+            .features h3 {{
+                color: #2d3748;
+                margin-top: 0;
+                margin-bottom: 15px;
+                font-size: 18px;
+            }}
+            .feature-item {{
+                display: flex;
+                align-items: center;
+                margin: 12px 0;
+                color: #4a5568;
+            }}
+            .feature-item .emoji {{
+                font-size: 20px;
+                margin-right: 12px;
+            }}
+            .footer {{ 
+                background: #2d3748;
+                color: #cbd5e0;
+                text-align: center;
+                padding: 30px;
+                font-size: 14px;
+            }}
+            .footer .logo {{
+                font-size: 24px;
+                margin-bottom: 10px;
+            }}
+            .footer a {{
+                color: #667eea;
+                text-decoration: none;
+            }}
+            .expiry-notice {{
+                background: #fff5e1;
+                border-left: 4px solid #f59e0b;
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 4px;
+                font-size: 14px;
+                color: #92400e;
+            }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <div class="icon">📚</div>
+                <h1>Welcome to EduResources!</h1>
+            </div>
+            
+            <div class="content">
+                <div class="greeting">Hello {user_data.name},</div>
+                
+                <div class="message">
+                    Thank you for joining <strong>EduResources</strong> - your gateway to academic excellence! 
+                    We're excited to have you as part of our community of engineering students.
+                </div>
+                
+                <div class="message">
+                    To get started and access thousands of study materials, papers, notes, and our AI study assistant, 
+                    please verify your email address by clicking the button below:
+                </div>
+                
+                <div style="text-align: center;">
+                    <a href="{verification_link}" class="button">Verify Email Address</a>
+                </div>
+                
+                <div class="expiry-notice">
+                    ⏰ <strong>Important:</strong> This verification link will expire in 24 hours for security reasons.
+                </div>
+                
+                <div class="message">
+                    If the button doesn't work, copy and paste this link into your browser:
+                </div>
+                
+                <div class="link-box">
+                    {verification_link}
+                </div>
+                
+                <div class="features">
+                    <h3>🎓 What's waiting for you:</h3>
+                    <div class="feature-item">
+                        <span class="emoji">📄</span>
+                        <span>Access thousands of previous year question papers</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="emoji">📝</span>
+                        <span>Comprehensive study notes from top performers</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="emoji">📚</span>
+                        <span>Complete syllabus for all branches and semesters</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="emoji">🤖</span>
+                        <span>AI Study Assistant for instant doubt resolution</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="emoji">💬</span>
+                        <span>Community forum to connect with peers</span>
+                    </div>
+                </div>
+                
+                <div class="message" style="color: #718096; font-size: 14px; margin-top: 30px;">
+                    If you didn't create this account, please ignore this email or contact us if you have concerns.
+                </div>
+            </div>
+            
+            <div class="footer">
+                <div class="logo">📚 EduResources</div>
+                <p style="margin: 10px 0;">Academic Resources Platform for Engineering Students</p>
+                <p style="margin: 10px 0; font-size: 12px;">
+                    © 2025 EduResources. Built with passion for education.
+                </p>
+                <p style="margin: 10px 0;">
+                    <a href="{FRONTEND_URL}">Visit Website</a>
+                </p>
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+    
+    try:
+        email_sent = send_email(
+            to_email=user_data.email,
+            subject="Welcome to EduResources - Verify Your Email 📚",
+            html_content=html_content
+        )
+        
+        if not email_sent:
+            # Rollback user creation if email fails
+            users_collection.delete_one({"_id": user_id})
+            email_verification_tokens_collection.delete_one({"user_id": user_id})
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Failed to send verification email. Please try again later."
+            )
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Email send error: {e}")
+        # Rollback user creation
+        users_collection.delete_one({"_id": user_id})
+        email_verification_tokens_collection.delete_one({"user_id": user_id})
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to send verification email. Please try again later."
+        )
+    
+    return {
+        "message": "Registration successful! Please check your email to verify your account.",
+        "email": user_data.email
+    }
 
 @app.post("/api/auth/login", response_model=Token)
 async def login(login_data: UserLogin):
