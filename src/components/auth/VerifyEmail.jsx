@@ -85,7 +85,7 @@ const VerifyEmail = () => {
           {status === 'error' && (
             <>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                Don't worry! You can request a new verification link.
+                Don&apos;t worry! You can request a new verification link.
               </p>
               <Link to="/resend-verification">
                 <Button 
