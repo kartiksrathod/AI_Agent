@@ -51,21 +51,17 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (userData) => {
-    try {
-      const res = await authAPI.register(userData);
-      const { access_token, user } = res.data;
-      
-      setCurrentUser(user);
-      setIsAdmin(user.is_admin === true);
-      
-      // Save to localStorage
-      localStorage.setItem('currentUser', JSON.stringify(user));
-      localStorage.setItem('token', access_token);
-      
-      return user;
-    } catch (error) {
-      throw error;
-    }
+    const res = await authAPI.register(userData);
+    const { access_token, user } = res.data;
+    
+    setCurrentUser(user);
+    setIsAdmin(user.is_admin === true);
+    
+    // Save to localStorage
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    localStorage.setItem('token', access_token);
+    
+    return user;
   };
 
   const logout = () => {
