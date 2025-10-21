@@ -19,17 +19,30 @@ const ForgotPassword = () => {
     setLoading(true);
 
     try {
-      // Mock forgot password functionality
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setSent(true);
-      toast({
-        title: "Reset Link Sent",
-        description: "Check your email for password reset instructions.",
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || '';
+      const response = await fetch(`${backendUrl}/api/auth/forgot-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
       });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSent(true);
+        toast({
+          title: "Reset Link Sent",
+          description: "Check your email for password reset instructions.",
+        });
+      } else {
+        throw new Error(data.detail || 'Failed to send reset email');
+      }
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to send reset email. Please try again.",
+        description: error.message || "Failed to send reset email. Please try again.",
         variant: "destructive"
       });
     } finally {
