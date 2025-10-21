@@ -79,6 +79,7 @@ try:
     forum_replies_collection = db.forum_replies  # Forum replies
     cms_content_collection = db.cms_content  # CMS content management
     password_reset_tokens_collection = db.password_reset_tokens  # Password reset tokens
+    email_verification_tokens_collection = db.email_verification_tokens  # Email verification tokens
     
     # Quick ping to check if DB is alive
     client.admin.command('ping')
