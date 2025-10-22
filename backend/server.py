@@ -420,30 +420,31 @@ async def register(user_data: UserCreate):
         "course": user_data.course,
         "semester": user_data.semester,
         "is_admin": False,
-        "email_verified": False,  # Email verification required
+        "email_verified": True,  # Auto-verify for MVP (email not configured yet)
         "created_at": datetime.utcnow()
     }
     
     users_collection.insert_one(user_doc)
     
+    # Skip email verification for MVP
     # Generate email verification token
-    verification_token = secrets.token_urlsafe(32)
+    # verification_token = secrets.token_urlsafe(32)
     
     # Store verification token with 24 hour expiry
-    token_doc = {
-        "_id": str(uuid.uuid4()),
-        "user_id": user_id,
-        "email": user_data.email,
-        "token": verification_token,
-        "created_at": datetime.utcnow(),
-        "expires_at": datetime.utcnow() + timedelta(hours=24),
-        "used": False
-    }
+    # token_doc = {
+    #     "_id": str(uuid.uuid4()),
+    #     "user_id": user_id,
+    #     "email": user_data.email,
+    #     "token": verification_token,
+    #     "created_at": datetime.utcnow(),
+    #     "expires_at": datetime.utcnow() + timedelta(hours=24),
+    #     "used": False
+    # }
     
-    email_verification_tokens_collection.insert_one(token_doc)
+    # email_verification_tokens_collection.insert_one(token_doc)
     
     # Send verification email
-    verification_link = f"{FRONTEND_URL}/verify-email/{verification_token}"
+    # verification_link = f"{FRONTEND_URL}/verify-email/{verification_token}"
     
     # Modern academic-themed email template
     html_content = f"""
