@@ -19,7 +19,8 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import secrets
 
-load_dotenv()
+# Load .env from the correct path
+load_dotenv(dotenv_path="/app/backend/.env")
 
 # Main app instance
 app = FastAPI(title="Academic Resources API", version="1.0.0")
