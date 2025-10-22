@@ -654,35 +654,36 @@ async def register(user_data: UserCreate):
     </html>
     """
     
-    try:
-        email_sent = send_email(
-            to_email=user_data.email,
-            subject="Welcome to EduResources - Verify Your Email 📚",
-            html_content=html_content
-        )
-        
-        if not email_sent:
-            # Rollback user creation if email fails
-            users_collection.delete_one({"_id": user_id})
-            email_verification_tokens_collection.delete_one({"user_id": user_id})
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Failed to send verification email. Please try again later."
-            )
-    except HTTPException:
-        raise
-    except Exception as e:
-        print(f"Email send error: {e}")
-        # Rollback user creation
-        users_collection.delete_one({"_id": user_id})
-        email_verification_tokens_collection.delete_one({"user_id": user_id})
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to send verification email. Please try again later."
-        )
+    # Skip email verification for MVP (email not configured yet)
+    # try:
+    #     email_sent = send_email(
+    #         to_email=user_data.email,
+    #         subject="Welcome to EduResources - Verify Your Email 📚",
+    #         html_content=html_content
+    #     )
+    #     
+    #     if not email_sent:
+    #         # Rollback user creation if email fails
+    #         users_collection.delete_one({"_id": user_id})
+    #         email_verification_tokens_collection.delete_one({"user_id": user_id})
+    #         raise HTTPException(
+    #             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+    #             detail="Failed to send verification email. Please try again later."
+    #         )
+    # except HTTPException:
+    #     raise
+    # except Exception as e:
+    #     print(f"Email send error: {e}")
+    #     # Rollback user creation
+    #     users_collection.delete_one({"_id": user_id})
+    #     email_verification_tokens_collection.delete_one({"user_id": user_id})
+    #     raise HTTPException(
+    #         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+    #         detail="Failed to send verification email. Please try again later."
+    #     )
     
     return {
-        "message": "Registration successful! Please check your email to verify your account.",
+        "message": "Registration successful! You can now log in.",
         "email": user_data.email
     }
 
