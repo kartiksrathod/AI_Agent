@@ -443,11 +443,12 @@ async def register(user_data: UserCreate):
     
     # email_verification_tokens_collection.insert_one(token_doc)
     
+    # Skip email for MVP
     # Send verification email
     # verification_link = f"{FRONTEND_URL}/verify-email/{verification_token}"
     
     # Modern academic-themed email template
-    html_content = f"""
+    html_content = """
     <!DOCTYPE html>
     <html>
     <head>
