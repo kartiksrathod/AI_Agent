@@ -97,50 +97,81 @@ const Register = () => {
   if (registrationSuccess) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-blue-950 dark:via-gray-900 dark:to-purple-950 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md dark:bg-gray-800 dark:border-gray-700">
-          <CardHeader className="text-center">
-            <div className="flex justify-center mb-4">
-              <CheckCircle className="h-16 w-16 text-green-600 dark:text-green-400" />
+        <Card className="w-full max-w-md dark:bg-gray-800 dark:border-gray-700 shadow-2xl">
+          <CardHeader className="text-center pb-4">
+            <div className="flex justify-center mb-6">
+              <div className="relative animate-bounce-once">
+                <div className="absolute inset-0 bg-green-400 dark:bg-green-500 rounded-full blur-xl opacity-50 animate-pulse"></div>
+                <CheckCircle className="relative h-20 w-20 text-green-600 dark:text-green-400 animate-scale-in" />
+              </div>
             </div>
-            <CardTitle className="text-2xl font-bold dark:text-white">Check Your Email! 📧</CardTitle>
-            <CardDescription className="dark:text-gray-400">
-              We&apos;ve sent you a verification link
+            <CardTitle className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">
+              Registration Successful! 🎉
+            </CardTitle>
+            <CardDescription className="dark:text-gray-400 text-base">
+              One last step - verify your email address
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-              <p className="text-sm text-blue-900 dark:text-blue-100">
-                <strong>Almost there!</strong> We&apos;ve sent a verification email to:
-              </p>
-              <p className="text-sm font-semibold text-blue-700 dark:text-blue-300 mt-2">
-                {userEmail}
-              </p>
-              <p className="text-xs text-blue-700 dark:text-blue-400 mt-2">
-                Click the link in the email to verify your account and start learning!
-              </p>
+          <CardContent className="space-y-5 animate-fade-in">
+            {/* Main Message */}
+            <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border-2 border-blue-300 dark:border-blue-700 rounded-xl p-5 shadow-sm">
+              <div className="flex items-start gap-3">
+                <Mail className="h-6 w-6 text-blue-600 dark:text-blue-400 mt-1 flex-shrink-0" />
+                <div>
+                  <p className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-2">
+                    📬 Check your inbox!
+                  </p>
+                  <p className="text-sm text-blue-800 dark:text-blue-200 mb-2">
+                    We&apos;ve sent a verification email to:
+                  </p>
+                  <p className="text-base font-bold text-blue-700 dark:text-blue-300 bg-white dark:bg-gray-800/50 px-3 py-2 rounded-lg mb-3 break-all">
+                    {userEmail}
+                  </p>
+                  <p className="text-xs text-blue-700 dark:text-blue-400">
+                    Click the verification link in the email to activate your account and start learning!
+                  </p>
+                </div>
+              </div>
             </div>
 
+            {/* What's Next Section */}
+            <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4">
+              <p className="text-sm font-semibold text-purple-900 dark:text-purple-200 mb-2">
+                🎯 What&apos;s Next?
+              </p>
+              <ol className="text-xs text-purple-800 dark:text-purple-300 space-y-1 ml-4 list-decimal">
+                <li>Open the email we just sent you</li>
+                <li>Click the &quot;Verify Email&quot; button</li>
+                <li>You&apos;ll be redirected to login</li>
+                <li>Start exploring study materials!</li>
+              </ol>
+            </div>
+
+            {/* Tip Section */}
             <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
               <p className="text-xs text-yellow-800 dark:text-yellow-200">
-                💡 <strong>Tip:</strong> Check your spam folder if you don&apos;t see the email within a few minutes.
+                💡 <strong>Pro Tip:</strong> Check your spam/junk folder if you don&apos;t see the email within 2-3 minutes.
               </p>
             </div>
 
-            <div className="space-y-2">
+            {/* Action Buttons */}
+            <div className="space-y-3 pt-2">
               <Button 
                 onClick={() => navigate('/resend-verification')}
                 variant="outline"
-                className="w-full dark:border-gray-600 dark:text-white dark:hover:bg-gray-700"
+                className="w-full dark:border-gray-600 dark:text-white dark:hover:bg-gray-700 py-6 font-semibold border-2 hover:border-blue-500 dark:hover:border-blue-500 transition-all"
+                data-testid="resend-email-button"
               >
-                <Mail className="mr-2 h-4 w-4" />
-                Didn&apos;t receive email?
+                <Mail className="mr-2 h-5 w-5" />
+                Didn&apos;t receive the email?
               </Button>
               
               <Button 
                 onClick={() => navigate('/login')}
-                className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 dark:from-blue-700 dark:to-purple-700 dark:hover:from-blue-800 dark:hover:to-purple-800 py-6 font-semibold shadow-lg hover:shadow-xl transition-all"
+                data-testid="back-to-login-button"
               >
-                Back to Login
+                Go to Login Page
               </Button>
             </div>
           </CardContent>
