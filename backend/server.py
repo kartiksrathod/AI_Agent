@@ -420,61 +420,120 @@ async def register(user_data: UserCreate):
         "course": user_data.course,
         "semester": user_data.semester,
         "is_admin": False,
-        "email_verified": True,  # Auto-verify for MVP (email not configured yet)
+        "email_verified": False,  # Email verification required
         "created_at": datetime.utcnow()
     }
     
     users_collection.insert_one(user_doc)
     
-    # Skip email verification for MVP
     # Generate email verification token
-    # verification_token = secrets.token_urlsafe(32)
+    verification_token = secrets.token_urlsafe(32)
     
     # Store verification token with 24 hour expiry
-    # token_doc = {
-    #     "_id": str(uuid.uuid4()),
-    #     "user_id": user_id,
-    #     "email": user_data.email,
-    #     "token": verification_token,
-    #     "created_at": datetime.utcnow(),
-    #     "expires_at": datetime.utcnow() + timedelta(hours=24),
-    #     "used": False
-    # }
+    token_doc = {
+        "_id": str(uuid.uuid4()),
+        "user_id": user_id,
+        "email": user_data.email,
+        "token": verification_token,
+        "created_at": datetime.utcnow(),
+        "expires_at": datetime.utcnow() + timedelta(hours=24),
+        "used": False
+    }
     
-    # email_verification_tokens_collection.insert_one(token_doc)
+    email_verification_tokens_collection.insert_one(token_doc)
     
-    # Skip email for MVP (email not configured yet)
+    # Create verification link
+    verification_link = f"{FRONTEND_URL}/verify-email/{verification_token}"
     
-    # Skip email verification for MVP (email not configured yet)
-    # try:
-    #     email_sent = send_email(
-    #         to_email=user_data.email,
-    #         subject="Welcome to EduResources - Verify Your Email 📚",
-    #         html_content=html_content
-    #     )
-    #     
-    #     if not email_sent:
-    #         # Rollback user creation if email fails
-    #         users_collection.delete_one({"_id": user_id})
-    #         email_verification_tokens_collection.delete_one({"user_id": user_id})
-    #         raise HTTPException(
-    #             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-    #             detail="Failed to send verification email. Please try again later."
-    #         )
-    # except HTTPException:
-    #     raise
-    # except Exception as e:
-    #     print(f"Email send error: {e}")
-    #     # Rollback user creation
-    #     users_collection.delete_one({"_id": user_id})
-    #     email_verification_tokens_collection.delete_one({"user_id": user_id})
-    #     raise HTTPException(
-    #         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-    #         detail="Failed to send verification email. Please try again later."
-    #     )
+    # Beautiful welcome email with verification
+    html_content = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <style>
+            body {{ font-family: 'Segoe UI', sans-serif; line-height: 1.6; color: #333; background-color: #f5f7fa; margin: 0; padding: 0; }}
+            .container {{ max-width: 600px; margin: 40px auto; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }}
+            .header {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 30px; text-align: center; }}
+            .header h1 {{ margin: 0; font-size: 28px; }}
+            .icon {{ font-size: 48px; margin-bottom: 10px; }}
+            .content {{ padding: 40px 30px; }}
+            .greeting {{ font-size: 20px; color: #2d3748; margin-bottom: 20px; font-weight: 500; }}
+            .button {{ display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; margin: 20px 0; font-weight: 600; }}
+            .features {{ background: #f7fafc; padding: 20px; border-radius: 8px; margin: 20px 0; }}
+            .feature-item {{ margin: 10px 0; }}
+            .expiry-notice {{ background: #fff5e1; border-left: 4px solid #f59e0b; padding: 15px; margin: 20px 0; border-radius: 4px; }}
+            .footer {{ background: #2d3748; color: #cbd5e0; text-align: center; padding: 30px; font-size: 14px; }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <div class="icon">🎓</div>
+                <h1>Welcome to EduResources!</h1>
+            </div>
+            <div class="content">
+                <div class="greeting">Hello {user_data.name},</div>
+                <p>Thank you for joining EduResources - Your Academic Success Platform! We're excited to have you as part of our learning community.</p>
+                <p>To get started and access all features, please verify your email address by clicking the button below:</p>
+                <div style="text-align: center;">
+                    <a href="{verification_link}" class="button">Verify Email Address</a>
+                </div>
+                <div class="expiry-notice">
+                    ⏰ <strong>Important:</strong> This verification link will expire in 24 hours.
+                </div>
+                <div class="features">
+                    <h3 style="margin-top: 0;">🎓 What's waiting for you:</h3>
+                    <div class="feature-item">📄 Access thousands of question papers</div>
+                    <div class="feature-item">📝 Download comprehensive study notes</div>
+                    <div class="feature-item">🤖 Get help from AI Study Assistant</div>
+                    <div class="feature-item">💬 Join the community forum</div>
+                    <div class="feature-item">📊 Track your learning progress</div>
+                    <div class="feature-item">🎯 Set and achieve learning goals</div>
+                </div>
+                <p style="font-size: 14px; color: #718096;">If the button doesn't work, copy and paste this link into your browser:</p>
+                <p style="word-break: break-all; font-size: 12px; color: #4a5568; background: #f7fafc; padding: 10px; border-radius: 4px;">{verification_link}</p>
+                <p style="margin-top: 30px; font-size: 14px; color: #718096;">If you didn't create an account, please ignore this email.</p>
+            </div>
+            <div class="footer">
+                <div style="font-size: 24px; margin-bottom: 10px;">📚 EduResources</div>
+                <p style="margin: 10px 0;">Academic Resources Platform for Engineering Students</p>
+                <p style="margin: 10px 0; font-size: 12px;">© 2025 EduResources. All rights reserved.</p>
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+    
+    # Send verification email
+    try:
+        email_sent = send_email(
+            to_email=user_data.email,
+            subject="Welcome to EduResources - Verify Your Email 📚",
+            html_content=html_content
+        )
+        
+        if not email_sent:
+            # Rollback user creation if email fails
+            users_collection.delete_one({"_id": user_id})
+            email_verification_tokens_collection.delete_one({"user_id": user_id})
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Failed to send verification email. Please try again later."
+            )
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Email send error: {e}")
+        # Rollback user creation
+        users_collection.delete_one({"_id": user_id})
+        email_verification_tokens_collection.delete_one({"user_id": user_id})
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to send verification email. Please try again later."
+        )
     
     return {
-        "message": "Registration successful! You can now log in.",
+        "message": "Registration successful! Please check your email to verify your account.",
         "email": user_data.email
     }
 
