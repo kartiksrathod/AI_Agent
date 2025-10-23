@@ -2365,7 +2365,15 @@ async def health_check():
     try:
         # Ping DB to verify connection
         client.admin.command('ping')
-        return {"status": "healthy", "database": "connected"}
+        
+        # Check email configuration
+        email_configured = bool(SMTP_USERNAME and SMTP_PASSWORD)
+        
+        return {
+            "status": "healthy", 
+            "database": "connected",
+            "email_system": "configured" if email_configured else "not_configured"
+        }
     except Exception as e:
         return {"status": "unhealthy", "database": "disconnected", "error": str(e)}
 
