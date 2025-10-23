@@ -578,8 +578,13 @@ async def login(login_data: UserLogin):
 
 ## Email utility function
 def send_email(to_email: str, subject: str, html_content: str):
-    """Send email using SMTP"""
+    """Send email using SMTP with robust error handling"""
     try:
+        # Validate SMTP configuration
+        if not SMTP_USERNAME or not SMTP_PASSWORD:
+            print("❌ SMTP credentials not configured")
+            return False
+        
         # Create message
         msg = MIMEMultipart('alternative')
         msg['Subject'] = subject
@@ -590,15 +595,22 @@ def send_email(to_email: str, subject: str, html_content: str):
         html_part = MIMEText(html_content, 'html')
         msg.attach(html_part)
         
-        # Send email
-        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+        # Send email with timeout
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=10) as server:
             server.starttls()
             server.login(SMTP_USERNAME, SMTP_PASSWORD)
             server.send_message(msg)
         
+        print(f"✅ Email sent successfully to {to_email}")
         return True
+    except smtplib.SMTPAuthenticationError as e:
+        print(f"❌ SMTP Authentication failed: {e}")
+        return False
+    except smtplib.SMTPException as e:
+        print(f"❌ SMTP error: {e}")
+        return False
     except Exception as e:
-        print(f"Error sending email: {e}")
+        print(f"❌ Error sending email: {e}")
         return False
 
 ## Email Verification Endpoints
