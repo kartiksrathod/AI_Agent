@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
-import { CheckCircle, XCircle, Loader2, Mail } from 'lucide-react';
+import { CheckCircle, XCircle, Loader2, Mail, ArrowRight, Sparkles } from 'lucide-react';
 import axios from 'axios';
 
 const API_BASE_URL = process.env.REACT_APP_BACKEND_URL !== undefined 
@@ -14,6 +14,7 @@ const VerifyEmail = () => {
   const navigate = useNavigate();
   const [status, setStatus] = useState('verifying'); // verifying, success, error
   const [message, setMessage] = useState('Verifying your email...');
+  const [countdown, setCountdown] = useState(5);
 
   useEffect(() => {
     const verifyEmail = async () => {
@@ -21,11 +22,6 @@ const VerifyEmail = () => {
         const response = await axios.get(`${API_BASE_URL}/api/auth/verify-email/${token}`);
         setStatus('success');
         setMessage(response.data.message || 'Email verified successfully!');
-        
-        // Redirect to login after 3 seconds
-        setTimeout(() => {
-          navigate('/login');
-        }, 3000);
       } catch (error) {
         setStatus('error');
         setMessage(
@@ -38,7 +34,19 @@ const VerifyEmail = () => {
     if (token) {
       verifyEmail();
     }
-  }, [token, navigate]);
+  }, [token]);
+
+  // Countdown timer for redirect
+  useEffect(() => {
+    if (status === 'success' && countdown > 0) {
+      const timer = setTimeout(() => {
+        setCountdown(countdown - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    } else if (status === 'success' && countdown === 0) {
+      navigate('/login');
+    }
+  }, [status, countdown, navigate]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-blue-950 dark:via-gray-900 dark:to-purple-950 flex items-center justify-center p-4">
