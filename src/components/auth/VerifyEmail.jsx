@@ -146,7 +146,7 @@ const VerifyEmail = () => {
                   ⚠️ Verification Link Invalid
                 </p>
                 <p className="text-sm text-red-700 dark:text-red-400">
-                  This link may have expired or already been used. Don't worry, you can request a new one!
+                  This link may have expired or already been used. Do not worry, you can request a new one!
                 </p>
               </div>
               
