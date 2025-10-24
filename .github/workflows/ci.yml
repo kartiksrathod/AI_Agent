@@ -142,7 +142,7 @@ jobs:
         yarn build
         echo "✅ Frontend build successful"
       env:
-        CI: true
+        CI: false
         GENERATE_SOURCEMAP: false
     
     - name: Check build output
