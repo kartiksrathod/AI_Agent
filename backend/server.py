@@ -420,7 +420,7 @@ async def register(user_data: UserCreate):
         "course": user_data.course,
         "semester": user_data.semester,
         "is_admin": False,
-        "email_verified": False,  # Email verification required
+        "email_verified": True,  # AUTO-VERIFIED: Email verification temporarily disabled
         "created_at": datetime.utcnow()
     }
     
