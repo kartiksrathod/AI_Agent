@@ -504,7 +504,7 @@ async def register(user_data: UserCreate):
     </html>
     """
     
-    # Send verification email
+    # Send verification email (optional - don't fail registration if email fails)
     try:
         email_sent = send_email(
             to_email=user_data.email,
@@ -512,28 +512,15 @@ async def register(user_data: UserCreate):
             html_content=html_content
         )
         
-        if not email_sent:
-            # Rollback user creation if email fails
-            users_collection.delete_one({"_id": user_id})
-            email_verification_tokens_collection.delete_one({"user_id": user_id})
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Failed to send verification email. Please try again later."
-            )
-    except HTTPException:
-        raise
+        if email_sent:
+            print(f"✅ Welcome email sent to {user_data.email}")
+        else:
+            print(f"⚠️  Welcome email failed to send to {user_data.email}")
     except Exception as e:
-        print(f"Email send error: {e}")
-        # Rollback user creation
-        users_collection.delete_one({"_id": user_id})
-        email_verification_tokens_collection.delete_one({"user_id": user_id})
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to send verification email. Please try again later."
-        )
+        print(f"⚠️  Email send error (non-critical): {e}")
     
     return {
-        "message": "Registration successful! Please check your email to verify your account.",
+        "message": "Registration successful! You can now login with your credentials.",
         "email": user_data.email
     }
 
