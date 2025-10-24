@@ -131,7 +131,7 @@ EMERGENT_LLM_KEY=sk-emergent-a047579AfDd6755D26
 
 ### Frontend Environment
 ```env
-REACT_APP_BACKEND_URL=https://ab5f01ec-a25d-4fbd-a174-0482797269ab.preview.emergentagent.com
+REACT_APP_BACKEND_URL=https://smtp-setup.preview.emergentagent.com
 ```
 
 ---
