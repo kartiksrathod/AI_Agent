@@ -1,6 +1,5 @@
 const js = require('@eslint/js');
 const reactPlugin = require('eslint-plugin-react');
-const reactHooksPlugin = require('eslint-plugin-react-hooks');
 const jsxA11yPlugin = require('eslint-plugin-jsx-a11y');
 const importPlugin = require('eslint-plugin-import');
 const globals = require('globals');
