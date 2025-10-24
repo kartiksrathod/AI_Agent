@@ -118,21 +118,27 @@ jobs:
       with:
         node-version: '18'
         cache: 'yarn'
+        cache-dependency-path: 'frontend/yarn.lock'
     
     - name: Install dependencies
-      run: yarn install --frozen-lockfile
+      run: |
+        cd frontend
+        yarn install --frozen-lockfile
     
     - name: Create test environment file
       run: |
+        cd frontend
         echo "REACT_APP_BACKEND_URL=https://api.example.com" > .env
     
     - name: Lint code with ESLint
       run: |
+        cd frontend
         echo "Running ESLint checks..."
         yarn lint || echo "⚠️  Linting issues found (non-blocking)"
     
     - name: Build application
       run: |
+        cd frontend
         yarn build
         echo "✅ Frontend build successful"
       env:
@@ -141,6 +147,7 @@ jobs:
     
     - name: Check build output
       run: |
+        cd frontend
         if [ -d "build" ]; then
           echo "✅ Build directory created"
           echo "Build size: $(du -sh build | cut -f1)"
