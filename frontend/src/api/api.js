@@ -1,0 +1,184 @@
+import axios from 'axios';
+
+// Get backend URL from env or fallback to localhost
+// For production/preview, use empty string to make requests to same domain
+// Kubernetes ingress will route /api/* to backend service
+const API_BASE_URL = process.env.REACT_APP_BACKEND_URL !== undefined 
+  ? process.env.REACT_APP_BACKEND_URL 
+  : 'http://localhost:8001';
+
+const api = axios.create({
+  baseURL: API_BASE_URL,
+});
+
+// Interceptor to add auth token to requests
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Authentication endpoints
+export const authAPI = {
+  login: (credentials) => api.post('/api/auth/login', credentials),
+  register: (userData) => api.post('/api/auth/register', userData),
+  verifyEmail: (token) => api.get(`/api/auth/verify-email/${token}`),
+  resendVerification: (email) => api.post('/api/auth/resend-verification', { email }),
+  forgotPassword: (email) => api.post('/api/auth/forgot-password', { email }),
+  resetPassword: (token, newPassword) => api.post('/api/auth/reset-password', { token, new_password: newPassword })
+};
+
+// Question Papers
+export const papersAPI = {
+  getAll: () => api.get('/api/papers'),
+  create: (formData) => api.post('/api/papers', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  }),
+  delete: (id) => api.delete(`/api/papers/${id}`),
+  download: async (id) => {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_BASE_URL}/api/papers/${id}/download`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error('Download failed');
+    }
+    
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = response.headers.get('content-disposition')?.split('filename=')[1]?.replace(/"/g, '') || 'paper.pdf';
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+  },
+  view: (id) => {
+    window.open(`${API_BASE_URL}/api/papers/${id}/view`, '_blank');
+  }
+};
+
+// Study Notes
+export const notesAPI = {
+  getAll: () => api.get('/api/notes'),
+  create: (formData) => api.post('/api/notes', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  }),
+  delete: (id) => api.delete(`/api/notes/${id}`),
+  download: async (id) => {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_BASE_URL}/api/notes/${id}/download`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error('Download failed');
+    }
+    
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = response.headers.get('content-disposition')?.split('filename=')[1]?.replace(/"/g, '') || 'note.pdf';
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+  },
+  view: (id) => {
+    window.open(`${API_BASE_URL}/api/notes/${id}/view`, '_blank');
+  }
+};
+
+// Syllabus
+export const syllabusAPI = {
+  getAll: () => api.get('/api/syllabus'),
+  create: (formData) => api.post('/api/syllabus', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  }),
+  delete: (id) => api.delete(`/api/syllabus/${id}`),
+  download: async (id) => {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_BASE_URL}/api/syllabus/${id}/download`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error('Download failed');
+    }
+    
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = response.headers.get('content-disposition')?.split('filename=')[1]?.replace(/"/g, '') || 'syllabus.pdf';
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+  },
+  view: (id) => {
+    window.open(`${API_BASE_URL}/api/syllabus/${id}/view`, '_blank');
+  }
+};
+
+// Platform stats
+export const statsAPI = {
+  get: () => api.get('/api/stats')
+};
+
+// User profile stuff
+export const profileAPI = {
+  get: () => api.get('/api/profile'),
+  update: (profileData) => api.put('/api/profile', profileData),
+  uploadPhoto: (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return api.post('/api/profile/photo', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+  },
+  removePhoto: () => api.delete('/api/profile/photo'),
+  updatePassword: (passwordData) => api.put('/api/profile/password', passwordData),
+  getPhoto: (userId) => `${API_BASE_URL}/api/profile/photo/${userId}`,
+  getStats: () => api.get('/api/profile/stats')  // Get user statistics
+};
+
+// Bookmarks
+export const bookmarksAPI = {
+  getAll: () => api.get('/api/bookmarks'),
+  create: (bookmarkData) => api.post('/api/bookmarks', bookmarkData),
+  remove: (resourceType, resourceId) => api.delete(`/api/bookmarks/${resourceType}/${resourceId}`),
+  check: (resourceType, resourceId) => api.get(`/api/bookmarks/check/${resourceType}/${resourceId}`)
+};
+
+// Achievements system
+export const achievementsAPI = {
+  getAll: () => api.get('/api/achievements')
+};
+
+// Learning Goals
+export const learningGoalsAPI = {
+  getAll: () => api.get('/api/learning-goals'),
+  create: (goalData) => api.post('/api/learning-goals', goalData),
+  update: (goalId, goalData) => api.put(`/api/learning-goals/${goalId}`, goalData),
+  delete: (goalId) => api.delete(`/api/learning-goals/${goalId}`)
+};
+
+export default api;
