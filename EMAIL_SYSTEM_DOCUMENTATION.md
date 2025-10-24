@@ -423,7 +423,7 @@ SMTP_FROM_EMAIL=kartiksrathod07@gmail.com
 SMTP_FROM_NAME=EduResources - Academic Platform
 
 # Frontend URL for email links
-FRONTEND_URL=https://smtp-setup.preview.emergentagent.com
+FRONTEND_URL=https://auth-flow-25.preview.emergentagent.com
 
 # Other configurations...
 ```

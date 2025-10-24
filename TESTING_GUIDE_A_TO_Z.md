@@ -4,7 +4,7 @@
 
 **Test Your Website Here:**
 ```
-https://smtp-setup.preview.emergentagent.com
+https://auth-flow-25.preview.emergentagent.com
 ```
 
 ---
@@ -586,7 +586,7 @@ If all tests pass and checklist complete:
 ### For Current Preview:
 Your site is already live at:
 ```
-https://smtp-setup.preview.emergentagent.com
+https://auth-flow-25.preview.emergentagent.com
 ```
 
 This preview URL is production-ready!
