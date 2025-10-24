@@ -67,7 +67,7 @@ EMERGENT_LLM_KEY=sk-emergent-38c10A41e0d3a3d19F
 
 ### Frontend (.env location: `/app/frontend/.env`)
 ```env
-REACT_APP_BACKEND_URL=https://pwd-reset-solution.preview.emergentagent.com
+REACT_APP_BACKEND_URL=https://ci-fix-urgent.preview.emergentagent.com
 ```
 
 ---
