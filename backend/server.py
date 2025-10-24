@@ -536,12 +536,12 @@ async def login(login_data: UserLogin):
             headers={"WWW-Authenticate": "Bearer"},
         )
     
-    # Check email verification
-    if not user.get("email_verified", False):
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Please verify your email address before logging in. Check your inbox for the verification link."
-        )
+    # Email verification check - temporarily disabled
+    # if not user.get("email_verified", False):
+    #     raise HTTPException(
+    #         status_code=status.HTTP_403_FORBIDDEN,
+    #         detail="Please verify your email address before logging in. Check your inbox for the verification link."
+    #     )
     
     # Create JWT token
     token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
