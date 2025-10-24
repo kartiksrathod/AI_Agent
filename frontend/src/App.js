@@ -242,28 +242,24 @@ const AppContent = () => {
 
 // App wrapper with intro animation
 const AppWithProviders = () => {
-  const [showIntro, setShowIntro] = useState(true);
-  const [introComplete, setIntroComplete] = useState(false);
+  const [showIntro, setShowIntro] = useState(() => {
+    // Check if user has already seen intro in this session
+    return !sessionStorage.getItem('hasSeenIntro');
+  });
+  const [introComplete, setIntroComplete] = useState(() => {
+    // If intro was already seen, mark as complete
+    return sessionStorage.getItem('hasSeenIntro') === 'true';
+  });
 
   const handleIntroComplete = () => {
     setShowIntro(false);
+    sessionStorage.setItem('hasSeenIntro', 'true');
     setTimeout(() => setIntroComplete(true), 500);
   };
 
-  // TODO: Maybe add localStorage check to show intro only once?
-  // Currently showing every time because it looks cool
-  // useEffect(() => {
-  //   const hasSeenIntro = localStorage.getItem('hasSeenIntro');
-  //   if (hasSeenIntro) {
-  //     setShowIntro(false);
-  //     setIntroComplete(true);
-  //   }
-  // }, []);
-
   useEffect(() => {
     if (!showIntro && introComplete) {
-      // Not saving to localStorage so intro shows every time
-      // localStorage.setItem('hasSeenIntro', 'true');
+      sessionStorage.setItem('hasSeenIntro', 'true');
     }
   }, [showIntro, introComplete]);
 
