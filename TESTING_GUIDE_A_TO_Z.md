@@ -4,7 +4,7 @@
 
 **Test Your Website Here:**
 ```
-https://710714f9-21d2-4be6-ac2e-19c0938b8ff1.preview.emergentagent.com
+https://pwd-reset-solution.preview.emergentagent.com
 ```
 
 ---
@@ -586,7 +586,7 @@ If all tests pass and checklist complete:
 ### For Current Preview:
 Your site is already live at:
 ```
-https://710714f9-21d2-4be6-ac2e-19c0938b8ff1.preview.emergentagent.com
+https://pwd-reset-solution.preview.emergentagent.com
 ```
 
 This preview URL is production-ready!
