@@ -520,8 +520,9 @@ async def register(user_data: UserCreate):
         print(f"⚠️  Email send error (non-critical): {e}")
     
     return {
-        "message": "Registration successful! You can now login with your credentials.",
-        "email": user_data.email
+        "message": "Registration successful! Please check your email to verify your account before logging in.",
+        "email": user_data.email,
+        "email_sent": email_sent if 'email_sent' in locals() else False
     }
 
 @app.post("/api/auth/login", response_model=Token)
