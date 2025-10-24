@@ -606,16 +606,15 @@ def send_email(to_email: str, subject: str, html_content: str):
 async def verify_email(token: str):
     """Verify user email with token"""
     try:
-        # Find token
+        # Find token (check both used and unused)
         token_doc = email_verification_tokens_collection.find_one({
-            "token": token,
-            "used": False
+            "token": token
         })
         
         if not token_doc:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Invalid or expired verification link"
+                detail="Invalid verification link. Please request a new one."
             )
         
         # Check if token is expired
@@ -624,6 +623,15 @@ async def verify_email(token: str):
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Verification link has expired. Please request a new one."
             )
+        
+        # Check if user is already verified
+        user = users_collection.find_one({"_id": token_doc["user_id"]})
+        if user and user.get("email_verified", False):
+            # Already verified - return success (handles duplicate clicks)
+            return {
+                "message": "Email already verified! You can login now.",
+                "already_verified": True
+            }
         
         # Mark user as verified
         users_collection.update_one(
