@@ -131,7 +131,7 @@ EMERGENT_LLM_KEY=sk-emergent-a047579AfDd6755D26
 
 ### Frontend Environment
 ```env
-REACT_APP_BACKEND_URL=https://auth-overhaul-8.preview.emergentagent.com
+REACT_APP_BACKEND_URL=https://pipeline-repair.preview.emergentagent.com
 ```
 
 ---
