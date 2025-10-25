@@ -664,6 +664,14 @@ async def login(request: Request, login_data: UserLogin, response: Response):
     # Return user data and token (for backward compatibility during transition)
     return Token(access_token=access_token, token_type="bearer", user=user_obj)
 
+@app.post("/api/auth/logout")
+async def logout(response: Response):
+    """✅ SECURITY FIX #2: Logout endpoint to clear httpOnly cookie"""
+    response.delete_cookie(key="access_token")
+    return {"message": "Logged out successfully"}
+
+
+
 ## Email utility function
 def send_email(to_email: str, subject: str, html_content: str):
     """Send email using SMTP with robust error handling"""
