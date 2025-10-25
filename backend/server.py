@@ -411,6 +411,57 @@ async def save_upload_file(upload_file, destination):
     
     return file_path
 
+# ✅ SECURITY FIX #5: File Validation Functions
+async def validate_file_size(file: UploadFile):
+    """Validate file size to prevent DoS"""
+    size = 0
+    chunk_size = 1024 * 1024  # 1MB chunks
+    
+    # Read file in chunks
+    content = await file.read()
+    size = len(content)
+    
+    if size > MAX_FILE_SIZE:
+        raise HTTPException(
+            status_code=413,
+            detail=f"File too large. Maximum size is {MAX_FILE_SIZE / 1024 / 1024}MB"
+        )
+    
+    # Reset file pointer
+    await file.seek(0)
+    return True
+
+async def validate_file_type(file: UploadFile):
+    """Validate file type using magic bytes (not just extension)"""
+    # Read first 2048 bytes for magic number detection
+    header = await file.read(2048)
+    await file.seek(0)
+    
+    # Check magic bytes
+    try:
+        mime = magic.from_buffer(header, mime=True)
+    except Exception as e:
+        print(f"Magic detection error: {e}")
+        raise HTTPException(
+            status_code=400,
+            detail="Could not determine file type"
+        )
+    
+    if mime not in ALLOWED_MIME_TYPES:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid file type '{mime}'. Only PDF files are allowed."
+        )
+    
+    # Also check extension as secondary check
+    if not file.filename.lower().endswith('.pdf'):
+        raise HTTPException(
+            status_code=400,
+            detail="File must have .pdf extension"
+        )
+    
+    return True
+
 ## Auth routes
 @app.post("/api/auth/register")
 async def register(user_data: UserCreate):
