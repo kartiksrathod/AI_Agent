@@ -423,7 +423,7 @@ SMTP_FROM_EMAIL=kartiksrathod07@gmail.com
 SMTP_FROM_NAME=EduResources - Academic Platform
 
 # Frontend URL for email links
-FRONTEND_URL=https://mongo-safeguard.preview.emergentagent.com
+FRONTEND_URL=https://launch-validator.preview.emergentagent.com
 
 # Other configurations...
 ```
