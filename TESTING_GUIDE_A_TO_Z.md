@@ -4,7 +4,7 @@
 
 **Test Your Website Here:**
 ```
-https://safety-first-55.preview.emergentagent.com
+https://mongo-safeguard.preview.emergentagent.com
 ```
 
 ---
@@ -586,7 +586,7 @@ If all tests pass and checklist complete:
 ### For Current Preview:
 Your site is already live at:
 ```
-https://safety-first-55.preview.emergentagent.com
+https://mongo-safeguard.preview.emergentagent.com
 ```
 
 This preview URL is production-ready!

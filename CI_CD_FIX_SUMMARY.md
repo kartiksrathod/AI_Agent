@@ -131,7 +131,7 @@ EMERGENT_LLM_KEY=sk-emergent-a047579AfDd6755D26
 
 ### Frontend Environment
 ```env
-REACT_APP_BACKEND_URL=https://safety-first-55.preview.emergentagent.com
+REACT_APP_BACKEND_URL=https://mongo-safeguard.preview.emergentagent.com
 ```
 
 ---

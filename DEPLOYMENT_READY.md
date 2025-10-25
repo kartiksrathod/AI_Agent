@@ -142,12 +142,12 @@ All scripts are in `/app/scripts/`:
 
 ### Frontend URL:
 ```
-https://safety-first-55.preview.emergentagent.com
+https://mongo-safeguard.preview.emergentagent.com
 ```
 
 ### Backend API:
 ```
-https://safety-first-55.preview.emergentagent.com/api
+https://mongo-safeguard.preview.emergentagent.com/api
 ```
 
 ### Admin Login:
