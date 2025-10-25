@@ -100,12 +100,10 @@ export const syllabusAPI = {
   }),
   delete: (id) => api.delete(`/api/syllabus/${id}`),
   download: async (id) => {
-    const token = localStorage.getItem('token');
+    // ✅ SECURITY FIX #2: Cookies sent automatically with credentials
     const response = await fetch(`${API_BASE_URL}/api/syllabus/${id}/download`, {
       method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
+      credentials: 'include' // Send cookies
     });
     
     if (!response.ok) {
