@@ -358,7 +358,14 @@ def create_access_token(data, expires_delta=None):
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
-def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
+def get_current_user(
+    request: Request,
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(HTTPBearer(auto_error=False))
+):
+    """
+    ✅ SECURITY FIX #2: Support both cookie and Authorization header
+    Priority: Cookie first, then Authorization header (for backward compatibility)
+    """
     # Standard auth exception
     auth_error = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -366,8 +373,23 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
         headers={"WWW-Authenticate": "Bearer"},
     )
     
-    try:
+    token = None
+    
+    # Try to get token from cookie first (secure method)
+    if "access_token" in request.cookies:
+        cookie_token = request.cookies.get("access_token")
+        if cookie_token.startswith("Bearer "):
+            token = cookie_token[7:]  # Remove "Bearer " prefix
+        else:
+            token = cookie_token
+    # Fall back to Authorization header (for backward compatibility)
+    elif credentials:
         token = credentials.credentials
+    
+    if not token:
+        raise auth_error
+    
+    try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         user_id = payload.get("sub")
         if not user_id:
