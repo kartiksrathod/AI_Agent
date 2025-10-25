@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { authAPI } from '../api/api';
+import { authAPI, profileAPI } from '../api/api';
 
 const AuthContext = createContext();
 
@@ -17,64 +17,63 @@ export const AuthProvider = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    // Check if user was logged in before (from localStorage)
-    const storedUser = localStorage.getItem('currentUser');
-    const storedToken = localStorage.getItem('token');
-    
-    if (storedUser && storedToken) {
+    // ✅ SECURITY FIX #2: Check authentication via API call instead of localStorage
+    // Cookies are sent automatically with the request
+    const checkAuth = async () => {
       try {
-        const user = JSON.parse(storedUser);
+        // Try to get profile - if cookie is valid, this will succeed
+        const res = await profileAPI.get();
+        const user = res.data;
         setCurrentUser(user);
-        setIsAdmin(user.is_admin === true); // Admin status comes from backend only
+        setIsAdmin(user.is_admin === true);
       } catch (error) {
-        console.error('Error parsing stored user:', error);
-        // Clear invalid data
-        localStorage.removeItem('currentUser');
-        localStorage.removeItem('token');
+        // No valid session - user needs to login
+        setCurrentUser(null);
+        setIsAdmin(false);
+      } finally {
+        setLoading(false);
       }
-    }
-    setLoading(false);
+    };
+
+    checkAuth();
   }, []);
 
   const login = async (email, password) => {
     const res = await authAPI.login({ email, password });
-    const { access_token, user } = res.data;
+    const { user } = res.data;
     
+    // ✅ SECURITY FIX #2: Don't store token - it's in httpOnly cookie now
     setCurrentUser(user);
     setIsAdmin(user.is_admin === true);
-    
-    // Save to localStorage for persistence
-    localStorage.setItem('currentUser', JSON.stringify(user));
-    localStorage.setItem('token', access_token);
     
     return user;
   };
 
   const register = async (userData) => {
     const res = await authAPI.register(userData);
-    const { access_token, user } = res.data;
+    const { user } = res.data;
     
+    // ✅ SECURITY FIX #2: Don't store token - it's in httpOnly cookie now
     setCurrentUser(user);
     setIsAdmin(user.is_admin === true);
-    
-    // Save to localStorage
-    localStorage.setItem('currentUser', JSON.stringify(user));
-    localStorage.setItem('token', access_token);
     
     return user;
   };
 
-  const logout = () => {
+  const logout = async () => {
+    // ✅ SECURITY FIX #2: Call logout endpoint to clear cookie
+    try {
+      await authAPI.logout();
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+    
     setCurrentUser(null);
     setIsAdmin(false);
-    // Clear everything from storage
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('token');
   };
 
   const updateUser = (updatedUser) => {
     setCurrentUser(updatedUser);
-    localStorage.setItem('currentUser', JSON.stringify(updatedUser));
   };
 
   const value = {
