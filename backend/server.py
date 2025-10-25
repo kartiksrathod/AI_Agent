@@ -18,7 +18,15 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import secrets
-import magic
+
+# Try to import magic for file validation, fallback to extension checking
+try:
+    import magic
+    MAGIC_AVAILABLE = True
+except ImportError:
+    print("⚠️  python-magic not available, using extension-based file validation")
+    MAGIC_AVAILABLE = False
+
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
