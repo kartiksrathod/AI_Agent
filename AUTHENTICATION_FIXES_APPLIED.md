@@ -25,7 +25,7 @@
 **Root Cause:** FRONTEND_URL was set to localhost, which doesn't work on other devices
 **Solution:**
 - Updated backend/.env with correct preview URL
-- FRONTEND_URL=https://launch-validator.preview.emergentagent.com
+- FRONTEND_URL=https://persistent-mongo.preview.emergentagent.com
 - All verification emails now use the preview URL instead of localhost
 
 **Test Result:** ✅ Email verification links now work on all devices
@@ -55,7 +55,7 @@
 ✅ MONGO_URL=mongodb://localhost:27017
 ✅ DATABASE_NAME=academic_resources
 ✅ SECRET_KEY=[configured]
-✅ FRONTEND_URL=https://launch-validator.preview.emergentagent.com
+✅ FRONTEND_URL=https://persistent-mongo.preview.emergentagent.com
 ✅ SMTP Configuration (Gmail)
 ✅ EMERGENT_LLM_KEY=sk-emergent-906D10dAb08F9964c6
 ```

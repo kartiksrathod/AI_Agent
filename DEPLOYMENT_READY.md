@@ -142,12 +142,12 @@ All scripts are in `/app/scripts/`:
 
 ### Frontend URL:
 ```
-https://launch-validator.preview.emergentagent.com
+https://persistent-mongo.preview.emergentagent.com
 ```
 
 ### Backend API:
 ```
-https://launch-validator.preview.emergentagent.com/api
+https://persistent-mongo.preview.emergentagent.com/api
 ```
 
 ### Admin Login:

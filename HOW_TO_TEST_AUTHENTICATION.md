@@ -9,7 +9,7 @@
 ### Step 1: Access the Application
 Open your browser (desktop or mobile) and go to:
 ```
-https://launch-validator.preview.emergentagent.com
+https://persistent-mongo.preview.emergentagent.com
 ```
 
 ### Step 2: Login as Admin
@@ -124,7 +124,7 @@ https://launch-validator.preview.emergentagent.com
 
 ### Test Admin Login via API:
 ```bash
-curl -X POST https://launch-validator.preview.emergentagent.com/api/auth/login \
+curl -X POST https://persistent-mongo.preview.emergentagent.com/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email": "kartiksrathod07@gmail.com", "password": "Sheshi@1234"}'
 ```
@@ -133,7 +133,7 @@ Expected: JWT token returned
 
 ### Test Password Reset Request:
 ```bash
-curl -X POST https://launch-validator.preview.emergentagent.com/api/auth/forgot-password \
+curl -X POST https://persistent-mongo.preview.emergentagent.com/api/auth/forgot-password \
   -H "Content-Type: application/json" \
   -d '{"email": "kartiksrathod07@gmail.com"}'
 ```
@@ -142,7 +142,7 @@ Expected: Success message + email sent
 
 ### Test Registration:
 ```bash
-curl -X POST https://launch-validator.preview.emergentagent.com/api/auth/register \
+curl -X POST https://persistent-mongo.preview.emergentagent.com/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Test User",
