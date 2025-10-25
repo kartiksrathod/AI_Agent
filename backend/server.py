@@ -483,32 +483,33 @@ async def validate_file_size(file: UploadFile):
 
 async def validate_file_type(file: UploadFile):
     """Validate file type using magic bytes (not just extension)"""
-    # Read first 2048 bytes for magic number detection
-    header = await file.read(2048)
-    await file.seek(0)
-    
-    # Check magic bytes
-    try:
-        mime = magic.from_buffer(header, mime=True)
-    except Exception as e:
-        print(f"Magic detection error: {e}")
-        raise HTTPException(
-            status_code=400,
-            detail="Could not determine file type"
-        )
-    
-    if mime not in ALLOWED_MIME_TYPES:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Invalid file type '{mime}'. Only PDF files are allowed."
-        )
-    
-    # Also check extension as secondary check
+    # Always check extension first
     if not file.filename.lower().endswith('.pdf'):
         raise HTTPException(
             status_code=400,
             detail="File must have .pdf extension"
         )
+    
+    # If magic library is available, do deeper validation
+    if MAGIC_AVAILABLE:
+        # Read first 2048 bytes for magic number detection
+        header = await file.read(2048)
+        await file.seek(0)
+        
+        # Check magic bytes
+        try:
+            mime = magic.from_buffer(header, mime=True)
+            if mime not in ALLOWED_MIME_TYPES:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Invalid file type '{mime}'. Only PDF files are allowed."
+                )
+        except Exception as e:
+            print(f"Magic detection error: {e}")
+            # Fallback to extension check (already done above)
+            pass
+    
+    return True
     
     return True
 
