@@ -51,11 +51,15 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 # Config from env
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "1440"))
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "15"))  # ✅ Reduced from 1440 to 15
 MONGO_URL = os.getenv("MONGO_URL")
 DATABASE_NAME = os.getenv("DATABASE_NAME")
 UPLOAD_DIR = os.getenv("UPLOAD_DIR", "uploads")
 EMERGENT_LLM_KEY = os.getenv("EMERGENT_LLM_KEY")
+
+# ✅ SECURITY FIX #5: File Upload Security
+MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
+ALLOWED_MIME_TYPES = ['application/pdf']
 
 # Email Configuration
 SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
