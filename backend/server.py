@@ -107,17 +107,16 @@ for folder in ["papers", "notes", "syllabus", "profile_photos"]:
 try:
     # MongoDB Atlas requires SSL/TLS - configure connection parameters
     import ssl
+    import certifi
     
     # Parse if it's an Atlas connection (mongodb+srv://)
     if "mongodb+srv://" in MONGO_URL or "mongodb+srv" in MONGO_URL:
-        # MongoDB Atlas connection with SSL/TLS
+        # MongoDB Atlas connection with SSL/TLS using certifi certificates
         client = MongoClient(
             MONGO_URL,
-            tls=True,
-            tlsAllowInvalidCertificates=True,  # For development - helps with SSL cert issues
+            tlsCAFile=certifi.where(),
             serverSelectionTimeoutMS=5000,
-            connectTimeoutMS=10000,
-            retryWrites=True
+            connectTimeoutMS=10000
         )
         print("🔒 Connecting to MongoDB Atlas with SSL/TLS...")
     else:
