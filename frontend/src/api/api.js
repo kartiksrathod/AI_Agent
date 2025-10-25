@@ -19,6 +19,7 @@ const api = axios.create({
 export const authAPI = {
   login: (credentials) => api.post('/api/auth/login', credentials),
   register: (userData) => api.post('/api/auth/register', userData),
+  logout: () => api.post('/api/auth/logout'), // ✅ SECURITY FIX #2: Logout endpoint
   verifyEmail: (token) => api.get(`/api/auth/verify-email/${token}`),
   resendVerification: (email) => api.post('/api/auth/resend-verification', { email }),
   forgotPassword: (email) => api.post('/api/auth/forgot-password', { email }),
