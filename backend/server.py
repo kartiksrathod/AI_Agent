@@ -23,11 +23,24 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 
+# Phase 2 Security Enhancements
+from middleware.security_headers import SecurityHeadersMiddleware
+from middleware.logging_middleware import RequestLoggingMiddleware
+from logging.config import setup_logging
+
 # Load .env from the correct path
 load_dotenv(dotenv_path="/app/backend/.env")
 
+# Initialize logging system
+setup_logging()
+
 # Main app instance
-app = FastAPI(title="Academic Resources API", version="1.0.0")
+app = FastAPI(
+    title="Academic Resources API", 
+    version="2.0.0",
+    docs_url="/docs" if os.getenv("ENVIRONMENT", "production") != "production" else None,
+    redoc_url="/redoc" if os.getenv("ENVIRONMENT", "production") != "production" else None,
+)
 
 # ✅ SECURITY FIX #1: CORS Configuration - Restrict to specific origins
 ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000,http://localhost:8080").split(",")
