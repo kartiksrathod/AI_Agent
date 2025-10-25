@@ -865,11 +865,12 @@ async def resend_verification(request: ResendVerificationRequest):
 
 ## Password Reset Endpoints
 @app.post("/api/auth/forgot-password")
-async def forgot_password(request: ForgotPasswordRequest):
+@limiter.limit("3/hour")  # ✅ SECURITY FIX #3: Rate limit password reset
+async def forgot_password(request: Request, reset_request: ForgotPasswordRequest):
     """Send password reset email"""
     try:
         # Check if user exists
-        user = users_collection.find_one({"email": request.email})
+        user = users_collection.find_one({"email": reset_request.email})
         
         # Always return success to prevent email enumeration
         if not user:
