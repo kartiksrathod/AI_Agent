@@ -592,7 +592,8 @@ async def register(request: Request, user_data: UserCreate):
     }
 
 @app.post("/api/auth/login", response_model=Token)
-async def login(login_data: UserLogin):
+@limiter.limit("5/minute")  # ✅ SECURITY FIX #3: Rate limit login attempts
+async def login(request: Request, login_data: UserLogin, response: Response):
     user = users_collection.find_one({"email": login_data.email})
     
     # Check if user exists and password matches
@@ -616,6 +617,16 @@ async def login(login_data: UserLogin):
         data={"sub": user["_id"]}, expires_delta=token_expires
     )
     
+    # ✅ SECURITY FIX #2: Set httpOnly cookie instead of sending token in body
+    response.set_cookie(
+        key="access_token",
+        value=f"Bearer {access_token}",
+        httponly=True,  # ✅ Prevents JavaScript access (XSS protection)
+        secure=True,    # ✅ Only sent over HTTPS
+        samesite="lax", # ✅ CSRF protection
+        max_age=ACCESS_TOKEN_EXPIRE_MINUTES * 60
+    )
+    
     user_obj = User(
         id=user["_id"],
         name=user["name"],
@@ -628,6 +639,7 @@ async def login(login_data: UserLogin):
         email_verified=user.get("email_verified", False)
     )
     
+    # Return user data and token (for backward compatibility during transition)
     return Token(access_token=access_token, token_type="bearer", user=user_obj)
 
 ## Email utility function
