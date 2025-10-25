@@ -103,9 +103,28 @@ Path(UPLOAD_DIR).mkdir(exist_ok=True)
 for folder in ["papers", "notes", "syllabus", "profile_photos"]:
     Path(f"{UPLOAD_DIR}/{folder}").mkdir(exist_ok=True)
 
-# MongoDB connection
+# MongoDB connection with SSL/TLS support for MongoDB Atlas
 try:
-    client = MongoClient(MONGO_URL)
+    # MongoDB Atlas requires SSL/TLS - configure connection parameters
+    import ssl
+    
+    # Parse if it's an Atlas connection (mongodb+srv://)
+    if "mongodb+srv://" in MONGO_URL or "mongodb+srv" in MONGO_URL:
+        # MongoDB Atlas connection with SSL/TLS
+        client = MongoClient(
+            MONGO_URL,
+            tls=True,
+            tlsAllowInvalidCertificates=True,  # For development - helps with SSL cert issues
+            serverSelectionTimeoutMS=5000,
+            connectTimeoutMS=10000,
+            retryWrites=True
+        )
+        print("🔒 Connecting to MongoDB Atlas with SSL/TLS...")
+    else:
+        # Local MongoDB connection
+        client = MongoClient(MONGO_URL)
+        print("📦 Connecting to local MongoDB...")
+    
     db = client[DATABASE_NAME]
     
     # All collections we need
