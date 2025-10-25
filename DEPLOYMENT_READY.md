@@ -142,12 +142,12 @@ All scripts are in `/app/scripts/`:
 
 ### Frontend URL:
 ```
-https://vulnsweeper.preview.emergentagent.com
+https://safety-first-55.preview.emergentagent.com
 ```
 
 ### Backend API:
 ```
-https://vulnsweeper.preview.emergentagent.com/api
+https://safety-first-55.preview.emergentagent.com/api
 ```
 
 ### Admin Login:

@@ -4,7 +4,7 @@
 
 **Test Your Website Here:**
 ```
-https://vulnsweeper.preview.emergentagent.com
+https://safety-first-55.preview.emergentagent.com
 ```
 
 ---
@@ -586,7 +586,7 @@ If all tests pass and checklist complete:
 ### For Current Preview:
 Your site is already live at:
 ```
-https://vulnsweeper.preview.emergentagent.com
+https://safety-first-55.preview.emergentagent.com
 ```
 
 This preview URL is production-ready!
