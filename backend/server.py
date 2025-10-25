@@ -885,7 +885,7 @@ async def forgot_password(request: Request, reset_request: ForgotPasswordRequest
         token_doc = {
             "_id": str(uuid.uuid4()),
             "user_id": user["_id"],
-            "email": request.email,
+            "email": reset_request.email,
             "token": reset_token,
             "created_at": datetime.utcnow(),
             "expires_at": datetime.utcnow() + timedelta(hours=1),
