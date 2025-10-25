@@ -464,7 +464,8 @@ async def validate_file_type(file: UploadFile):
 
 ## Auth routes
 @app.post("/api/auth/register")
-async def register(user_data: UserCreate):
+@limiter.limit("3/minute")  # ✅ SECURITY FIX #3: Rate limit registration
+async def register(request: Request, user_data: UserCreate):
     # Make sure email isn't already taken
     if users_collection.find_one({"email": user_data.email}):
         raise HTTPException(
