@@ -26,7 +26,7 @@ from slowapi.errors import RateLimitExceeded
 # Phase 2 Security Enhancements
 from middleware.security_headers import SecurityHeadersMiddleware
 from middleware.logging_middleware import RequestLoggingMiddleware
-from logging.config import setup_logging
+from app_logging.config import setup_logging
 
 # Load .env from the correct path
 load_dotenv(dotenv_path="/app/backend/.env")
