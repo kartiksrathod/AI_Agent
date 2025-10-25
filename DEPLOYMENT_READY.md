@@ -142,12 +142,12 @@ All scripts are in `/app/scripts/`:
 
 ### Frontend URL:
 ```
-https://total-checkout.preview.emergentagent.com
+https://vulnsweeper.preview.emergentagent.com
 ```
 
 ### Backend API:
 ```
-https://total-checkout.preview.emergentagent.com/api
+https://vulnsweeper.preview.emergentagent.com/api
 ```
 
 ### Admin Login:
