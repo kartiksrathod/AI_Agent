@@ -29,14 +29,20 @@ load_dotenv(dotenv_path="/app/backend/.env")
 # Main app instance
 app = FastAPI(title="Academic Resources API", version="1.0.0")
 
-# CORS - allowing all origins for now (tighten this in production)
+# ✅ SECURITY FIX #1: CORS Configuration - Restrict to specific origins
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000,http://localhost:8080").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS,  # ✅ Fixed: No more wildcard
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH"],
+    allow_headers=["Content-Type", "Authorization"],
 )
+
+# ✅ SECURITY FIX #3: Rate Limiting Setup
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # Auth setup
 security = HTTPBearer()
