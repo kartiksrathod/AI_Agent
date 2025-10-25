@@ -9,19 +9,11 @@ const API_BASE_URL = process.env.REACT_APP_BACKEND_URL !== undefined
 
 const api = axios.create({
   baseURL: API_BASE_URL,
+  withCredentials: true, // ✅ SECURITY FIX #2: Send cookies with requests
 });
 
-// Interceptor to add auth token to requests
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+// ✅ SECURITY FIX #2: Removed localStorage token interceptor
+// Cookies are sent automatically by the browser
 
 // Authentication endpoints
 export const authAPI = {
