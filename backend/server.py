@@ -1157,12 +1157,9 @@ async def create_paper(
     file: UploadFile = File(...),
     current_user: User = Depends(get_current_user)
 ):
-    # Only accept PDFs
-    if not file.filename.endswith('.pdf'):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Only PDF files are allowed"
-        )
+    # ✅ SECURITY FIX #5: Validate file size and type
+    await validate_file_size(file)
+    await validate_file_type(file)
     
     # Save the uploaded file
     file_path = await save_upload_file(file, f"{UPLOAD_DIR}/papers")
