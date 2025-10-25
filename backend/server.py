@@ -42,6 +42,13 @@ app = FastAPI(
     redoc_url="/redoc" if os.getenv("ENVIRONMENT", "production") != "production" else None,
 )
 
+# ✅ PHASE 2: Security Headers Middleware (HSTS, CSP, X-Frame-Options, etc.)
+enforce_https = os.getenv("ENVIRONMENT", "production") == "production"
+app.add_middleware(SecurityHeadersMiddleware, enforce_https=enforce_https)
+
+# ✅ PHASE 2: Request Logging Middleware (Security event tracking)
+app.add_middleware(RequestLoggingMiddleware)
+
 # ✅ SECURITY FIX #1: CORS Configuration - Restrict to specific origins
 ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000,http://localhost:8080").split(",")
 app.add_middleware(
