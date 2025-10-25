@@ -1057,7 +1057,7 @@ async def forgot_password(request: Request, reset_request: ForgotPasswordRequest
         
         # Send email
         email_sent = send_email(
-            to_email=request.email,
+            to_email=reset_request.email,
             subject="Password Reset Request - Academic Resources",
             html_content=html_content
         )
