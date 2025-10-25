@@ -67,12 +67,10 @@ export const notesAPI = {
   }),
   delete: (id) => api.delete(`/api/notes/${id}`),
   download: async (id) => {
-    const token = localStorage.getItem('token');
+    // ✅ SECURITY FIX #2: Cookies sent automatically with credentials
     const response = await fetch(`${API_BASE_URL}/api/notes/${id}/download`, {
       method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
+      credentials: 'include' // Send cookies
     });
     
     if (!response.ok) {
