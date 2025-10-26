@@ -38,14 +38,6 @@ const Home = () => {
       color: 'bg-purple-50 hover:bg-purple-100 border-purple-200 dark:bg-purple-950 dark:hover:bg-purple-900 dark:border-purple-800',
       iconColor: 'text-purple-600 dark:text-purple-400',
       path: '/syllabus'
-    },
-    {
-      title: 'Forum',
-      description: 'Engineering community help',
-      icon: MessageSquare,
-      color: 'bg-orange-50 hover:bg-orange-100 border-orange-200 dark:bg-orange-950 dark:hover:bg-orange-900 dark:border-orange-800',
-      iconColor: 'text-orange-600 dark:text-orange-400',
-      path: '/forum'
     }
   ];
 
