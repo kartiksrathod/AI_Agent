@@ -296,14 +296,14 @@ const AIAssistant = () => {
                   onKeyPress={handleKeyPress}
                   placeholder="Ask me anything about engineering..."
                   disabled={isLoading}
-                  className="flex-1"
+                  className="flex-1 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400"
                   data-testid="ai-chat-input"
                 />
                 <Button
                   onClick={sendMessage}
                   disabled={isLoading || !inputMessage.trim()}
                   size="sm"
-                  className="bg-blue-600 hover:bg-blue-700"
+                  className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
                   data-testid="ai-send-message-btn"
                 >
                   {isLoading ? (
@@ -313,7 +313,7 @@ const AIAssistant = () => {
                   )}
                 </Button>
               </div>
-              <p className="text-xs text-gray-500 mt-2 flex items-center gap-1">
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 flex items-center gap-1">
                 <HelpCircle className="h-3 w-3" />
                 AI can help with engineering topics, problem solving, and study guidance
               </p>
