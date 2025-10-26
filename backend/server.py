@@ -837,7 +837,7 @@ class ResendVerificationRequest(BaseModel):
     email: EmailStr
 
 @app.post("/api/auth/resend-verification")
-async def resend_verification(request: ResendVerificationRequest):
+async def resend_verification(req_request: Request, request: ResendVerificationRequest):
     """Resend verification email"""
     try:
         # Check if user exists
