@@ -160,12 +160,12 @@ const AIAssistant = () => {
       <div className="fixed bottom-6 right-6 z-50" data-testid="ai-assistant-trigger">
         <Button
           onClick={() => setIsOpen(true)}
-          className="h-14 w-14 rounded-full bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse"
+          className="h-14 w-14 rounded-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse"
           data-testid="open-ai-assistant-btn"
         >
-          <Brain className="h-6 w-6" />
+          <Brain className="h-6 w-6 text-white" />
         </Button>
-        <div className="absolute -top-12 right-0 bg-gray-900 text-white px-3 py-1 rounded-lg text-sm whitespace-nowrap opacity-0 hover:opacity-100 transition-opacity">
+        <div className="absolute -top-12 right-0 bg-gray-900 dark:bg-gray-800 text-white px-3 py-1 rounded-lg text-sm whitespace-nowrap opacity-0 hover:opacity-100 transition-opacity shadow-lg">
           AI Study Assistant
         </div>
       </div>
