@@ -208,7 +208,7 @@ const AIAssistant = () => {
         </CardHeader>
 
         {!isMinimized && (
-          <CardContent className="p-0 flex flex-col h-[calc(500px-80px)]">
+          <CardContent className="p-0 flex flex-col h-[calc(500px-80px)] bg-white dark:bg-gray-800">
             {error && (
               <Alert variant="destructive" className="m-4 mb-2">
                 <AlertDescription>{error}</AlertDescription>
@@ -216,7 +216,7 @@ const AIAssistant = () => {
             )}
 
             {/* Messages */}
-            <ScrollArea className="flex-1 p-4" data-testid="ai-chat-messages">
+            <ScrollArea className="flex-1 p-4 bg-gray-50 dark:bg-gray-900" data-testid="ai-chat-messages">
               <div className="space-y-4">
                 {messages.map((message) => (
                   <div
