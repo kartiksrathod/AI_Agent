@@ -27,6 +27,17 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL !== undefined
 const AIAssistant = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
+
+  // Listen for custom event to open AI Assistant
+  useEffect(() => {
+    const handleOpenAI = () => {
+      setIsOpen(true);
+      setIsMinimized(false);
+    };
+    
+    window.addEventListener('openAIAssistant', handleOpenAI);
+    return () => window.removeEventListener('openAIAssistant', handleOpenAI);
+  }, []);
   const [messages, setMessages] = useState([
     {
       id: 1,
