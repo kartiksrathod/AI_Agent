@@ -68,8 +68,7 @@ const SmartSearchBar = () => {
       const routes = {
         papers: '/papers',
         notes: '/notes',
-        syllabus: '/syllabus',
-        forum: '/forum'
+        syllabus: '/syllabus'
       };
       
       if (routes[item.type]) {
