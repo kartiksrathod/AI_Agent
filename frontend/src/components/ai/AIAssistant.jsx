@@ -246,14 +246,14 @@ const AIAssistant = () => {
                 
                 {isLoading && (
                   <div className="flex gap-3" data-testid="ai-loading-indicator">
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 flex items-center justify-center">
                       <Bot className="h-4 w-4" />
                     </div>
                     <div className="flex-1">
-                      <div className="inline-block p-3 rounded-lg bg-gray-100">
+                      <div className="inline-block p-3 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
                         <div className="flex items-center gap-2">
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                          <span className="text-sm text-gray-600">Thinking...</span>
+                          <Loader2 className="h-4 w-4 animate-spin text-gray-600 dark:text-gray-300" />
+                          <span className="text-sm text-gray-600 dark:text-gray-300">Thinking...</span>
                         </div>
                       </div>
                     </div>
