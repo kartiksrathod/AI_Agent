@@ -27,7 +27,6 @@ const SmartSearchBar = () => {
     { title: 'Software Engineering Papers', type: 'papers', icon: FileText, category: 'Question Papers' },
     { title: 'Database Management System', type: 'notes', icon: BookOpen, category: 'Study Notes' },
     { title: 'Mechanical Engineering Syllabus', type: 'syllabus', icon: GraduationCap, category: 'Syllabus' },
-    { title: 'Help with Programming', type: 'forum', icon: MessageSquare, category: 'Community' },
   ];
 
   // Load recent searches from localStorage
