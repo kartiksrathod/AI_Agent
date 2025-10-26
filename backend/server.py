@@ -598,8 +598,9 @@ async def register(request: Request, user_data: UserCreate):
     
     email_verification_tokens_collection.insert_one(token_doc)
     
-    # Create verification link
-    verification_link = f"{FRONTEND_URL}/verify-email/{verification_token}"
+    # Create verification link with dynamic frontend URL
+    frontend_url = get_frontend_url(request)
+    verification_link = f"{frontend_url}/verify-email/{verification_token}"
     
     # Beautiful welcome email with verification
     html_content = f"""
