@@ -210,12 +210,15 @@ const FeaturesSection = () => {
                     ))}
                   </div>
                   
-                  <Link to={feature.link}>
+                  {feature.title === "AI Study Assistant" ? (
                     <motion.div
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
                       <Button 
+                        onClick={() => {
+                          window.dispatchEvent(new CustomEvent('openAIAssistant'));
+                        }}
                         className={`w-full bg-gradient-to-r ${feature.color} hover:shadow-xl text-white border-0 relative overflow-hidden group/btn`}
                         size="lg"
                       >
@@ -228,7 +231,27 @@ const FeaturesSection = () => {
                         <span className="relative z-10">Explore Now</span>
                       </Button>
                     </motion.div>
-                  </Link>
+                  ) : (
+                    <Link to={feature.link}>
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Button 
+                          className={`w-full bg-gradient-to-r ${feature.color} hover:shadow-xl text-white border-0 relative overflow-hidden group/btn`}
+                          size="lg"
+                        >
+                          <motion.span
+                            className="absolute inset-0 bg-white/20"
+                            initial={{ x: "-100%" }}
+                            whileHover={{ x: "100%" }}
+                            transition={{ duration: 0.6 }}
+                          />
+                          <span className="relative z-10">Explore Now</span>
+                        </Button>
+                      </motion.div>
+                    </Link>
+                  )}
                 </CardContent>
               </Card>
             </motion.div>
