@@ -96,7 +96,28 @@ SMTP_USERNAME = os.getenv("SMTP_USERNAME")
 SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
 SMTP_FROM_EMAIL = os.getenv("SMTP_FROM_EMAIL")
 SMTP_FROM_NAME = os.getenv("SMTP_FROM_NAME", "Academic Resources")
-FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
+FRONTEND_URL = os.getenv("FRONTEND_URL", "")
+
+# Helper function to get frontend URL dynamically
+def get_frontend_url(request: Request = None):
+    """
+    Dynamically determine frontend URL based on request origin.
+    Works for both localhost and preview environments.
+    """
+    # If FRONTEND_URL is set in .env, use it
+    if FRONTEND_URL:
+        return FRONTEND_URL
+    
+    # Otherwise, detect from request
+    if request:
+        origin = request.headers.get("origin") or request.headers.get("referer", "")
+        if origin:
+            # Extract base URL from origin/referer
+            if origin.startswith("http"):
+                return origin.rstrip("/")
+    
+    # Default fallback
+    return "http://localhost:3000"
 
 # Make sure upload folders exist
 Path(UPLOAD_DIR).mkdir(exist_ok=True)
