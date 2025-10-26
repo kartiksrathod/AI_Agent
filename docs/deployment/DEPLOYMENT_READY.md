@@ -142,12 +142,12 @@ All scripts are in `/app/scripts/`:
 
 ### Frontend URL:
 ```
-https://academic-resources-1.preview.emergentagent.com
+https://ci-health-fix.preview.emergentagent.com
 ```
 
 ### Backend API:
 ```
-https://academic-resources-1.preview.emergentagent.com/api
+https://ci-health-fix.preview.emergentagent.com/api
 ```
 
 ### Admin Login:
