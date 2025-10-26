@@ -196,7 +196,7 @@ const Home = () => {
             <p className="text-lg text-gray-600 dark:text-gray-300">Jump straight to what you need</p>
           </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {quickAccessCards.map((card, index) => (
               <motion.div
                 key={index}
