@@ -146,7 +146,7 @@ const Home = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              Access thousands of previous year question papers, study notes, syllabus, and connect with fellow engineering students. 
+              Access hundreds of previous year question papers, study notes, and syllabus. 
               Everything you need to excel in your engineering journey, all in one place.
             </motion.p>
             
