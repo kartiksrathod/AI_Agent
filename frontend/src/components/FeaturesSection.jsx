@@ -46,15 +46,6 @@ const FeaturesSection = () => {
       color: "from-purple-500 to-pink-500",
       bgColor: "bg-purple-50 dark:bg-purple-950/30",
       link: "/"
-    },
-    {
-      icon: Users,
-      title: "Student Community",
-      description: "Connect with fellow engineering students, share knowledge, and get peer support.",
-      features: ["Active Forums", "Study Groups", "Peer Support", "Knowledge Sharing"],
-      color: "from-orange-500 to-red-500",
-      bgColor: "bg-orange-50 dark:bg-orange-950/30",
-      link: "/forum"
     }
   ];
 
