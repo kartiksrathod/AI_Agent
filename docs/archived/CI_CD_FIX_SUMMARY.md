@@ -131,7 +131,7 @@ EMERGENT_LLM_KEY=sk-emergent-a047579AfDd6755D26
 
 ### Frontend Environment
 ```env
-REACT_APP_BACKEND_URL=https://persistent-mongo.preview.emergentagent.com
+REACT_APP_BACKEND_URL=https://academic-resources-1.preview.emergentagent.com
 ```
 
 ---

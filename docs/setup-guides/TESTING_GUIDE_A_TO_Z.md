@@ -4,7 +4,7 @@
 
 **Test Your Website Here:**
 ```
-https://persistent-mongo.preview.emergentagent.com
+https://academic-resources-1.preview.emergentagent.com
 ```
 
 ---
@@ -586,7 +586,7 @@ If all tests pass and checklist complete:
 ### For Current Preview:
 Your site is already live at:
 ```
-https://persistent-mongo.preview.emergentagent.com
+https://academic-resources-1.preview.emergentagent.com
 ```
 
 This preview URL is production-ready!

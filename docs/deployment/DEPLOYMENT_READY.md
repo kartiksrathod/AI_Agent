@@ -142,12 +142,12 @@ All scripts are in `/app/scripts/`:
 
 ### Frontend URL:
 ```
-https://persistent-mongo.preview.emergentagent.com
+https://academic-resources-1.preview.emergentagent.com
 ```
 
 ### Backend API:
 ```
-https://persistent-mongo.preview.emergentagent.com/api
+https://academic-resources-1.preview.emergentagent.com/api
 ```
 
 ### Admin Login:
