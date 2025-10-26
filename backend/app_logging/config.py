@@ -61,7 +61,7 @@ def setup_logging():
     """
     
     # Create logs directory
-    log_dir = Path("/var/log/app")
+    log_dir = Path(__file__).resolve().parent / "logs"
     log_dir.mkdir(parents=True, exist_ok=True)
     
     # Root logger configuration
