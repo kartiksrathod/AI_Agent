@@ -174,23 +174,6 @@ const Home = () => {
                   </Button>
                 </motion.div>
               </Link>
-              <Link to="/forum">
-                <motion.div
-                  whileHover={{ 
-                    scale: 1.02,
-                  }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Button 
-                    data-testid="join-community-btn"
-                    size="lg" 
-                    variant="outline" 
-                    className="px-8 border-2 border-gray-800 dark:border-gray-600 text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 relative group overflow-hidden hover:shadow-lg transition-shadow duration-300"
-                  >
-                    <span className="relative z-10 font-semibold">Join Community</span>
-                  </Button>
-                </motion.div>
-              </Link>
             </motion.div>
           </div>
         </div>
