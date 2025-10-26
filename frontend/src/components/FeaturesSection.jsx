@@ -23,8 +23,8 @@ const FeaturesSection = () => {
     {
       icon: FileText,
       title: "Question Papers Archive",
-      description: "Access thousands of previous year question papers from top engineering colleges across India.",
-      features: ["10,000+ Papers", "All Branches Covered", "Semester-wise Organization", "Instant Download"],
+      description: "Access hundreds of previous year question papers of VTU.",
+      features: ["All Branches Covered", "Semester-wise Organization", "Instant Download"],
       color: "from-blue-500 to-cyan-500",
       bgColor: "bg-blue-50 dark:bg-blue-950/30",
       link: "/papers"
