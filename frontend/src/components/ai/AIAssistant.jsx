@@ -225,19 +225,19 @@ const AIAssistant = () => {
                     data-testid={`ai-message-${message.type}`}
                   >
                     <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
-                      message.type === 'ai' ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-600'
+                      message.type === 'ai' ? 'bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
                     }`}>
                       {message.type === 'ai' ? <Bot className="h-4 w-4" /> : <User className="h-4 w-4" />}
                     </div>
                     <div className={`flex-1 ${message.type === 'user' ? 'text-right' : ''}`}>
                       <div className={`inline-block p-3 rounded-lg max-w-[80%] ${
                         message.type === 'ai' 
-                          ? 'bg-gray-100 text-gray-900' 
-                          : 'bg-blue-600 text-white'
+                          ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-700' 
+                          : 'bg-blue-600 dark:bg-blue-700 text-white'
                       }`}>
                         <p className="text-sm whitespace-pre-wrap">{message.content}</p>
                       </div>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                         {message.timestamp.toLocaleTimeString()}
                       </p>
                     </div>
