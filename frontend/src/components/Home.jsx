@@ -7,7 +7,6 @@ import {
   FileText, 
   BookOpen, 
   GraduationCap, 
-  MessageSquare,
   Sparkles
 } from 'lucide-react';
 import FeaturesSection from './FeaturesSection';
