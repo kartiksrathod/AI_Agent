@@ -21,7 +21,6 @@ import ResendVerification from "./components/auth/ResendVerification";
 import Papers from "./components/papers/Papers";
 import Notes from "./components/notes/Notes";
 import Syllabus from "./components/syllabus/Syllabus";
-import Forum from "./components/forum/Forum";
 import AIAssistant from "./components/ai/AIAssistant";
 import ProfileDashboard from "./components/dashboard/ProfileDashboard";
 import KeyboardShortcutsModal from "./components/KeyboardShortcutsModal";
