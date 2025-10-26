@@ -972,8 +972,9 @@ async def forgot_password(request: Request, reset_request: ForgotPasswordRequest
         
         password_reset_tokens_collection.insert_one(token_doc)
         
-        # Create reset link
-        reset_link = f"{FRONTEND_URL}/reset-password/{reset_token}"
+        # Create reset link with dynamic frontend URL
+        frontend_url = get_frontend_url(request)
+        reset_link = f"{frontend_url}/reset-password/{reset_token}"
         
         # Email content - Modern academic theme
         html_content = f"""
