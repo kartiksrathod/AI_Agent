@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, FileText, BookOpen, GraduationCap, MessageSquare, Clock, TrendingUp, X } from 'lucide-react';
+import { Search, FileText, BookOpen, GraduationCap, Clock, TrendingUp, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Input } from './ui/input';
 import { useToast } from './ui/advanced-toast';
