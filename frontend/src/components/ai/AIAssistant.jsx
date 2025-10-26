@@ -265,8 +265,8 @@ const AIAssistant = () => {
 
             {/* Quick Questions */}
             {messages.length === 1 && (
-              <div className="p-4 border-t bg-gray-50">
-                <p className="text-xs text-gray-600 mb-2 flex items-center gap-1">
+              <div className="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+                <p className="text-xs text-gray-600 dark:text-gray-400 mb-2 flex items-center gap-1">
                   <Lightbulb className="h-3 w-3" />
                   Quick questions to get started:
                 </p>
@@ -277,7 +277,7 @@ const AIAssistant = () => {
                       variant="outline"
                       size="sm"
                       onClick={() => handleQuickQuestion(question)}
-                      className="text-xs h-7"
+                      className="text-xs h-7 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                       data-testid={`quick-question-${index}`}
                     >
                       {question}
@@ -288,7 +288,7 @@ const AIAssistant = () => {
             )}
 
             {/* Input Area */}
-            <div className="p-4 border-t">
+            <div className="p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
               <div className="flex gap-2">
                 <Input
                   value={inputMessage}
