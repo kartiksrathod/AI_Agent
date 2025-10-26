@@ -33,7 +33,7 @@ const FeaturesSection = () => {
       icon: BookOpen,
       title: "Study Materials Hub",
       description: "Comprehensive study notes, reference materials, and guides created by top students and faculty.",
-      features: ["Quality Notes", "Topic-wise Chapters", "Visual Diagrams", "Easy Navigation"],
+      features: ["Quality Notes", "Module-wise Notes"],
       color: "from-green-500 to-emerald-500",
       bgColor: "bg-green-50 dark:bg-green-950/30",
       link: "/notes"
