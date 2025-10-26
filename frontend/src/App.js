@@ -137,7 +137,6 @@ const AppContent = () => {
                     <Route path="/papers" element={<Papers />} />
                     <Route path="/notes" element={<Notes />} />
                     <Route path="/syllabus" element={<Syllabus />} />
-                    <Route path="/forum" element={<Forum />} />
                     <Route path="/announcements" element={<CMSContent />} />
                     <Route 
                       path="/profile" 
