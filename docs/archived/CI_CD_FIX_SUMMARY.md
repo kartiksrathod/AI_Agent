@@ -131,7 +131,7 @@ EMERGENT_LLM_KEY=sk-emergent-a047579AfDd6755D26
 
 ### Frontend Environment
 ```env
-REACT_APP_BACKEND_URL=https://ci-health-fix.preview.emergentagent.com
+REACT_APP_BACKEND_URL=https://user-record-check.preview.emergentagent.com
 ```
 
 ---

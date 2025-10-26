@@ -26,7 +26,7 @@ fi
 
 if [ ! -f "/app/frontend/.env" ]; then
     echo "   ⚠️  Frontend .env missing! Creating..."
-    echo "REACT_APP_BACKEND_URL=https://ci-health-fix.preview.emergentagent.com/api" > /app/frontend/.env
+    echo "REACT_APP_BACKEND_URL=https://user-record-check.preview.emergentagent.com/api" > /app/frontend/.env
 fi
 echo "   ✅ Frontend .env exists"
 
