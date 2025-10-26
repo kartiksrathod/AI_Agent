@@ -876,8 +876,9 @@ async def resend_verification(req_request: Request, request: ResendVerificationR
         
         email_verification_tokens_collection.insert_one(token_doc)
         
-        # Send verification email
-        verification_link = f"{FRONTEND_URL}/verify-email/{verification_token}"
+        # Send verification email with dynamic frontend URL
+        frontend_url = get_frontend_url(req_request)
+        verification_link = f"{frontend_url}/verify-email/{verification_token}"
         
         html_content = f"""
         <!DOCTYPE html>
