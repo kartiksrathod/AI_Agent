@@ -174,8 +174,8 @@ const AIAssistant = () => {
 
   return (
     <div className="fixed bottom-6 right-6 z-50" data-testid="ai-assistant-chat">
-      <Card className={`w-96 h-[500px] shadow-2xl border-0 ${isMinimized ? 'h-16' : ''} transition-all duration-300`}>
-        <CardHeader className="pb-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-lg">
+      <Card className={`w-96 h-[500px] shadow-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 ${isMinimized ? 'h-16' : ''} transition-all duration-300`}>
+        <CardHeader className="pb-3 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-700 dark:to-purple-700 text-white rounded-t-lg">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Brain className="h-5 w-5" />
