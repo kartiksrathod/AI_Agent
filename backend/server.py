@@ -5,36 +5,35 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Explicitly load .env from the backend folder
 dotenv_path = Path(__file__).resolve().parent / ".env"
 print(f"🔍 Loading .env from: {dotenv_path}")
 load_dotenv(dotenv_path)
 
 # ============================================================
-# ✅ STEP 2: Imports that depend on env vars
+# ✅ STEP 2: Imports
 # ============================================================
 import uuid
 import logging
 from datetime import datetime, timedelta
-from fastapi import FastAPI, HTTPException, Depends, Request
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from pymongo import MongoClient
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 from pydantic import BaseModel, EmailStr
+import importlib
+import pkgutil
+
+# ✅ Central Config
+from config import (
+    db,
+    JWT_SECRET_KEY,
+    JWT_ALGORITHM,
+    ACCESS_TOKEN_EXPIRE_MINUTES,
+    ALLOWED_ORIGINS,
+)
 
 # ============================================================
-# ✅ STEP 3: Config & Environment Variables
-# ============================================================
-MONGO_URL = os.getenv("MONGO_URL")
-DATABASE_NAME = os.getenv("DATABASE_NAME", "academic_resources_db")
-ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(",")
-JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "supersecretkey")
-JWT_ALGORITHM = "HS256"
-JWT_EXPIRATION_MINUTES = 60
-
-# ============================================================
-# ✅ STEP 4: Logging Setup
+# ✅ STEP 3: Logging Setup
 # ============================================================
 LOG_DIR = os.path.join(os.getcwd(), "app_logging", "logs")
 os.makedirs(LOG_DIR, exist_ok=True)
@@ -47,37 +46,27 @@ logger = logging.getLogger(__name__)
 logger.info("✅ Logging initialized")
 
 # ============================================================
-# ✅ STEP 5: MongoDB Connection
-# ============================================================
-try:
-    client = MongoClient(MONGO_URL)
-    db = client[DATABASE_NAME]
-    client.admin.command("ping")
-    logger.info("✅ MongoDB connected successfully")
-except Exception as e:
-    logger.error(f"❌ MongoDB connection failed: {e}")
-    db = None
-
-# ============================================================
-# ✅ STEP 6: Password Hashing & JWT
+# ✅ STEP 4: Password Hashing & JWT
 # ============================================================
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
+    """Generate JWT token"""
     to_encode = data.copy()
-    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=JWT_EXPIRATION_MINUTES))
+    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, JWT_SECRET_KEY, algorithm=JWT_ALGORITHM)
 
 def verify_token(token: str):
+    """Decode JWT and verify validity"""
     try:
         payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM])
-        return payload.get("sub")
+        return payload
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
 
 # ============================================================
-# ✅ STEP 7: FastAPI App Initialization
+# ✅ STEP 5: FastAPI App Initialization
 # ============================================================
 app = FastAPI(title="EduResources API")
 
@@ -90,7 +79,7 @@ app.add_middleware(
 )
 
 # ============================================================
-# ✅ STEP 8: Models
+# ✅ STEP 6: Pydantic Models
 # ============================================================
 class UserRegister(BaseModel):
     name: str
@@ -105,7 +94,7 @@ class UserLogin(BaseModel):
     password: str
 
 # ============================================================
-# ✅ STEP 9: Auth Routes
+# ✅ STEP 7: Auth Routes
 # ============================================================
 @app.post("/api/auth/register")
 async def register(user: UserRegister):
@@ -128,15 +117,16 @@ async def register(user: UserRegister):
         "usn": user.usn,
         "course": user.course,
         "semester": user.semester,
-        "is_admin": False,
-        "created_at": datetime.utcnow()
+        "is_admin": users_collection.count_documents({}) == 0,  # first user = admin
+        "created_at": datetime.utcnow(),
     }
 
     users_collection.insert_one(user_doc)
     logger.info(f"👤 New user registered: {user.email}")
 
-    token = create_access_token({"sub": user.email})
+    token = create_access_token({"sub": user.email, "is_admin": user_doc["is_admin"]})
     return {"message": "User registered successfully", "token": token, "user_id": user_id}
+
 
 @app.post("/api/auth/login")
 async def login(user: UserLogin):
@@ -150,10 +140,7 @@ async def login(user: UserLogin):
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
     is_admin = existing_user.get("is_admin", False)
-    token = create_access_token({
-        "sub": user.email,
-        "is_admin": is_admin
-    })
+    token = create_access_token({"sub": user.email, "is_admin": is_admin})
 
     logger.info(f"✅ User logged in: {user.email} | Admin: {is_admin}")
 
@@ -166,9 +153,10 @@ async def login(user: UserLogin):
             "usn": existing_user.get("usn"),
             "course": existing_user.get("course"),
             "semester": existing_user.get("semester"),
-            "is_admin": is_admin
-        }
+            "is_admin": is_admin,
+        },
     }
+
 
 @app.get("/api/profile")
 async def profile(request: Request):
@@ -176,7 +164,8 @@ async def profile(request: Request):
     if not token or not token.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Token missing or invalid")
 
-    email = verify_token(token.split(" ")[1])
+    payload = verify_token(token.split(" ")[1])
+    email = payload.get("sub")
 
     user = db.users.find_one({"email": email}, {"password": 0})
     if not user:
@@ -185,18 +174,32 @@ async def profile(request: Request):
     return user
 
 # ============================================================
-# ✅ STEP 10: Include External Routers
+# ✅ STEP 8: Auto-Import All Routers from /routes
 # ============================================================
-from routes.admin_routes import router as admin_router
-from routes import auth, stats
+import routes
 
-app.include_router(auth.router)
-app.include_router(stats.router)
-app.include_router(admin_router, prefix="/api/admin")
+def auto_include_routers(app):
+    """Automatically include all routers from the 'routes' package."""
+    for _, module_name, _ in pkgutil.iter_modules(routes.__path__):
+        module = importlib.import_module(f"routes.{module_name}")
+        if hasattr(module, "router"):
+            prefix = f"/api/{module_name.replace('_routes', '')}"
+            tag = module_name.replace("_routes", "").capitalize()
+            app.include_router(module.router, prefix=prefix, tags=[tag])
+            logger.info(f"✅ Router loaded: {module_name} -> {prefix}")
+
+auto_include_routers(app)
 
 # ============================================================
-# ✅ STEP 11: Root
+# ✅ STEP 9: Root Endpoint
 # ============================================================
 @app.get("/")
 async def root():
-    return {"message": "EduResources Backend Running!"}
+    return {"message": "🚀 EduResources Backend Running Successfully!"}
+
+# ============================================================
+# ✅ STEP 10: Run Server
+# ============================================================
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("server:app", host="0.0.0.0", port=8000, reload=True)
