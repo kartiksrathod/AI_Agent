@@ -5,7 +5,7 @@ from datetime import datetime
 import uuid
 from typing import Optional
 
-router = APIRouter(prefix="/api/admin", tags=["Admin"])
+router = APIRouter()
 
 
 def get_current_user(request: Request):
