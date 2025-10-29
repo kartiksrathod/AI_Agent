@@ -142,12 +142,12 @@ All scripts are in `/app/scripts/`:
 
 ### Frontend URL:
 ```
-https://log-permission-fix.preview.emergentagent.com
+https://acadoc-manager.preview.emergentagent.com
 ```
 
 ### Backend API:
 ```
-https://log-permission-fix.preview.emergentagent.com/api
+https://acadoc-manager.preview.emergentagent.com/api
 ```
 
 ### Admin Login:

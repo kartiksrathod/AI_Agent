@@ -18,7 +18,7 @@ All 5 critical security vulnerabilities from the security assessment have been s
 **Fix Applied:**
 - Created `/app/backend/.env` with specific ALLOWED_ORIGINS
 - Backend already configured to use `ALLOWED_ORIGINS` from environment
-- Set to: `https://log-permission-fix.preview.emergentagent.com,http://localhost:3000`
+- Set to: `https://acadoc-manager.preview.emergentagent.com,http://localhost:3000`
 
 **Location:** `/app/backend/server.py:33-40`
 
@@ -182,12 +182,12 @@ ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=15
 
 # CORS - Specific origins only
-ALLOWED_ORIGINS=https://log-permission-fix.preview.emergentagent.com,http://localhost:3000
+ALLOWED_ORIGINS=https://acadoc-manager.preview.emergentagent.com,http://localhost:3000
 ```
 
 ### Frontend .env
 ```env
-REACT_APP_BACKEND_URL=https://log-permission-fix.preview.emergentagent.com
+REACT_APP_BACKEND_URL=https://acadoc-manager.preview.emergentagent.com
 ```
 
 ---

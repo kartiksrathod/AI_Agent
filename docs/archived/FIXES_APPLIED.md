@@ -58,12 +58,12 @@ SMTP_USERNAME=kartiksrathod07@gmail.com
 SMTP_PASSWORD=bgzz vneq ftgi fclj
 SMTP_FROM_EMAIL=kartiksrathod07@gmail.com
 SMTP_FROM_NAME=EduResources - Academic Platform
-FRONTEND_URL=https://log-permission-fix.preview.emergentagent.com
+FRONTEND_URL=https://acadoc-manager.preview.emergentagent.com
 ```
 
 ### 2. `/app/.env` (Frontend)
 ```env
-REACT_APP_BACKEND_URL=https://log-permission-fix.preview.emergentagent.com
+REACT_APP_BACKEND_URL=https://acadoc-manager.preview.emergentagent.com
 ```
 
 ### 3. `/app/.github/workflows/ci.yml` (Updated)
@@ -184,7 +184,7 @@ git push origin main
 
 ## Preview Environment Access
 
-**URL:** https://log-permission-fix.preview.emergentagent.com
+**URL:** https://acadoc-manager.preview.emergentagent.com
 
 **Admin Login:**
 - Email: kartiksrathod07@gmail.com
