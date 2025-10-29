@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Body, Request
 from jose import jwt, JWTError
-from config import JWT_SECRET_KEY, JWT_ALGORITHM
-from database import db
+from config import JWT_SECRET_KEY, JWT_ALGORITHM, db
 from datetime import datetime
 import uuid
 from typing import Optional
