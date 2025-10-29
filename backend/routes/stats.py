@@ -1,9 +1,9 @@
 # routes/stats.py
 from fastapi import APIRouter
-from database import db
+from config import db
 from bson import ObjectId
 
-router = APIRouter(prefix="/api/stats", tags=["Stats"])
+router = APIRouter()
 
 @router.get("/")
 async def get_stats():
