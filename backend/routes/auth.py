@@ -154,7 +154,7 @@ async def verify_email(token: str):
     We return a small HTML page that redirects to frontend login after 3 seconds.
     """
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM])
     except JWTError:
         raise HTTPException(status_code=400, detail="Invalid or expired verification link")
 
